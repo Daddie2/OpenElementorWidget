@@ -86,21 +86,9 @@ class Latest_4_Posts_Hover_Widget extends Elementor\Widget_Base {
             echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'latest-4-posts-hover');
             echo '</div>';
         }
-     else {
-        // Nessun post trovato
-        echo '<div class="no-posts-message">';
-        echo esc_html__('Nessun post trovato.', 'latest-4-posts-hover');
-        echo '</div>';
-        }
     }
 
-
-function enqueue_widget_styles() {
-    wp_enqueue_style(
-        'latest-4-posts-hover',
-        plugin_dir_url(__FILE__) . 'style-4-post.css',
-        filemtime(plugin_dir_path(__FILE__) . 'style-4-post.css')
-    );
-}
-add_action('wp_enqueue_scripts', 'enqueue_widget_styles');
+    public function get_style_depends() {
+		return [ 'latest-4-post'];
+	}
 }

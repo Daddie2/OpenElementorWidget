@@ -18,6 +18,9 @@ function register_OpenElementorWidget_widgets($widgets_manager)
     // require_once(plugin_dir_path(__FILE__) . 'widgets/Your-Other-Widget.php');
     // $widgets_manager->register_widget_type(new \Elementor_Your_Other_Widget());
 }
-
+function register_widget_styles() {
+	wp_register_style( 'latest-4-post', plugins_url( 'widget/css/style-4-post.css', __FILE__ ) );
+}
+add_action( 'wp_enqueue_scripts', 'register_widget_styles' );
 // Hook the registration function to Elementor's widgets_registered action
 add_action('elementor/widgets/widgets_registered', 'register_OpenElementorWidget_widgets');
