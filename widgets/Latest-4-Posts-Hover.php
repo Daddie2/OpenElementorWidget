@@ -38,13 +38,14 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
-
         $this->add_control(
-            'title',
+            'title_color',
             [
-                'label' => esc_html__('Title', 'Latest-4-Post-Hover'),
-                'type' => \Elementor\Controls_Manager::TEXTAREA,
-                'default' => esc_html__('Hello world', 'Latest-4-Post-Hover'),
+                'label' => esc_html__('Text Color', 'Latest-4-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .hello-world' => 'color: {{VALUE}};',
+                ],
             ]
         );
 
