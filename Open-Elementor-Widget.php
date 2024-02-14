@@ -12,7 +12,7 @@ function register_OpenElementorWidget_widgets($widgets_manager)
 {
     // Include and register the Latest-4-Posts-Hover widget
     require_once(plugin_dir_path(__FILE__) . 'widgets/Latest-4-Posts-Hover.php');
-    $widgets_manager->register_widget_type(new \Elementor_Latest_4_Posts_Hover_Widget());
+    $widgets_manager->register_widget_type(new \Latest_4_Posts_Hover_Widget());
 
     // Include and register other custom widgets here if needed
     // require_once(plugin_dir_path(__FILE__) . 'widgets/Your-Other-Widget.php');

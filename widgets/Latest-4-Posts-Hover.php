@@ -53,12 +53,6 @@ class Latest_4_Posts_Hover_Widget extends Elementor\Widget_Base {
         ];
 
         $posts = get_posts($args);
-        if (empty($posts)) {
-            echo '<div class="no-posts-message">';
-            echo esc_html__( 'No posts found.', 'latest-4-posts-hover' );
-            echo '</div>';
-            return;
-        }
     
         if ($posts) {
             echo '<div class="latest-4-posts-hover">';
@@ -86,8 +80,20 @@ class Latest_4_Posts_Hover_Widget extends Elementor\Widget_Base {
 
             echo '</div>';
         }
+        else {
+            // Gestisci il caso in cui $posts non è un array valido
+            echo '<div class="error-message">';
+            echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'latest-4-posts-hover');
+            echo '</div>';
+        }
+     else {
+        // Nessun post trovato
+        echo '<div class="no-posts-message">';
+        echo esc_html__('Nessun post trovato.', 'latest-4-posts-hover');
+        echo '</div>';
+        }
     }
-}
+
 
 function enqueue_widget_styles() {
     wp_enqueue_style(
@@ -97,3 +103,4 @@ function enqueue_widget_styles() {
     );
 }
 add_action('wp_enqueue_scripts', 'enqueue_widget_styles');
+}
