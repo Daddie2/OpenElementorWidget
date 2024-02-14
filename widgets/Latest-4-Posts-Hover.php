@@ -53,12 +53,13 @@ class Latest_4_Posts_Hover_Widget extends Elementor\Widget_Base {
         ];
 
         $posts = get_posts($args);
-        if ( ! have_posts() ) {
+        if (empty($posts)) {
             echo '<div class="no-posts-message">';
             echo esc_html__( 'No posts found.', 'latest-4-posts-hover' );
             echo '</div>';
             return;
         }
+    
         if ($posts) {
             echo '<div class="latest-4-posts-hover">';
 
