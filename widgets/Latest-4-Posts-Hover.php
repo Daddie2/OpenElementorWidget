@@ -53,7 +53,12 @@ class Latest_4_Posts_Hover_Widget extends Elementor\Widget_Base {
         ];
 
         $posts = get_posts($args);
-
+        if ( ! have_posts() ) {
+            echo '<div class="no-posts-message">';
+            echo esc_html__( 'No posts found.', 'latest-4-posts-hover' );
+            echo '</div>';
+            return;
+        }
         if ($posts) {
             echo '<div class="latest-4-posts-hover">';
 
@@ -91,4 +96,3 @@ function enqueue_widget_styles() {
     );
 }
 add_action('wp_enqueue_scripts', 'enqueue_widget_styles');
-
