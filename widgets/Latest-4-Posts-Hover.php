@@ -40,8 +40,11 @@ protected function _register_controls() {
 
     $this->end_controls_section();
 }
-
+public function get_style_depends() {
+    return [ 'latest-4-post'];
+}
 protected function render() {
+    wp_enqueue_style('latest-4-post', plugins_url('style-4-post.css', __FILE__));
 
     $settings = $this->get_settings_for_display();
 
@@ -85,7 +88,4 @@ protected function render() {
     }
 }
 
-public function get_style_depends() {
-    return [ 'latest-4-post'];
-}
 }
