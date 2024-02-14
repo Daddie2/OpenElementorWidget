@@ -1,0 +1,102 @@
+/* Stile base del widget */
+.latest-4-posts-hover {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  
+  .latest-4-posts-hover .card {
+    width: 450px; /* Larghezza base, regolabile con media queries */
+    min-height: 500px; /* Altezza base, regolabile con media queries */
+    border-radius: 16px;
+    margin: 0 auto; /* Centralizzazione orizzontale */
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2),
+                0 5px 8px 0px rgba(0, 0, 0, 0.14),
+                0 1px 14px 0px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    background-size: cover;
+    border-top: none;
+    transition: all 0.3s ease-in-out; /* Transizione per hover */
+  }
+  
+  .latest-4-posts-hover .info {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Sfondo bianco trasparente */
+    transform: translateY(100%); /* Nascondi info inizialmente */
+    transition: transform 0.5s ease-out; /* Transizione smooth */
+  }
+  
+  .latest-4-posts-hover .info:before {
+    z-index: -1;
+    display: block;
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    filter: blur(6px);
+    background-size: cover;
+    opacity: 0.45;
+    transform: translateY(-70%); /* Posizione verticale blur */
+    transition: transform 0.5s ease-out; /* Transizione smooth */
+  }
+  
+  .card:hover .info,
+  .card:hover .info:before {
+    transform: translateY(0); /* Visualizza info su hover */
+  }
+  
+  .latest-4-posts-hover .title {
+    margin: 0;
+    padding: 10px;
+    font-size: 32px;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.87);
+    overflow-wrap: break-word;
+  }
+  
+  .latest-4-posts-hover .post-date {
+    margin: 0;
+    padding: 0 10px;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+  
+  .latest-4-posts-hover .description {
+    margin: 0;
+    padding: 0 24px 24px;
+    font-size: 19px;
+    line-height: 1.5;
+    color: black; /* Rimuovi !important e specifica il colore */
+    display: none;
+  }
+  
+  .card:hover .description {
+    display: block; /* Visualizza descrizione su hover */
+  }
+  
+  /* Media queries per responsive design */
+  @media (max-width: 1199px) {
+    .latest-4-posts-hover .card {
+      width: 70em; /* Adatta larghezza per schermi medio-grandi */
+    }
+  }
+  
+  @media (max-width: 1051px) {
+    .latest-4-posts-hover .card {
+      width: 60em; /* Adatta larghezza per schermi medi */
+    }
+  }
+  
+  @media (max-width: 991px) {
+    .latest-4-posts-hover .card {
+      width: 56em; /* Adatta larghezza per schermi medio-piccoli */
+    }
+  }
+  @media (max-width: 819px) {
+    .latest-4-posts-hover .card {
+      width: 50em; /* Adatta larghezza per schermi medio-piccoli */
+    }
+  }
