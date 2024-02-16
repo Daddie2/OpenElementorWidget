@@ -57,5 +57,5 @@ class My_Elementor_Widget extends \Elementor\Widget_Base {
         echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'latest-4-posts-hover');
         echo '</div>';
     }
-        
+}
 }
