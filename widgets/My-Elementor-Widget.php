@@ -1,52 +1,24 @@
 <?php
-class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
-
-    public function get_style_depends() {
-		return [ 'lastest-4-post' ];
-	}
-    public function __construct($data = [], $args = null) {
-        parent::__construct($data, $args);
-    }
+class My_Elementor_Widget extends \Elementor\Widget_Base {
 
     public function get_name() {
-        return 'latest-4-posts-hover';
+        return 'my-elementor-widget';
     }
 
     public function get_title() {
-        return esc_html__('Latest 4 Posts Hover', 'latest-4-posts-hover');
+        return __('My Elementor Widget', 'my-elementor-widget');
     }
 
     public function get_icon() {
-        return 'eicon-post-list';
+        return 'eicon-posts-circle';
     }
 
     public function get_categories() {
-        return ['basic'];
+        return ['general'];
     }
 
-    protected function _register_controls() {
-        $this->start_controls_section(
-            'section_content',
-            [
-                'label' => esc_html__('Content', 'latest-4-posts-hover'),
-            ]
-        );
-
-        $this->add_control(
-            'posts_per_page',
-            [
-                'label' => esc_html__('Number of Posts', 'latest-4-posts-hover'),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => 4,
-            ]
-        );
-
-        $this->end_controls_section();
-    }
     protected function render() {
-
         $settings = $this->get_settings_for_display();
-
         $args = [
             'posts_per_page' => $settings['posts_per_page'],
         ];
@@ -85,5 +57,5 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
         echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'latest-4-posts-hover');
         echo '</div>';
     }
-}
+        
 }
