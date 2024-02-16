@@ -243,7 +243,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
           }
           
           .card-container .card {
-            flex-basis: calc(20% - 20px);
+            flex-basis: calc(25% - 20px);
             margin: 10px;
           }
         </style>';
