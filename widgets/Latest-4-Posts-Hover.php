@@ -38,16 +38,29 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                 'label' => esc_html__('Number of Posts', 'latest-4-posts-hover'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 4,
+                'max'=> 4,
+                'min'=> 1,
+            ]
+        );
+        $this->add_control(
+            'default_image',
+            [
+                'label' => esc_html__('Default Image', 'latest-4-posts-hover'),
+                'type' => \Elementor\Controls_Manager::MEDIA,
+                'default' => [
+                    'url' => \Elementor\Utils::get_placeholder_image_src(),
+                ],
             ]
         );
         $this->end_controls_section();
     }
     protected function render() {
-        $settings = $this->get_settings_for_display();
+        $settings = $this->get_settings_for_display(); 
         $args = [
             'posts_per_page' => $settings['posts_per_page'],
-            ];
+            ];           
         $posts = get_posts($args);
+    
         if ($posts) { 
              echo '<div class="card2-container">'; 
             foreach ($posts as $post) { 
@@ -55,9 +68,16 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                 $post_content = wp_trim_words($post->post_content, 15); 
                 $post_date = date('d/m/Y', strtotime($post->post_date)); 
                 $post_link = get_permalink($post->ID); 
-                $post_thumbnail = get_the_post_thumbnail_url($post->ID); 
+            // Check if the post has a featured image
+            $featured_image = get_the_post_thumbnail_url($post->ID);
+            if (!$featured_image) {
+                // If not, use the custom default image
+                $default_image = $settings['default_image']['url'];
+                $featured_image = $default_image;
+            }
+
                 echo '<div class="card2">
-                <div style="background-image: url(' . $post_thumbnail . ');"> 
+                <div style="background-image: url(' . $featured_image . ');"> 
                 <a href="' . $post_link . '" class="card2-link"> 
                 <div class="info"> <h1>' . $post_title . '</h1> <p class="post-date">' . $post_date . '
                 </p> <p class="description">' . $post_content . '</p> </div> </div> </a> </div> '; } echo '</div>';
@@ -81,6 +101,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                 0px 5px 8px 0px rgba(0, 0, 0, 0.14),
                 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
             overflow: hidden;
+           margin-bottom: 20px; /            
         }
     
         .info {
@@ -151,7 +172,11 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
           
           .card2-container .card2 {
             flex-basis: calc(25% - 20px);
-            padding-bottom:20px;
+          }
+          @media (max-width: 900px) {
+            .card2-container .card2 {
+              flex-basis: 100%;
+            }
           }
         </style>';
 
