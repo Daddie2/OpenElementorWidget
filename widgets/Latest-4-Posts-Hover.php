@@ -96,6 +96,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                     }
                     echo '<div class="card2"style="background-image: url(' . $featured_image . ');">
                 <div class="info">
+                <a href="' . $category_link . '"> Categoria: ' . $category_name . '</a>
                 <a href="' . $post_link . '" class="card2-link" style="display: block;">
                  <h1>' . $post_title . '</h1> <p class="post-date">' . $post_date . '
                 </p> <p class="description">' . $post_content .
