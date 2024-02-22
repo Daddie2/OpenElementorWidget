@@ -56,33 +56,88 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
     }
     protected function render() {
         $settings = $this->get_settings_for_display(); 
+        if($settings['posts_per_page']==null){
+            $settings['posts_per_page']=4;
+        }
         $args = [
             'posts_per_page' => $settings['posts_per_page'],
-            ];           
+            ];          
         $posts = get_posts($args);
-    
+        $flex=100/$settings['posts_per_page'];
+        $widht=$flex-1;
+        
         if ($posts) { 
              echo '<div class="card2-container">'; 
-            foreach ($posts as $post) { 
-                $post_title = get_the_title($post->ID);
-                $post_content = wp_trim_words($post->post_content, 15); 
-                $post_date = date('d/m/Y', strtotime($post->post_date)); 
-                $post_link = get_permalink($post->ID); 
-            // Check if the post has a featured image
-            $featured_image = get_the_post_thumbnail_url($post->ID);
-            if (!$featured_image) {
-                // If not, use the custom default image
-                $default_image = $settings['default_image']['url'];
-                $featured_image = $default_image;
-            }
+             if (wp_is_mobile()) {
+                // Codice da eseguire se la larghezza dello schermo è minore o uguale a 900 pixel
 
-                echo '<div class="card2">
-                <div style="background-image: url(' . $featured_image . ');"> 
-                <a href="' . $post_link . '" class="card2-link"> 
-                <div class="info"> <h1>' . $post_title . '</h1> <p class="post-date">' . $post_date . '
-                </p> <p class="description">' . $post_content . '</p> </div> </div> </a> </div> '; } echo '</div>';
-        }
-            
+                // Rendering dei post
+                foreach ($posts as $post) {
+                    setup_postdata($post);
+                      
+                    $post_title = get_the_title($post->ID);
+                    $post_content = wp_trim_words($post->post_content, 15);
+                    $post_date = date('d/m/Y', strtotime($post->post_date));
+                    $post_link = get_permalink($post->ID);
+                    // Check if the post has a featured image
+                    $featured_image = get_the_post_thumbnail_url($post->ID);
+                    if (!$featured_image) {
+                        // If not, use the custom default image
+                        $featured_image = $settings['default_image']['url'];
+                    }
+                    $categories = get_the_category($post->ID);
+                    if (!empty($categories)) {
+                        $category = $categories[0];
+                        $category_name = isset($category->name) ? $category->name : '';
+                        $category_link = isset($category->term_id) ? get_category_link($category->term_id) : '';
+                    } else {
+                        $category_name = '';
+                        $category_link = '';
+                    }
+                    echo '<div class="card2"style="background-image: url(' . $featured_image . ');">
+                <div class="info">
+                <a href="' . $post_link . '" class="card2-link" style="display: block;">
+                 <h1>' . $post_title . '</h1> <p class="post-date">' . $post_date . '
+                </p> <p class="description">' . $post_content .
+                '</p> </div>  </div> ';
+                }
+                wp_reset_postdata();
+                echo '</div>';
+    }
+ else {
+                foreach ($posts as $post) {
+                    $post_title = get_the_title($post->ID);
+                    $post_content = wp_trim_words($post->post_content, 15);
+                    $post_date = date('d/m/Y', strtotime($post->post_date));
+                    $post_link = get_permalink($post->ID);
+                    // Check if the post has a featured image
+                    $featured_image = get_the_post_thumbnail_url($post->ID);
+                    if (!$featured_image) {
+                        // If not, use the custom default image
+                        $featured_image = $settings['default_image']['url'];
+                    }
+                    $categories = get_the_category($post->ID);
+                    if (!empty($categories)) {
+                        $category = $categories[0];
+                        $category_name = isset($category->name) ? $category->name : '';
+                        $category_link = isset($category->term_id) ? get_category_link($category->term_id) : '';
+                    } else {
+                        $category_name = '';
+                        $category_link = '';
+                    } 
+                    echo '
+                    <div class="card2"style="background-image: url(' . $featured_image . ');">
+                    <a href="' . $post_link . '" class="card2-link"> 
+                    <div class="info"> <h1>' . $post_title . '</h1>
+                    <a href="' . $category_link . '"> Categoria: ' . $category_name . '</a>
+                     <a class="post-date">' . $post_date . '
+                </a> <p class="description">' . $post_content .
+                '</p></div>  </div> </a>';
+                }
+                wp_reset_postdata();
+                echo '</div>';
+    }
+}           
     else {
         // Gestisci il caso in cui $posts non è un array valido
         echo '<div class="error-message">';
@@ -96,12 +151,15 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
         .card2 {
             border-radius: 16px;
             margin: 0 auto;
-            width: 450px;
             box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
                 0px 5px 8px 0px rgba(0, 0, 0, 0.14),
                 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
-            overflow: hidden;
-           margin-bottom: 20px; /            
+            overflow: hidden; 
+            width: '.$widht.'%; 
+            margin-bottom: 20px;
+            background-position: center center;
+            background-size: cover;
+            cursor: pointer;
         }
     
         .info {
@@ -141,6 +199,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
             margin: 0;
             font-size: 32px;
             line-height: 1;
+            bottom: margin 0px;
             color: rgba(0, 0, 0, 0.87);
             overflow-wrap: break-word;
         }
@@ -167,17 +226,26 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
         .card2-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: left;
+            flex-basis: ('.$flex.'- 20px);
           }
-          
-          .card2-container .card2 {
-            flex-basis: calc(25% - 20px);
-          }
+                            }
+                  }';
+                  if($flex!=100){
+echo'     
+            @media ( max-width:1200px) {
+                .card2-container .card2 {
+                    flex-basis: 49%;            
+                            }
+                  }';
+}
+
+echo'
           @media (max-width: 900px) {
             .card2-container .card2 {
               flex-basis: 100%;
             }
-          }
+                  }
         </style>';
 
 }
