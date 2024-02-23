@@ -94,13 +94,15 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                         $category_name = '';
                         $category_link = '';
                     }
-                    echo '<div class="card2"style="background-image: url(' . $featured_image . ');">
+                echo '<div class="card2"style="background-image: url(' . $featured_image . ');">
                 <div class="info">
-                <a href="' . $category_link . '"> Categoria: ' . $category_name . '</a>
                 <a href="' . $post_link . '" class="card2-link" style="display: block;">
-                 <h1>' . $post_title . '</h1> <p class="post-date">' . $post_date . '
-                </p> <p class="description">' . $post_content .
-                '</p> </div>  </div> ';
+                <h1 class="title">' . $post_title . '</h1><a class="date">' . $post_date . '</a>';
+                if($category_name != ''){
+                    echo '<p class="category"href="' . $category_link . '"> Categoria: ' . $category_name . '</p>';
+
+                }
+                echo '<p class="description">' . $post_content .'</p></div>  </div> </a>';
                 }
                 wp_reset_postdata();
                 echo '</div>';
@@ -129,11 +131,12 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                     echo '
                     <div class="card2"style="background-image: url(' . $featured_image . ');">
                     <a href="' . $post_link . '" class="card2-link"> 
-                    <div class="info"> <h1>' . $post_title . '</h1>
-                    <a href="' . $category_link . '"> Categoria: ' . $category_name . '</a>
-                     <a class="post-date">' . $post_date . '
-                </a> <p class="description">' . $post_content .
-                '</p></div>  </div> </a>';
+                    <div class="info"> <h1 class="title">' . $post_title . '</h1><a class="date">' . $post_date . '</a>';
+                    if($category_name != ''){
+                        echo '<p class="category"href="' . $category_link . '"> Categoria: ' . $category_name . '</p>';
+
+                    }
+                    echo '<p class="description">' . $post_content .'</p></div>  </div> </a>';
                 }
                 wp_reset_postdata();
                 echo '</div>';
@@ -172,6 +175,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                 translateY(-170px)
                 translateZ(0); /* Regola la posizione verticale */
             transition: transform 0.5s ease-out;
+            
         }
     
         .info:before {
@@ -197,26 +201,31 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
         }
     
         .title {
-            margin: 0;
             font-size: 32px;
-            line-height: 1;
-            bottom: margin 0px;
+            padding: 0 5px;
+            margin-bottom: 0px;
             color: rgba(0, 0, 0, 0.87);
             overflow-wrap: break-word;
         }
     
-        .post-date {
-            margin: 0;
-            padding: 0 10px;
+        .date {
+            margin-top: 0;
+            padding: 0 5px;
             font-size: 18px;
-            color: rgba(0, 0, 0, 0.54);
+            color:black;
+        }
+        .category {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 0 5px;
+            font-size: 18px;
+            color:black;
         }
     
         .description {
             margin: 0;
-            padding: 0 24px 24px;
+            padding: 0 15px;
             font-size: 19px;
-            line-height: 1.5;
             color: black !important;
         }
     
