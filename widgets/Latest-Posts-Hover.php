@@ -1,19 +1,15 @@
 <?php
-class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
-
-    public function get_style_depends() {
-		return [ 'lastest-4-post' ];
-	}
+class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
     public function __construct($data = [], $args = null) {
         parent::__construct($data, $args);
     }
 
     public function get_name() {
-        return 'latest-4-posts-hover';
+        return 'latest-posts-hover';
     }
 
     public function get_title() {
-        return esc_html__('Latest 4 Posts Hover', 'latest-4-posts-hover');
+        return esc_html__('Latest Posts Hover', 'latest-posts-hover');
     }
 
     public function get_icon() {
@@ -21,21 +17,20 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
     }
 
     public function get_categories() {
-        return ['basic'];
+        return ['OpenWidget'];
     }
-
     protected function _register_controls() {
         $this->start_controls_section(
-            'section_content',
+            'section_general',
             [
-                'label' => esc_html__('Content', 'latest-4-posts-hover'),
+                'label' => esc_html__('General', 'Latest-Posts-Hover'),
             ]
         );
 
         $this->add_control(
             'posts_per_page',
             [
-                'label' => esc_html__('Number of Posts', 'latest-4-posts-hover'),
+                'label' => esc_html__('Number of Posts', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 4,
                 'max'=> 4,
@@ -45,10 +40,73 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'default_image',
             [
-                'label' => esc_html__('Default Image', 'latest-4-posts-hover'),
+                'label' => esc_html__('Default Image', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::MEDIA,
                 'default' => [
                     'url' => \Elementor\Utils::get_placeholder_image_src(),
+                ],
+            ]
+        );
+        $this->end_controls_section();
+        $this->start_controls_section(
+            'section_title',
+            [
+                'label' => esc_html__('Title', 'Latest-Posts-Hover'),
+            ]
+        );
+        $this->add_control(
+            'Title_color' ,
+            [
+                'label' => esc_html__('Color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .title' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'title_font_size',
+            [
+                'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 30,
+                    'unit' => 'px',
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => 1,
+                        'max' => 120,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .title' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+			'title_font',
+			[
+				'label' => esc_html__( 'Font Family', 'Latest-Posts-Hover' ),
+				'type' => \Elementor\Controls_Manager::FONT,
+				'default' => "Work Sans",
+				'selectors' => [
+					'{{WRAPPER}} .title' => 'font-family: {{VALUE}}',
+				],
+			]
+		);
+        $this->add_control(
+            'title_bold',
+            [
+                'label' => esc_html__('Title Bold', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+                'selectors' => [
+                    '{{WRAPPER}} .title' => 'font-weight: {{VALUE}};',
                 ],
             ]
         );
@@ -65,7 +123,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
         $posts = get_posts($args);
         $flex=100/$settings['posts_per_page'];
         $widht=$flex-1;
-        
+        $title_color=$settings['Title_color'];
         if ($posts) { 
              echo '<div class="card2-container">'; 
              if (wp_is_mobile()) {
@@ -97,7 +155,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                 echo '<div class="card2"style="background-image: url(' . $featured_image . ');">
                 <div class="info">
                 <a href="' . $post_link . '" class="card2-link" style="display: block;">
-                <h1 class="title">' . $post_title . '</h1><a class="date">' . $post_date . '</a>';
+                <b class="title">' . $post_title . '</b><p class="date">' . $post_date . '</p>';
                 if($category_name != ''){
                     echo '<p class="category"href="' . $category_link . '"> Categoria: ' . $category_name . '</p>';
 
@@ -131,7 +189,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
                     echo '
                     <div class="card2"style="background-image: url(' . $featured_image . ');">
                     <a href="' . $post_link . '" class="card2-link"> 
-                    <div class="info"> <h1 class="title">' . $post_title . '</h1><a class="date">' . $post_date . '</a>';
+                    <div class="info"> <b class="title">' . $post_title . '</b><p class="date">' . $post_date . '</p>';
                     if($category_name != ''){
                         echo '<p class="category"href="' . $category_link . '"> Categoria: ' . $category_name . '</p>';
 
@@ -145,7 +203,7 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
     else {
         // Gestisci il caso in cui $posts non è un array valido
         echo '<div class="error-message">';
-        echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'latest-4-posts-hover');
+        echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'Latest-Posts-Hover');
         echo '</div>';
     }
         echo'<style>
@@ -204,12 +262,13 @@ class Latest_4_Posts_Hover_Widget extends \Elementor\Widget_Base {
             font-size: 32px;
             padding: 0 5px;
             margin-bottom: 0px;
-            color: rgba(0, 0, 0, 0.87);
+            color: black;
             overflow-wrap: break-word;
         }
     
         .date {
             margin-top: 0;
+            margin-bottom: 0;
             padding: 0 5px;
             font-size: 18px;
             color:black;
