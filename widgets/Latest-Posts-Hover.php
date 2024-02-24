@@ -26,17 +26,26 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
                 'label' => esc_html__('General', 'Latest-Posts-Hover'),
             ]
         );
-
         $this->add_control(
-            'posts_per_page',
+            'all_post',
             [
-                'label' => esc_html__('Number of Posts', 'Latest-Posts-Hover'),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => 4,
-                'max'=> 4,
-                'min'=> 1,
+                'label' => esc_html__('All post', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'all',
+                'default' => 'normal',
             ]
         );
+            $this->add_control(
+                'posts_per_page',
+                [
+                    'label' => esc_html__('Number of Posts', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::NUMBER,
+                    'default' => 4,
+                    'min'=> 1,
+                ]
+            );
         $this->add_control(
             'default_image',
             [
@@ -45,6 +54,25 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
                 'default' => [
                     'url' => \Elementor\Utils::get_placeholder_image_src(),
                 ],
+            ]
+        );
+        $this->add_control(
+            'card_color',
+            [
+                'label' => esc_html__('Background color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '255, 255, 255',
+            ]
+        );
+        $this->add_control(
+            'card_opacity',
+            [
+                'label' => esc_html__('Card opacity', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 0.8,
+                'min'=> 0,
+                'max'=>1,
+                'step' => 0.1,
             ]
         );
         $this->end_controls_section();
@@ -103,13 +131,250 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'yes',
-                'default' => 'yes',
+                'return_value' => 'bold',
+                'default' => 'normal',
                 'selectors' => [
                     '{{WRAPPER}} .title' => 'font-weight: {{VALUE}};',
                 ],
             ]
         );
+        $this->end_controls_section();
+        $this->start_controls_section(
+            'section_date',
+            [
+                'label' => esc_html__('Date', 'Latest-Posts-Hover'),
+            ]
+        );   
+        $this->add_control(
+            'date_active',
+            [
+                'label' => esc_html__('Date Active', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'block',
+                'default' => 'none',
+                'selectors' => [
+                    '{{WRAPPER}} .date' => 'display: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'Date_color' ,
+            [
+                'label' => esc_html__('Color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .date' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'date_font_size',
+            [
+                'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 18,
+                    'unit' => 'px',
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => 1,
+                        'max' => 120,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .date' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+			'date_font',
+			[
+				'label' => esc_html__( 'Font Family', 'Latest-Posts-Hover' ),
+				'type' => \Elementor\Controls_Manager::FONT,
+				'default' => "Work Sans",
+				'selectors' => [
+					'{{WRAPPER}} .date' => 'font-family: {{VALUE}}',
+				],
+			]
+		);
+        $this->add_control(
+            'date_bold',
+            [
+                'label' => esc_html__('Date Bold', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'bold',
+                'default' => 'normal',
+                'selectors' => [
+                    '{{WRAPPER}} .date' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+     
+        $this->end_controls_section();
+        $this->start_controls_section(
+            'section_category',
+            [
+                'label' => esc_html__('Category', 'Latest-Posts-Hover'),
+            ]
+        );
+        $this->add_control(
+            'category_active',
+            [
+                'label' => esc_html__('Date Active', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'block',
+                'default' => 'none',
+                'selectors' => [
+                    '{{WRAPPER}} .category' => 'display: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'category_color' ,
+            [
+                'label' => esc_html__('Color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'category_font_size',
+            [
+                'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 18,
+                    'unit' => 'px',
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => 1,
+                        'max' => 120,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .category' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+			'category_font',
+			[
+				'label' => esc_html__( 'Font Family', 'Latest-Posts-Hover' ),
+				'type' => \Elementor\Controls_Manager::FONT,
+				'default' => "Work Sans",
+				'selectors' => [
+					'{{WRAPPER}} .category' => 'font-family: {{VALUE}}',
+				],
+			]
+		);
+        $this->add_control(
+            'category_bold',
+            [
+                'label' => esc_html__('category Bold', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'bold',
+                'default' => 'normal',
+                'selectors' => [
+                    '{{WRAPPER}} .category' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->end_controls_section();
+        $this->start_controls_section(
+            'section_content',
+            [
+                'label' => esc_html__('Content', 'Latest-Posts-Hover'),
+            ]
+        ); 
+        $this->add_control(
+            'content_word_pc',
+            [
+                'label' => esc_html__('Number of Word on pc', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 15,
+                'min'=> 1,
+            ]
+        );
+        $this->add_control(
+            'content_word_mobile',
+            [
+                'label' => esc_html__('Number of Word on mobile', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 15,
+                'min'=> 1,
+            ]
+        );
+        $this->add_control(
+            'text_color' ,
+            [
+                'label' => esc_html__('Color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .description' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'content_font_size',
+            [
+                'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 18,
+                    'unit' => 'px',
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => 1,
+                        'max' => 120,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .description' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+			'content_font',
+			[
+				'label' => esc_html__( 'Font Family', 'Latest-Posts-Hover' ),
+				'type' => \Elementor\Controls_Manager::FONT,
+				'default' => "Work Sans",
+				'selectors' => [
+					'{{WRAPPER}} .description' => 'font-family: {{VALUE}}',
+				],
+			]
+		);
+        $this->add_control(
+            'content_bold',
+            [
+                'label' => esc_html__('category Bold', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'bold',
+                'default' => 'normal',
+                'selectors' => [
+                    '{{WRAPPER}} .description' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+       
         $this->end_controls_section();
     }
     protected function render() {
@@ -119,9 +384,25 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
         }
         $args = [
             'posts_per_page' => $settings['posts_per_page'],
-            ];          
-        $posts = get_posts($args);
+            ];
+        if($settings['all_post']!='all'){
+            $posts = get_posts($args);
+        }
+        else{
+            $args = [
+                'posts_per_page' => -1,
+                ];
+            $posts = get_posts($args);
+
+        }
+        $opacity=$settings['card_opacity'];
+        $cardColor=$settings['card_color'];
+        $wordPc=$settings['content_word_pc'];
+        $wordMobile=$settings['content_word_mobile'];     
         $flex=100/$settings['posts_per_page'];
+        if($settings['posts_per_page']>4){
+        $flex=25;
+        }
         $widht=$flex-1;
         $title_color=$settings['Title_color'];
         if ($posts) { 
@@ -134,7 +415,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
                     setup_postdata($post);
                       
                     $post_title = get_the_title($post->ID);
-                    $post_content = wp_trim_words($post->post_content, 15);
+                    $post_content = wp_trim_words($post->post_content, $wordMobile);
                     $post_date = date('d/m/Y', strtotime($post->post_date));
                     $post_link = get_permalink($post->ID);
                     // Check if the post has a featured image
@@ -147,17 +428,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
                     if (!empty($categories)) {
                         $category = $categories[0];
                         $category_name = isset($category->name) ? $category->name : '';
-                        $category_link = isset($category->term_id) ? get_category_link($category->term_id) : '';
                     } else {
                         $category_name = '';
-                        $category_link = '';
                     }
                 echo '<div class="card2"style="background-image: url(' . $featured_image . ');">
                 <div class="info">
                 <a href="' . $post_link . '" class="card2-link" style="display: block;">
-                <b class="title">' . $post_title . '</b><p class="date">' . $post_date . '</p>';
+                <a class="title">' . $post_title . '</a><p class="date">' . $post_date . '</p>';
                 if($category_name != ''){
-                    echo '<p class="category"href="' . $category_link . '"> Categoria: ' . $category_name . '</p>';
+                    echo '<p class="category"> Categoria: ' . $category_name . '</p>';
 
                 }
                 echo '<p class="description">' . $post_content .'</p></div>  </div> </a>';
@@ -168,8 +447,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
  else {
                 foreach ($posts as $post) {
                     $post_title = get_the_title($post->ID);
-                    $post_content = wp_trim_words($post->post_content, 15);
-                    $post_date = date('d/m/Y', strtotime($post->post_date));
+                    $post_content = wp_trim_words($post->post_content, $wordPc);
+                    $post_date = date_i18n(get_option('date_format'), strtotime($post->post_date));
                     $post_link = get_permalink($post->ID);
                     // Check if the post has a featured image
                     $featured_image = get_the_post_thumbnail_url($post->ID);
@@ -181,17 +460,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
                     if (!empty($categories)) {
                         $category = $categories[0];
                         $category_name = isset($category->name) ? $category->name : '';
-                        $category_link = isset($category->term_id) ? get_category_link($category->term_id) : '';
                     } else {
                         $category_name = '';
-                        $category_link = '';
                     } 
                     echo '
                     <div class="card2"style="background-image: url(' . $featured_image . ');">
                     <a href="' . $post_link . '" class="card2-link"> 
-                    <div class="info"> <b class="title">' . $post_title . '</b><p class="date">' . $post_date . '</p>';
+                    <div class="info"> <a class="title">' . $post_title . '</a><p class="date">' . $post_date . '</p>';
                     if($category_name != ''){
-                        echo '<p class="category"href="' . $category_link . '"> Categoria: ' . $category_name . '</p>';
+                        echo '<p class="category"> Categoria: ' . $category_name . '</p>';
 
                     }
                     echo '<p class="description">' . $post_content .'</p></div>  </div> </a>';
@@ -228,7 +505,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
             position: relative;
             width: 100%;
             height: 600px;
-            background-color: rgba(255, 255, 255, 0.8); /* Sfondo bianco trasparente */
+            background-color: '.$cardColor.';
+            filter:opacity('.$opacity.' ); 
             transform: translateY(100%)
                 translateY(-170px)
                 translateZ(0); /* Regola la posizione verticale */
@@ -272,6 +550,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
             padding: 0 5px;
             font-size: 18px;
             color:black;
+            display:none;
         }
         .category {
             margin-top: 0;
@@ -279,13 +558,14 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
             padding: 0 5px;
             font-size: 18px;
             color:black;
+            display:none;
         }
     
         .description {
             margin: 0;
             padding: 0 15px;
             font-size: 19px;
-            color: black !important;
+            color: black;
         }
     
         .card2:hover .description {
