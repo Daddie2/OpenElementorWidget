@@ -490,9 +490,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base {
         .card2 {
             border-radius: 16px;
             margin: 0 auto;
-            box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-                0px 5px 8px 0px rgba(0, 0, 0, 0.14),
-                0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+            box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.5),
+                1px 5px 8px 0px rgba(0, 0, 0, 0.14),
+                1px 1px 14px 0px rgba(0, 0, 0, 0.12);
             overflow: hidden; 
             width: '.$widht.'%; 
             margin-bottom: 20px;
