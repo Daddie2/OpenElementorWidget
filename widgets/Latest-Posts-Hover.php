@@ -251,7 +251,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'black',
                 'selectors' => [
-                    '{{WRAPPER}} .category' => 'color: {{VALUE}}; ',
+                    '{{WRAPPER}} .category' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -515,7 +515,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
                     if ($category_name != '') {
-                        echo '<a class="category" role="button" tabindex="0" href="google.com">' . $category_string . '</a>';
+                        echo '<a class="category" href="google.com">' . $category_string . '</a>';
                     }
                     echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
         </div>
