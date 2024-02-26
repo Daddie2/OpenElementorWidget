@@ -420,7 +420,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $wordMobile = $settings['content_word_mobile'];
         $flex = 100 / count($posts);
 
-        if ($settings['posts_per_page'] > 4) {
+        if ( count($posts) > 4) {
             $flex = 25;
         }
         $widht = $flex - 1;
@@ -616,7 +616,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
         .category {
             margin-top: 0px;
-            margin-bottom: 0;
+            margin-bottom: 0px;
             padding: 0 5px;
             font-size: 18px;
             color:black;
@@ -624,10 +624,13 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
     
         .description {
-            margin: 0;
+            margin-top: 0px;
+            margin-bottom: 0;            
             padding: 0 15px;
             font-size: 19px;
             color: black;
+            display:block;            
+            overflow-wrap: break-word;
         }
     
         .card2:hover .description {
