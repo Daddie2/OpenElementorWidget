@@ -476,12 +476,12 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     echo '
        <div class="card2" style="background-image: url(' . $featured_image . ');>
         <div class="info">
-            <div class="title">     <a href="' . $post_link . '" class="card2-link">' . $post_title . ' <a/></div>
+            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
                     if ($category_name != '') {
                         echo '<a class="category" role="button" tabindex="0" href="google.com">' . $category_string . '</a>';
                     }
-                    echo '<p class="description">     <a href="' . $post_link . '" class="card2-link">' . $post_content . ' </a> </p>
+                    echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
         </div>
         </div>';
                 }
@@ -512,12 +512,12 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     echo '
        <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>
         <div class="info">
-            <div class="title">     <a href="' . $post_link . '" class="card2-link">' . $post_title . ' <a/></div>
+            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
                     if ($category_name != '') {
                         echo '<a class="category" role="button" tabindex="0" href="google.com">' . $category_string . '</a>';
                     }
-                    echo '<p class="description">     <a href="' . $post_link . '" class="card2-link">' . $post_content . ' </a> </p>
+                    echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
         </div>
         </div>';
                 }
