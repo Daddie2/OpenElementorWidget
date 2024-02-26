@@ -68,7 +68,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             [
                 'label' => esc_html__('Background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => '255, 255, 255',
+                'default' => '#FFFFFF',
             ]
         );
         $this->add_control(
@@ -418,7 +418,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $cardColor = $settings['card_color'];
         $wordPc = $settings['content_word_pc'];
         $wordMobile = $settings['content_word_mobile'];
-        $flex = 100 / $settings['posts_per_page'];
+        $flex = 100 / count($posts);
+
         if ($settings['posts_per_page'] > 4) {
             $flex = 25;
         }
