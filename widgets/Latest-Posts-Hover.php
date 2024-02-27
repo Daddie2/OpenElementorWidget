@@ -82,6 +82,16 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'step' => 0.1,
             ]
         );
+        $this->add_control(
+            'selected_page',
+            [
+                'label' => esc_html__('Select Page if you have a page with all post, made with this widget', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => $this->get_pages(),
+                'default' => '0',
+            ]
+        );
+
         $this->end_controls_section();
         $this->start_controls_section(
             'section_title',
@@ -142,6 +152,37 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'default' => 'normal',
                 'selectors' => [
                     '{{WRAPPER}} .title' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'title_alignment',
+            [
+                'label' => esc_html__('Title Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .title' => 'text-align: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
                 ],
             ]
         );
@@ -222,7 +263,37 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-
+        $this->add_control(
+            'date_alignment',
+            [
+                'label' => esc_html__('Date Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .date' => 'text-align: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
         $this->end_controls_section();
         $this->start_controls_section(
             'section_category',
@@ -237,7 +308,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'block',
+                'return_value' => 'inline-block',
                 'default' => 'none',
                 'selectors' => [
                     '{{WRAPPER}} .category' => 'display: {{VALUE}};',
@@ -300,6 +371,40 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+        $this->add_control(
+            'category_alignment',
+            [
+                'label' => esc_html__('Category Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .categories-links' => 'text-align: {{VALUE}};',
+                    '{{WRAPPER}} .category' => 'text-align: {{VALUE}};',
+
+
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
         $this->end_controls_section();
         $this->start_controls_section(
             'section_content',
@@ -326,9 +431,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             ]
         );
         $this->add_control(
-            'text_color',
+            'content_color',
             [
-                'label' => esc_html__('Color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Content Color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'black',
                 'selectors' => [
@@ -339,7 +444,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'content_font_size',
             [
-                'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Contnet Font Size', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 18,
@@ -359,7 +464,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'content_font',
             [
-                'label' => esc_html__('Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Content Font Family', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -370,7 +475,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'content_bold',
             [
-                'label' => esc_html__('category Bold', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Content Bold', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -381,8 +486,48 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-
+        $this->add_control(
+            'content_alignment',
+            [
+                'label' => esc_html__('Content Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .description' => 'text-align: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
         $this->end_controls_section();
+    }
+    private function get_pages()
+    {
+        $pages = get_pages();
+        $options = [];
+        $options[0] = esc_html__('Default', 'OpenWidget');
+        foreach ($pages as $page) {
+            $options[$page->ID] = $page->post_title;
+        }
+        return $options;
     }
     protected function render()
     {
@@ -399,28 +544,28 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args = [
                 'posts_per_page' => $settings['posts_per_page'],
             ];
-        }
-        if ($settings['all_post'] == 'all') {
-
-            if (isset($_GET['category']) && ($_GET['category']) == "all") {
-                $args = [
-                    'posts_per_page' => -1,
-                ];
-            }
+        } else {
             $args = [
-                'posts_per_page' => -1,
+                'posts_per_page' => $settings['posts_per_page'],
                 'category_name' => isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '',
 
             ];
         }
+        if ($settings['all_post'] == 'all') {
+            $args = [
+                'posts_per_page' => -1,
+            ];
+        }
+
         $posts = get_posts($args);
         $opacity = $settings['card_opacity'];
         $cardColor = $settings['card_color'];
         $wordPc = $settings['content_word_pc'];
         $wordMobile = $settings['content_word_mobile'];
-        $flex = 100 / count($posts);
-
-        if ( count($posts) > 4) {
+        if (count($posts) != 0) {
+            $flex = 100 / count($posts);
+        }
+        if (count($posts) > 4 || count($posts) == 0) {
             $flex = 25;
         }
         $widht = $flex - 1;
@@ -433,7 +578,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 echo ' active';
             }
             echo '">All</button>';
-            $categories = get_categories();
+            $categories = get_categories(['hide_empty' => 0]);
             foreach ($categories as $category) {
                 $category_name = $category->name;
                 $category_slug = $category->slug;
@@ -444,11 +589,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 echo '">' . $category_name . '</button>';
             }
             echo '</form> </div>';
-            if (isset($_GET['category']) && $_GET['category'] != 'all') {
-                $category = get_category_by_slug($_GET['category']);
-                echo '<p> ' . $category->name . '</p>';
-            }
             echo '<div class="card2-container">';
+            $selected_page_id = $settings['selected_page'];
             if (wp_is_mobile()) {
                 // Codice da eseguire se la larghezza dello schermo è minore o uguale a 900 pixel
 
@@ -464,23 +606,31 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-                    $categories = get_the_category($post->ID);
-                    if (!empty($categories)) {
-                        $category_name = array();
-                        foreach ($categories as $category) {
-                            $category_name[] = $category->name;
-                        }
-                        $category_string = implode(', ', $category_name);
-                    } else {
-                        $category_name = '';
-                    }
+                    echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
                     echo '
-       <div class="card2" style="background-image: url(' . $featured_image . ');>
         <div class="info">
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
-                    if ($category_name != '') {
-                        echo '<a class="category" role="button" tabindex="0" href="google.com">' . $category_string . '</a>';
+                    if ($selected_page_id != 0) {
+                        $page_link = get_permalink($selected_page_id);
+                        $categories = get_the_category($post->ID);
+                        if (!empty($categories)) {
+                            echo '<div class="categories-links">';
+                            foreach ($categories as $category) {
+                                $category_link = add_query_arg('category', $category->slug, $page_link);
+                                echo '<a href="' . $category_link . '" class="category">' . $category->name . '</a>';
+                            }
+                            echo '</div>';
+                        }
+                    } else {
+                        $categories = get_the_category($post->ID);
+                        if (!empty($categories)) {
+                            echo '<div class="categories-links">';
+                            foreach ($categories as $category) {
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">' . $category->name . '</a>';
+                            }
+                            echo '</div>';
+                        }
                     }
                     echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
         </div>
@@ -500,23 +650,35 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-                    $categories = get_the_category($post->ID);
-                    if (!empty($categories)) {
-                        $category_name = array();
-                        foreach ($categories as $category) {
-                            $category_name[] = $category->name;
-                        }
-                        $category_string = implode(', ', $category_name);
+                    if (is_admin()) {
+                        echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
                     } else {
-                        $category_name = '';
+                        echo '       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>';
                     }
                     echo '
-       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>
         <div class="info">
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
-                    if ($category_name != '') {
-                        echo '<a class="category" href="google.com">' . $category_string . '</a>';
+                    if ($selected_page_id != 0) {
+                        $page_link = get_permalink($selected_page_id);
+                        $categories = get_the_category($post->ID);
+                        if (!empty($categories)) {
+                            echo '<div class="categories-links">';
+                            foreach ($categories as $category) {
+                                $category_link = add_query_arg('category', $category->slug, $page_link);
+                                echo '<a href="' . $category_link . '" class="category">' . $category->name . '</a>';
+                            }
+                            echo '</div>';
+                        }
+                    } else {
+                        $categories = get_the_category($post->ID);
+                        if (!empty($categories)) {
+                            echo '<div class="categories-links">';
+                            foreach ($categories as $category) {
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">' . $category->name . '</a>';
+                            }
+                            echo '</div>';
+                        }
                     }
                     echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
         </div>
@@ -532,18 +694,33 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             echo '</div>';
         }
         echo '<style>
-        .category-filter-button {
-  background-color: green;
-  color: yellow;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
-}
+  .category-filter-button{
+ background: linear-gradient(to right,#196BCA ,#532db3);
+ background-color: #196BCA;
+ color: #fff;
+ font-family: Trebuchet MS;
+ font-size: 20px;
+ font-weight: 400;
+ font-style: italic;
+ text-decoration: none;
+ padding: 14px 15px;
+ border: 0px solid #000;
+ border-radius: 100px;
+ display: inline-block;
+ box-shadow: 0px 1px 4px 2px #2D2D2D;
+padding: 0 5px;
+margin-bottom: 5px;
+    margin-right: 5px;
 
-.category-filter-button.active {
-  background-color: red;
+
+ 
+}
+.category-filter-button:hover{
+ background: linear-gradient(to right,#1866c0 ,#4f2baa);
+ background-color: #1866c0;
+}
+.category-filter-button:active{
+ transform: scale(0.95);
 }
         .card2-link {
             
@@ -604,6 +781,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             margin-bottom: 0px;
             color: black ;
             overflow-wrap: break-word;
+            display:block;
+            text-align: center;
+
         }
     
         .date {
@@ -613,6 +793,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             font-size: 18px;
             color: black;
             display:none;
+            text-align: left;
+
         }
         .category {
             margin-top: 0px;
@@ -620,7 +802,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             padding: 0 5px;
             font-size: 18px;
             color:black;
-            display:none;
+            display:none;            
+            text-align: left;
+
         }
     
         .description {
@@ -631,8 +815,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             color: black;
             display:block;            
             overflow-wrap: break-word;
+            text-align: left;
         }
-    
+        .categories-links {
+            padding: 0;
+            flex-wrap: wrap;
+            text-align: left;
+            display: inline;
+        }
+
         .card2:hover .description {
             display: block;
         }
