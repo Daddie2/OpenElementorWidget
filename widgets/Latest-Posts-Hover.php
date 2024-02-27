@@ -1,6 +1,7 @@
 <?php
 class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
 {
+    
     public function __construct($data = [], $args = null)
     {
         parent::__construct($data, $args);
@@ -383,10 +384,29 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         );
 
         $this->end_controls_section();
+        $this->start_controls_section(
+            'section_filter',
+            [
+                'label' => esc_html__('Filter', 'Latest-Posts-Hover'),
+            ]
+        );
+        $this->add_control(
+            'text_color_inactive',
+            [
+                'label' => esc_html__('Color text inactive', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button' => '  color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
     }
     protected function render()
+    
     {
-
         $settings = $this->get_settings_for_display();
         if ($settings['posts_per_page'] == null) {
             $settings['posts_per_page'] = 4;
@@ -426,6 +446,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $widht = $flex - 1;
         $title_color = $settings['Title_color'];
         if ($posts) {
+
             echo '<div class="category-filter">
         <form method="get" action="">
         <button type="submit" name="category" value="all" class="category-filter-button';
@@ -446,9 +467,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             echo '</form> </div>';
             if (isset($_GET['category']) && $_GET['category'] != 'all') {
                 $category = get_category_by_slug($_GET['category']);
-                echo '<p> ' . $category->name . '</p>';
             }
-            echo '<div class="card2-container">';
+                echo '<div class="card2-container">';       
             if (wp_is_mobile()) {
                 // Codice da eseguire se la larghezza dello schermo è minore o uguale a 900 pixel
 
@@ -475,7 +495,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         $category_name = '';
                     }
                     echo '
-       <div class="card2" style="background-image: url(' . $featured_image . ');>
+       <div class="card2" style="background-image: url(' . $featured_image . ')">
         <div class="info">
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
@@ -510,8 +530,13 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     } else {
                         $category_name = '';
                     }
+                    if(!is_admin()){
+                        echo'       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>';
+                    }
+                    if(is_admin()){
+                        echo'<div class="card2" style="background-image: url(' . $featured_image . ')">';
+                    }
                     echo '
-       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>
         <div class="info">
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
@@ -522,6 +547,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         </div>
         </div>';
                 }
+              
                 wp_reset_postdata();
                 echo '</div>';
             }
@@ -530,21 +556,36 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             echo '<div class="error-message">';
             echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'Latest-Posts-Hover');
             echo '</div>';
-        }
+        }  if ( isset($_GET['action'])  && $_GET['action'] === 'edit' ){
+                    echo'prova';
+                }
         echo '<style>
-        .category-filter-button {
-  background-color: green;
-  color: yellow;
-  padding: 10px 20px;
+    .category-filter {
+        display: flex;
+        align-items: left;
+        flex-wrap: wrap;
+        margin-top: 50px;
+        }
+
+.category-filter-button {
+  background-color: #007BFF;
+  color: #fff;
   border: none;
   border-radius: 5px;
+  padding: 10px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px;
   cursor: pointer;
-  margin-right: 10px;
+  transition: background-color 0.3s ease;
 }
 
-.category-filter-button.active {
-  background-color: red;
+.category-filter-button:hover {
+  background-color: green;
 }
+.category-filter-button.active {
+    background-color: red;
+  }
         .card2-link {
             
             text-decoration: none;
@@ -662,5 +703,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                   }
     
         </style>';
+        
     }
+
+    
 }
