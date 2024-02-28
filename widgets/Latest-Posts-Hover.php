@@ -401,7 +401,64 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-
+        $this->add_control(
+            'text_color_active',
+            [
+                'label' => esc_html__('Color text active', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button.active' => '  color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+        $this->add_control(
+            'background_color_active',
+            [
+                'label' => esc_html__('Background color  active', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button.active' => '  background-color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'background_color_inactive',
+            [
+                'label' => esc_html__('Background color  inactive', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button' => '  background-color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'Text_inactive_bold',
+            [
+                'label' => esc_html__('Text inactive Bold', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'bold',
+                'default' => 'normal',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'background_color_hover',
+            [
+                'label' => esc_html__('Background color  hover', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button:hover' => '  background-color: {{VALUE}};',
+                ],
+            ]
+        );
         $this->end_controls_section();
     }
     protected function render()
@@ -578,10 +635,11 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
   margin: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-weight: normal;
 }
 
 .category-filter-button:hover {
-  background-color: green;
+  background-color: green !important;
 }
 .category-filter-button.active {
     background-color: red;
