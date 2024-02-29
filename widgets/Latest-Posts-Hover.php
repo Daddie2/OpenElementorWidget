@@ -816,9 +816,12 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args = [
                 'posts_per_page' => -1,
             ];
-            $this->set_settings('selected_page', get_the_ID());
+            echo '<script>
+           const selectedPageControl = elementor.settings.page.controls.selected_page;
+
+// Imposta il valore desiderato per il controllo
+selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 10 con l'ID pagina desiderato
         }
-        echo get_the_ID();
 
         $posts = get_posts($args);
         $cardColor = $settings['card_color'];
