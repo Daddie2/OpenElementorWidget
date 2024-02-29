@@ -146,6 +146,37 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+        $this->add_control(
+            'title_alignment',
+            [
+                'label' => esc_html__('Title Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .title' => 'text-align: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
         $this->end_controls_section();
         $this->start_controls_section(
             'section_date',
@@ -223,7 +254,37 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-
+        $this->add_control(
+            'date_alignment',
+            [
+                'label' => esc_html__('Date Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .date' => 'text-align: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
         $this->end_controls_section();
         $this->start_controls_section(
             'section_category',
@@ -301,6 +362,40 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+        $this->add_control(
+            'category_alignment',
+            [
+                'label' => esc_html__('Category Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .categories-links' => 'text-align: {{VALUE}};',
+                    '{{WRAPPER}} .category' => 'text-align: {{VALUE}};',
+
+
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
         $this->end_controls_section();
         $this->start_controls_section(
             'section_content',
@@ -340,7 +435,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'content_font_size',
             [
-                'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Content Font Size', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 18,
@@ -360,7 +455,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'content_font',
             [
-                'label' => esc_html__('Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Content Font Family', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -382,6 +477,37 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+        $this->add_control(
+            'content_alignment',
+            [
+                'label' => esc_html__('Content Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .description' => 'text-align: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
 
         $this->end_controls_section();
         $this->start_controls_section(
@@ -391,9 +517,54 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             ]
         );
         $this->add_control(
+            'filter_active',
+            [
+                'label' => esc_html__('Filter Active', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'block',
+                'default' => 'none',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter' => 'display: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'filter_alignment',
+            [
+                'label' => esc_html__('Filter Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter' => 'justify-content: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
+        $this->add_control(
             'text_color_inactive',
             [
-                'label' => esc_html__('Color text inactive', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Inactive text color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'black',
                 'selectors' => [
@@ -402,31 +573,20 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             ]
         );
         $this->add_control(
-            'text_color_active',
+            'text_font_inactive',
             [
-                'label' => esc_html__('Color text active', 'Latest-Posts-Hover'),
-                'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => 'black',
+                'label' => esc_html__('Inactive text Font Family', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::FONT,
+                'default' => "Work Sans",
                 'selectors' => [
-                    '{{WRAPPER}} .category-filter-button.active' => '  color: {{VALUE}} !important;',
+                    '{{WRAPPER}} .category-filter-button' => 'font-family: {{VALUE}}',
                 ],
             ]
-        );
-        $this->add_control(
-            'background_color_active',
-            [
-                'label' => esc_html__('Background color  active', 'Latest-Posts-Hover'),
-                'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => 'black',
-                'selectors' => [
-                    '{{WRAPPER}} .category-filter-button.active' => '  background-color: {{VALUE}};',
-                ],
-            ]
-        );
+        );     
         $this->add_control(
             'background_color_inactive',
             [
-                'label' => esc_html__('Background color  inactive', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Inactive background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'black',
                 'selectors' => [
@@ -435,9 +595,29 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             ]
         );
         $this->add_control(
+            'inactive_font_size',
+            [
+                'label' => esc_html__('Inactive text Font Size', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 18,
+                    'unit' => 'px',
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => 1,
+                        'max' => 120,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
             'Text_inactive_bold',
             [
-                'label' => esc_html__('Text inactive Bold', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Inactive text bold', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -449,9 +629,98 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             ]
         );
         $this->add_control(
+            'text_color_active',
+            [
+                'label' => esc_html__('Active  text clor', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button.active' => '  color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+        $this->add_control(
+            'text_font_active',
+            [
+                'label' => esc_html__('Active text Font Family', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::FONT,
+                'default' => "Work Sans",
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button.active' => 'font-family: {{VALUE}}',
+                ],
+            ]
+        );    
+        $this->add_control(
+            'background_color_active',
+            [
+                'label' => esc_html__('Active background color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button.active' => '  background-color: {{VALUE}};',
+                ],
+            ]
+        ); 
+        $this->add_control(
+            'active_font_size',
+            [
+                'label' => esc_html__('Active text Font Size', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 18,
+                    'unit' => 'px',
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => 1,
+                        'max' => 120,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button.active' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'Text_active_bold',
+            [
+                'label' => esc_html__('Active text bold ', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'bold',
+                'default' => 'normal',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button.active' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'text_color_hover',
+            [
+                'label' => esc_html__('Hover text color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button:hover' => '  color: {{VALUE}} !important;',
+                ],
+            ]
+        );
+        $this->add_control(
+            'text_font_hover',
+            [
+                'label' => esc_html__('hover text Font Family', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::FONT,
+                'default' => "Work Sans",
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button:hover' => 'font-family: {{VALUE}}',
+                ],
+            ]
+        );    
+        $this->add_control(
             'background_color_hover',
             [
-                'label' => esc_html__('Background color  hover', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Hover background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'black',
                 'selectors' => [
@@ -459,6 +728,42 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+        
+        $this->add_control(
+            'hover_font_size',
+            [
+                'label' => esc_html__('Hover text Font Size', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 18,
+                    'unit' => 'px',
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => 1,
+                        'max' => 120,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button:hover' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'Text_hover_bold',
+            [
+                'label' => esc_html__('Hover text Bold', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'bold',
+                'default' => 'normal',
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter-button:hover' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+        
         $this->end_controls_section();
     }
     protected function render()
@@ -618,10 +923,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 }
         echo '<style>
     .category-filter {
-        display: flex;
-        align-items: left;
+        display: none;
+        justify-content:left; 
         flex-wrap: wrap;
-        margin-top: 50px;
         }
 
 .category-filter-button {
@@ -636,13 +940,21 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-weight: normal;
+  font-family:Work Sans;
+  font: size 15px;
 }
 
 .category-filter-button:hover {
-  background-color: green !important;
+  background-color: black;
+  font-weight: normal;
+  font: size 15px;
+  font-family:Work Sans;
 }
 .category-filter-button.active {
     background-color: red;
+    font-weight: normal;
+    font: size 15px;
+    font-family:Work Sans;
   }
         .card2-link {
             
@@ -703,8 +1015,10 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             margin-bottom: 0px;
             color: black ;
             overflow-wrap: break-word;
+            display:block;
+            text-align: center;
+
         }
-    
         .date {
             margin-top: 0;
             margin-bottom: 0px;
@@ -712,6 +1026,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             font-size: 18px;
             color: black;
             display:none;
+            text-align: left;
         }
         .category {
             margin-top: 0px;
@@ -720,6 +1035,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             font-size: 18px;
             color:black;
             display:none;
+            text-align: left;
         }
     
         .description {
@@ -730,6 +1046,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             color: black;
             display:block;            
             overflow-wrap: break-word;
+            text-align: left;
+
         }
     
         .card2:hover .description {
