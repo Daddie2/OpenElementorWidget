@@ -1,7 +1,7 @@
 <?php
 class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
 {
-    
+
     public function __construct($data = [], $args = null)
     {
         parent::__construct($data, $args);
@@ -86,15 +86,17 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+
         $this->add_control(
             'selected_page',
             [
-                'label' => esc_html__('Select Page if you have a page with all post, made with this widget', 'OpenWidget'),
+                'label' => esc_html__(' Select Page if you have a page with all post, made with this widget for the links', 'OpenWidget'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => $this->get_pages(),
-                'default' => '0',
+                'default' => 0,
             ]
         );
+
         $this->end_controls_section();
         $this->start_controls_section(
             'section_title',
@@ -594,7 +596,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     '{{WRAPPER}} .category-filter-button' => 'font-family: {{VALUE}}',
                 ],
             ]
-        );     
+        );
         $this->add_control(
             'background_color_inactive',
             [
@@ -661,7 +663,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     '{{WRAPPER}} .category-filter-button.active' => 'font-family: {{VALUE}}',
                 ],
             ]
-        );    
+        );
         $this->add_control(
             'background_color_active',
             [
@@ -672,7 +674,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     '{{WRAPPER}} .category-filter-button.active' => '  background-color: {{VALUE}};',
                 ],
             ]
-        ); 
+        );
         $this->add_control(
             'active_font_size',
             [
@@ -728,7 +730,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     '{{WRAPPER}} .category-filter-button:hover' => 'font-family: {{VALUE}}',
                 ],
             ]
-        );    
+        );
         $this->add_control(
             'background_color_hover',
             [
@@ -740,7 +742,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-        
+
         $this->add_control(
             'hover_font_size',
             [
@@ -775,7 +777,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-        
+
         $this->end_controls_section();
     }
     private function get_pages()
@@ -789,7 +791,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         return $options;
     }
     protected function render()
-    
+
     {
         $settings = $this->get_settings_for_display();
         if ($settings['posts_per_page'] == null) {
@@ -814,6 +816,11 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args = [
                 'posts_per_page' => -1,
             ];
+            echo '<script>
+           const selectedPageControl = elementor.settings.page.controls.selected_page;
+
+// Imposta il valore desiderato per il controllo
+selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 10 con l'ID pagina desiderato
         }
 
         $posts = get_posts($args);
@@ -950,9 +957,10 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             echo '<div class="error-message">';
             echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'Latest-Posts-Hover');
             echo '</div>';
-        }  if ( isset($_GET['action'])  && $_GET['action'] === 'edit' ){
-                    echo'prova';
-                }
+        }
+        if (isset($_GET['action'])  && $_GET['action'] === 'edit') {
+            echo 'prova';
+        }
         echo '<style>
     .category-filter {
         display: none;
@@ -1111,8 +1119,5 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                   }
     
         </style>';
-        
     }
-
-    
 }
