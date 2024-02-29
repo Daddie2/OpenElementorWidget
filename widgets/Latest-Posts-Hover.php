@@ -83,6 +83,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'step' => 0.1,
             ]
         );
+        $this->add_control(
+            'selected_page',
+            [
+                'label' => esc_html__('Select Page if you have a page with all post, made with this widget', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => $this->get_pages(),
+                'default' => '0',
+            ]
+        );
         $this->end_controls_section();
         $this->start_controls_section(
             'section_title',
@@ -299,7 +308,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'block',
+                'return_value' => 'inline-block',
                 'default' => 'none',
                 'selectors' => [
                     '{{WRAPPER}} .category' => 'display: {{VALUE}};',
@@ -523,7 +532,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'block',
+                'return_value' => 'flex',
                 'default' => 'none',
                 'selectors' => [
                     '{{WRAPPER}} .category-filter' => 'display: {{VALUE}};',
@@ -766,6 +775,16 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         
         $this->end_controls_section();
     }
+    private function get_pages()
+    {
+        $pages = get_pages();
+        $options = [];
+        $options[0] = esc_html__('Default', 'OpenWidget');
+        foreach ($pages as $page) {
+            $options[$page->ID] = $page->post_title;
+        }
+        return $options;
+    }
     protected function render()
     
     {
@@ -781,34 +800,33 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args = [
                 'posts_per_page' => $settings['posts_per_page'],
             ];
-        }
-        if ($settings['all_post'] == 'all') {
-
-            if (isset($_GET['category']) && ($_GET['category']) == "all") {
-                $args = [
-                    'posts_per_page' => -1,
-                ];
-            }
+        } else {
             $args = [
-                'posts_per_page' => -1,
+                'posts_per_page' => $settings['posts_per_page'],
                 'category_name' => isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '',
 
             ];
         }
+        if ($settings['all_post'] == 'all') {
+            $args = [
+                'posts_per_page' => -1,
+            ];
+        }
+
         $posts = get_posts($args);
         $opacity = $settings['card_opacity'];
         $cardColor = $settings['card_color'];
         $wordPc = $settings['content_word_pc'];
         $wordMobile = $settings['content_word_mobile'];
-        $flex = 100 / count($posts);
-
-        if ( count($posts) > 4) {
+        if (count($posts) != 0) {
+            $flex = 100 / count($posts);
+        }
+        if (count($posts) > 4 || count($posts) == 0) {
             $flex = 25;
         }
         $widht = $flex - 1;
         $title_color = $settings['Title_color'];
         if ($posts) {
-
             echo '<div class="category-filter">
         <form method="get" action="">
         <button type="submit" name="category" value="all" class="category-filter-button';
@@ -816,7 +834,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 echo ' active';
             }
             echo '">All</button>';
-            $categories = get_categories();
+            $categories = get_categories(['hide_empty' => 0]);
             foreach ($categories as $category) {
                 $category_name = $category->name;
                 $category_slug = $category->slug;
@@ -827,10 +845,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 echo '">' . $category_name . '</button>';
             }
             echo '</form> </div>';
-            if (isset($_GET['category']) && $_GET['category'] != 'all') {
-                $category = get_category_by_slug($_GET['category']);
-            }
-                echo '<div class="card2-container">';       
+            echo '<div class="card2-container">';
+            $selected_page_id = $settings['selected_page'];
             if (wp_is_mobile()) {
                 // Codice da eseguire se la larghezza dello schermo è minore o uguale a 900 pixel
 
@@ -846,23 +862,31 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-                    $categories = get_the_category($post->ID);
-                    if (!empty($categories)) {
-                        $category_name = array();
-                        foreach ($categories as $category) {
-                            $category_name[] = $category->name;
-                        }
-                        $category_string = implode(', ', $category_name);
-                    } else {
-                        $category_name = '';
-                    }
+                    echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
                     echo '
-       <div class="card2" style="background-image: url(' . $featured_image . ')">
         <div class="info">
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
-                    if ($category_name != '') {
-                        echo '<a class="category" role="button" tabindex="0" href="google.com">' . $category_string . '</a>';
+                    if ($selected_page_id != 0) {
+                        $page_link = get_permalink($selected_page_id);
+                        $categories = get_the_category($post->ID);
+                        if (!empty($categories)) {
+                            echo '<div class="categories-links">';
+                            foreach ($categories as $category) {
+                                $category_link = add_query_arg('category', $category->slug, $page_link);
+                                echo '<a href="' . $category_link . '" class="category">' . $category->name . '</a>';
+                            }
+                            echo '</div>';
+                        }
+                    } else {
+                        $categories = get_the_category($post->ID);
+                        if (!empty($categories)) {
+                            echo '<div class="categories-links">';
+                            foreach ($categories as $category) {
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">' . $category->name . '</a>';
+                            }
+                            echo '</div>';
+                        }
                     }
                     echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
         </div>
@@ -882,34 +906,40 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-                    $categories = get_the_category($post->ID);
-                    if (!empty($categories)) {
-                        $category_name = array();
-                        foreach ($categories as $category) {
-                            $category_name[] = $category->name;
-                        }
-                        $category_string = implode(', ', $category_name);
+                    if (is_admin()) {
+                        echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
                     } else {
-                        $category_name = '';
-                    }
-                    if(!is_admin()){
-                        echo'       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>';
-                    }
-                    if(is_admin()){
-                        echo'<div class="card2" style="background-image: url(' . $featured_image . ')">';
+                        echo '       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>';
                     }
                     echo '
         <div class="info">
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
             <p class="date">' . $post_date . '</p> ';
-                    if ($category_name != '') {
-                        echo '<a class="category" href="google.com">' . $category_string . '</a>';
+                    if ($selected_page_id != 0) {
+                        $page_link = get_permalink($selected_page_id);
+                        $categories = get_the_category($post->ID);
+                        if (!empty($categories)) {
+                            echo '<div class="categories-links">';
+                            foreach ($categories as $category) {
+                                $category_link = add_query_arg('category', $category->slug, $page_link);
+                                echo '<a href="' . $category_link . '" class="category">' . $category->name . '</a>';
+                            }
+                            echo '</div>';
+                        }
+                    } else {
+                        $categories = get_the_category($post->ID);
+                        if (!empty($categories)) {
+                            echo '<div class="categories-links">';
+                            foreach ($categories as $category) {
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">' . $category->name . '</a>';
+                            }
+                            echo '</div>';
+                        }
                     }
                     echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
         </div>
         </div>';
                 }
-              
                 wp_reset_postdata();
                 echo '</div>';
             }
@@ -924,7 +954,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         echo '<style>
     .category-filter {
         display: none;
-        justify-content:left; 
+        justify-content:right; 
         flex-wrap: wrap;
         }
 
@@ -1035,7 +1065,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             font-size: 18px;
             color:black;
             display:none;
-            text-align: left;
+            text-align: center;
         }
     
         .description {
