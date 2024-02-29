@@ -69,7 +69,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             [
                 'label' => esc_html__('Background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => '#FFFFFF',
+                'default' => '#f8f8f8',
             ]
         );
         $this->add_control(
@@ -81,6 +81,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'min' => 0,
                 'max' => 1,
                 'step' => 0.1,
+                'selectors' => [
+                    '{{WRAPPER}} .title' => 'filter:{{VALUE}}!important;',
+                ],
             ]
         );
         $this->add_control(
@@ -814,7 +817,6 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
 
         $posts = get_posts($args);
-        $opacity = $settings['card_opacity'];
         $cardColor = $settings['card_color'];
         $wordPc = $settings['content_word_pc'];
         $wordMobile = $settings['content_word_mobile'];
@@ -1009,7 +1011,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             width: 100%;
             height: 600px;
             background-color: ' . $cardColor . ';
-            filter:opacity(' . $opacity . ' ); 
+            filter:opacity(0.8); 
             transform: translateY(100%)
                 translateY(-170px)
                 translateZ(0); /* Regola la posizione verticale */
