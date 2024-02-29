@@ -26,6 +26,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     {
         return ['OpenWidget'];
     }
+    
     protected function _register_controls()
     {
         $this->start_controls_section(
@@ -86,7 +87,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-
+       
         $this->add_control(
             'selected_page',
             [
@@ -97,7 +98,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             ]
         );
 
-        $this->end_controls_section();
+        $this->end_controls_section(); 
+
         $this->start_controls_section(
             'section_title',
             [
@@ -816,11 +818,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args = [
                 'posts_per_page' => -1,
             ];
-            echo '<script>
-           const selectedPageControl = elementor.settings.page.controls.selected_page;
-
-// Imposta il valore desiderato per il controllo
-selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 10 con l'ID pagina desiderato
+        
         }
 
         $posts = get_posts($args);
@@ -915,7 +913,7 @@ selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 1
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-                    if (is_admin()) {
+                    if (iElementor\Plugin::$instance->editor->is_edit_mode()) {
                         echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
                     } else {
                         echo '       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>';
