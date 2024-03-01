@@ -794,8 +794,19 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     }
     protected function render()
 
-    {
-        $settings = $this->get_settings_for_display();
+    {        
+    $settings = $this->get_settings_for_display();
+
+if(isset($_GET['s']) || is_archive()){
+    if($settings['all_post']!='all'){
+    echo 'latest '.$settings['posts_per_page']."post";
+}
+else{
+    echo 'latest post';
+} 
+} 
+else{
+
         if ($settings['posts_per_page'] == null) {
             $settings['posts_per_page'] = 4;
         }
@@ -881,7 +892,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category">' . $category->name . '</a>';
+                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
                             }
                             echo '</div>';
                         }
@@ -890,7 +901,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         if (!empty($categories)) {
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">' . $category->name . '</a>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> ' . $category->name . ' </a>';
                             }
                             echo '</div>';
                         }
@@ -913,7 +924,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-                    if (iElementor\Plugin::$instance->editor->is_edit_mode()) {
+                    if (is_admin()) {
                         echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
                     } else {
                         echo '       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>';
@@ -929,7 +940,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category">' . $category->name . '</a>';
+                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
                             }
                             echo '</div>';
                         }
@@ -938,7 +949,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         if (!empty($categories)) {
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">' . $category->name . '</a>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">'  . $category->name . ' </a>';
                             }
                             echo '</div>';
                         }
@@ -1118,4 +1129,5 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     
         </style>';
     }
+}
 }

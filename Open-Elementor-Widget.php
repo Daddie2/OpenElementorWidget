@@ -14,6 +14,14 @@ function dequeue_parent_theme_styles() {
         wp_dequeue_style( 'parent-style-rtl' );
     }
 }
+function my_custom_excerpt() {
+	$content=get_the_content();
+	$excerpt=wp_trim_words( $content, 30 );
+	return $excerpt;
+  
+  }
+  
+  add_filter( 'get_the_excerpt', 'my_custom_excerpt' );
 add_action('elementor/widgets/widgets_registered', 'register_OpenElementorWidget_widgets');
 
 function add_elementor_widget_categories($elements_manager)
