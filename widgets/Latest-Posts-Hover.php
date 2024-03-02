@@ -797,16 +797,6 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     {        
     $settings = $this->get_settings_for_display();
 
-if(isset($_GET['s']) || is_archive()){
-    if($settings['all_post']!='all'){
-    echo 'latest '.$settings['posts_per_page']."post";
-}
-else{
-    echo 'latest post';
-} 
-} 
-else{
-
         if ($settings['posts_per_page'] == null) {
             $settings['posts_per_page'] = 4;
         }
@@ -892,7 +882,7 @@ else{
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
+                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . '&nbsp; </a>';
                             }
                             echo '</div>';
                         }
@@ -901,7 +891,7 @@ else{
                         if (!empty($categories)) {
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> ' . $category->name . ' </a>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> ' . $category->name . '&nbsp; </a>';
                             }
                             echo '</div>';
                         }
@@ -940,7 +930,7 @@ else{
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
+                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . '&nbsp; </a>';
                             }
                             echo '</div>';
                         }
@@ -949,7 +939,7 @@ else{
                         if (!empty($categories)) {
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">'  . $category->name . ' </a>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . '&nbsp; </a>';
                             }
                             echo '</div>';
                         }
@@ -1080,7 +1070,6 @@ else{
         .category {
             margin-top: 0px;
             margin-bottom: 0px;
-            padding: 0 5px;
             font-size: 18px;
             color:black;
             display:none;
@@ -1129,5 +1118,4 @@ else{
     
         </style>';
     }
-}
 }
