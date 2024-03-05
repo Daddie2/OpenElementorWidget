@@ -11,7 +11,6 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     {
         return 'latest-posts-hover';
     }
-
     public function get_title()
     {
         return esc_html__('Latest Posts Hover', 'latest-posts-hover');
@@ -26,7 +25,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     {
         return ['OpenWidget'];
     }
-    
+
     protected function _register_controls()
     {
         $this->start_controls_section(
@@ -87,7 +86,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-       
+
         $this->add_control(
             'selected_page',
             [
@@ -98,7 +97,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             ]
         );
 
-        $this->end_controls_section(); 
+        $this->end_controls_section();
 
         $this->start_controls_section(
             'section_title',
@@ -792,11 +791,11 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
         return $options;
     }
+
     protected function render()
 
-    {        
-    $settings = $this->get_settings_for_display();
-
+    {
+        $settings = $this->get_settings_for_display();
         if ($settings['posts_per_page'] == null) {
             $settings['posts_per_page'] = 4;
         }
@@ -819,7 +818,6 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args = [
                 'posts_per_page' => -1,
             ];
-        
         }
 
         $posts = get_posts($args);
@@ -930,7 +928,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . '&nbsp; </a>';
+                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . '<br>; </a>';
                             }
                             echo '</div>';
                         }
