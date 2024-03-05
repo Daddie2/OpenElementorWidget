@@ -11,7 +11,6 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     {
         return 'latest-posts-hover';
     }
-
     public function get_title()
     {
         return esc_html__('Latest Posts Hover', 'latest-posts-hover');
@@ -26,6 +25,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     {
         return ['OpenWidget'];
     }
+
     protected function _register_controls()
     {
         $this->start_controls_section(
@@ -98,6 +98,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         );
 
         $this->end_controls_section();
+
         $this->start_controls_section(
             'section_title',
             [
@@ -790,6 +791,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
         return $options;
     }
+
     protected function render()
 
     {
@@ -816,11 +818,6 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args = [
                 'posts_per_page' => -1,
             ];
-            echo '<script>
-           const selectedPageControl = elementor.settings.page.controls.selected_page;
-
-// Imposta il valore desiderato per il controllo
-selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 10 con l'ID pagina desiderato
         }
 
         $posts = get_posts($args);
@@ -883,7 +880,7 @@ selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 1
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category">' . $category->name . '</a>';
+                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . '&nbsp; </a>';
                             }
                             echo '</div>';
                         }
@@ -892,7 +889,7 @@ selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 1
                         if (!empty($categories)) {
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">' . $category->name . '</a>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> ' . $category->name . '&nbsp; </a>';
                             }
                             echo '</div>';
                         }
@@ -931,7 +928,7 @@ selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 1
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category">' . $category->name . '</a>';
+                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . '<br>; </a>';
                             }
                             echo '</div>';
                         }
@@ -940,7 +937,7 @@ selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 1
                         if (!empty($categories)) {
                             echo '<div class="categories-links">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category">' . $category->name . '</a>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . '&nbsp; </a>';
                             }
                             echo '</div>';
                         }
@@ -1071,7 +1068,6 @@ selectedPageControl.setValue(' . get_the_ID() . '); </script>'; // Sostituisci 1
         .category {
             margin-top: 0px;
             margin-bottom: 0px;
-            padding: 0 5px;
             font-size: 18px;
             color:black;
             display:none;
