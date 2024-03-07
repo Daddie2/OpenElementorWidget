@@ -1,55 +1,54 @@
 <?php
 /*
-Plugin Name:OpenElementorWidget
-Description: Custom widget for Elementor
+Plugin Name: OpenWidgetElementor
+Description: Custom widget for elementor
 Version: 1.0
-Author: Davide
-*/
+Author: Davide 
+*/ function remove_text_before_last_post_title($excerpt)
+{
+  // Ottieni l'ultimo post
+  $last_post = get_posts(array(
+    'numberposts' => 1,
+    'order' => 'DESC',
+  ))[0];
 
-// Register the custom widgets with Elementor
-add_filter('the_excerpt', function ($excerpt) {
+  // Ottieni il titolo dell'ultimo post
+  $last_post_title = $last_post->post_title;
 
-    $excerpt_length = 40; // Change excerpt length 
+  // Trova la posizione del titolo dell'ultimo post nell'excerpt
+  $position = strpos($excerpt, $last_post_title);
 
-    global $post;
+  // Se il titolo è presente, restituisce solo il testo dopo di esso
+  if ($position !== false) {
+    $excerpt = str_replace("Read More", "", $excerpt);
+    $excerpt = str_replace("  »", "", $excerpt);
+    return substr($excerpt, $position);
+  }
+  $excerpt = str_replace("Read More", "", $excerpt);
+  $excerpt = str_replace("  »", "", $excerpt);
 
-    if (
-        is_archive() || is_search()
-    ) {
-        $post = get_post();
-    }
+  // Se il titolo non è presente, restituisce l'excerpt originale
+  return $excerpt;
+}
 
-    if (has_excerpt($post)) {
-		echo "porva";
-    }
-	 else {
-        $content = get_the_content();
-        $first_word = substr($content, 0, strpos($content, ' '));
-        $content = substr($content, strpos($content, ' ') + 2);
-		echo $first_word;
-        $excerpt = wp_trim_words($content, $excerpt_length);
-        $excerpt = $first_word . ' ' . $excerpt;
-    }
-
-    return $excerpt;
-}, 10, 2);
+add_filter('wp_trim_excerpt', 'remove_text_before_last_post_title');
 add_action('elementor/widgets/widgets_registered', 'register_OpenElementorWidget_widgets');
 
 function add_elementor_widget_categories($elements_manager)
 {
 
-	$elements_manager->add_category(
-		'OpenWidget',
-		[
-			'title' => esc_html__('OpenWidget', 'open-elementor-widget'),
-			'icon' => 'fa fa-plug',
-		]
-	);
+  $elements_manager->add_category(
+    'OpenWidget',
+    [
+      'title' => esc_html__('OpenWidget', 'open-elementor-widget'),
+      'icon' => 'fa fa-plug',
+    ]
+  );
 }
 add_action('elementor/elements/categories_registered', 'add_elementor_widget_categories');
 function register_OpenElementorWidget_widgets($widgets_manager)
 {
-	// Include and register the latest-posts-hover widget
-	require_once(plugin_dir_path(__FILE__) . 'widgets/Latest-Posts-Hover.php');
-	$widgets_manager->register_widget_type(new \Latest_Posts_Hover_Widget());
+  // Include and register the latest-posts-hover widget
+  require_once(plugin_dir_path(__FILE__) . 'widgets/Latest-Posts-Hover.php');
+  $widgets_manager->register_widget_type(new \Latest_Posts_Hover_Widget());
 }
