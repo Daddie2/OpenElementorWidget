@@ -20,12 +20,11 @@ Author: Davide
 
   // Se il titolo è presente, restituisce solo il testo dopo di esso
   if ($position !== false) {
-    $excerpt = str_replace("Read More", "", $excerpt);
-    $excerpt = str_replace("  »", "", $excerpt);
+    $excerpt = preg_replace('#<a.*?>.*?</a>#i', '', $excerpt);
     return substr($excerpt, $position);
   }
-  $excerpt = str_replace("Read More", "", $excerpt);
-  $excerpt = str_replace("  »", "", $excerpt);
+  $excerpt = preg_replace('#<a.*?>.*?</a>#i', '', $excerpt);
+
 
   // Se il titolo non è presente, restituisce l'excerpt originale
   return $excerpt;
