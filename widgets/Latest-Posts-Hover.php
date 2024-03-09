@@ -247,7 +247,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'date_font',
             [
-                'label' => esc_html__('Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Font Date', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -292,6 +292,114 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'toggle' => true,
                 'selectors' => [
                     '{{WRAPPER}} .date' => 'text-align: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
+        $this->end_controls_section();
+        $this->start_controls_section(
+            'section_tag',
+            [
+                'label' => esc_html__('Tag', 'Latest-Posts-Hover'),
+            ]
+        );
+        $this->add_control(
+            'tag_active',
+            [
+                'label' => esc_html__('Tag Active', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'block',
+                'default' => 'none',
+                'selectors' => [
+                    '{{WRAPPER}} .tag' => 'display: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'Tag_color',
+            [
+                'label' => esc_html__('Color Tag', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'black',
+                'selectors' => [
+                    '{{WRAPPER}} .tag' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'tag_font_size',
+            [
+                'label' => esc_html__('Size Tag', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => [
+                    'size' => 18,
+                    'unit' => 'px',
+                ],
+                'range' => [
+                    'px' => [
+                        'min' => 1,
+                        'max' => 120,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .tag' => 'font-size: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'tag_font',
+            [
+                'label' => esc_html__('Font tag', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::FONT,
+                'default' => "Work Sans",
+                'selectors' => [
+                    '{{WRAPPER}} .tag' => 'font-family: {{VALUE}}',
+                ],
+            ]
+        );
+        $this->add_control(
+            'tag_bold',
+            [
+                'label' => esc_html__('Tag Bold', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'bold',
+                'default' => 'normal',
+                'selectors' => [
+                    '{{WRAPPER}} .tag' => 'font-weight: {{VALUE}};',
+                ],
+            ]
+        );
+        $this->add_control(
+            'tag_alignment',
+            [
+                'label' => esc_html__('Tag Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .tag' => 'text-align: {{VALUE}};',
                 ],
                 'icon_colors' => [
                     'left' => 'white',
@@ -862,6 +970,11 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     $post_content = wp_trim_words($post->post_content, $wordPc);
                     $post_date = date_i18n(get_option('date_format'), strtotime($post->post_date));
                     $post_link = get_permalink($post->ID);
+                    $tags = get_the_tags($post->ID);
+                    if ($tags) {
+                        foreach ($tags as $tag) {
+                            echo '<a href="' . get_tag_link($tag->term_id) . '">' . $tag->name . '</a>';
+                        }                    
                     // Check if the post has a featured image
                     $featured_image = get_the_post_thumbnail_url($post->ID);
                     if (!$featured_image) {
@@ -871,7 +984,11 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
                     echo '
         <div class="info">
-            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
+            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
+            if ($tags) {
+                foreach ($tags as $tag) {
+                    echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a>';
+                } } echo'
             <p class="date">' . $post_date . '</p> ';
                     if ($selected_page_id != 0) {
                         $page_link = get_permalink($selected_page_id);
@@ -900,12 +1017,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 }
                 wp_reset_postdata();
                 echo '</div>';
-            } else {
+            } 
+        }
+             else {
                 foreach ($posts as $post) {
                     $post_title = get_the_title($post->ID);
                     $post_content = wp_trim_words($post->post_content, $wordPc);
                     $post_date = date_i18n(get_option('date_format'), strtotime($post->post_date));
                     $post_link = get_permalink($post->ID);
+                    $tags = get_the_tags($post->ID);
                     // Check if the post has a featured image
                     $featured_image = get_the_post_thumbnail_url($post->ID);
                     if (!$featured_image) {
@@ -919,7 +1039,11 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     }
                     echo '
         <div class="info">
-            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>
+            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
+            if ($tags) {
+                foreach ($tags as $tag) {
+                    echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a>';
+                } } echo'
             <p class="date">' . $post_date . '</p> ';
                     if ($selected_page_id != 0) {
                         $page_link = get_permalink($selected_page_id);
@@ -952,7 +1076,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         } else {
             // Gestisci il caso in cui $posts non è un array valido
             echo '<div class="error-message">';
-            echo esc_html__('Impossibile recuperare i post. Si è verificato un errore.', 'Latest-Posts-Hover');
+            echo esc_html__('No post', 'Latest-Posts-Hover');
             echo '</div>';
         }
         if (isset($_GET['action'])  && $_GET['action'] === 'edit') {
@@ -1056,6 +1180,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             text-align: center;
 
         }
+        .tag {
+            margin-top: 0;
+            margin-bottom: 0px;
+            padding: 0 5px;
+            font-size: 18px;
+            color: black;
+            display:none;
+            text-align: left;
+        }
         .date {
             margin-top: 0;
             margin-bottom: 0px;
@@ -1068,6 +1201,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         .category {
             margin-top: 0px;
             margin-bottom: 0px;
+            padding: 0 5px;
             font-size: 18px;
             color:black;
             display:none;
