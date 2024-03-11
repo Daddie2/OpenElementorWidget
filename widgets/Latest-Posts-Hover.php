@@ -206,7 +206,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'block',
+                'return_value' => 'inline-block',
                 'default' => 'none',
                 'selectors' => [
                     '{{WRAPPER}} .date' => 'display: {{VALUE}};',
@@ -507,7 +507,6 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'default' => 'left',
                 'toggle' => true,
                 'selectors' => [
-                    '{{WRAPPER}} .categories-links' => 'text-align: {{VALUE}};',
                     '{{WRAPPER}} .category' => 'text-align: {{VALUE}};',
 
 
@@ -689,7 +688,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             [
                 'label' => esc_html__('Inactive text color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => 'black',
+                'default' => 'white',
                 'selectors' => [
                     '{{WRAPPER}} .category-filter-button' => '  color: {{VALUE}} !important;',
                 ],
@@ -756,7 +755,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             [
                 'label' => esc_html__('Active  text clor', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => 'black',
+                'default' => 'white',
                 'selectors' => [
                     '{{WRAPPER}} .category-filter-button.active' => '  color: {{VALUE}} !important;',
                 ],
@@ -778,7 +777,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             [
                 'label' => esc_html__('Active background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => 'black',
+                'default' => 'red',
                 'selectors' => [
                     '{{WRAPPER}} .category-filter-button.active' => '  background-color: {{VALUE}};',
                 ],
@@ -823,7 +822,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             [
                 'label' => esc_html__('Hover text color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => 'black',
+                'default' => 'white',
                 'selectors' => [
                     '{{WRAPPER}} .category-filter-button:hover' => '  color: {{VALUE}} !important;',
                 ],
@@ -845,7 +844,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             [
                 'label' => esc_html__('Hover background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => 'black',
+                'default' => 'orange',
                 'selectors' => [
                     '{{WRAPPER}} .category-filter-button:hover' => '  background-color: {{VALUE}};',
                 ],
@@ -910,25 +909,18 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $args = [
             'posts_per_page' => $settings['posts_per_page'],
             'category_name' => isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '',
+            'tag' => isset($_GET['tags']) ? sanitize_text_field($_GET['tags']) : '', 
         ];
         if (isset($_GET['category']) && ($_GET['category']) == "all") {
             $args = [
                 'posts_per_page' => $settings['posts_per_page'],
             ];
         } 
-        if(isset($_GET['category']) && (!$_GET['category']) == "all") {
-            $args = [
-                'posts_per_page' => $settings['posts_per_page'],
-                'category_name' => isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '',
-
-            ];
-        }
         if ($settings['all_post'] == 'all') {
             $args = [
                 'posts_per_page' => -1,
             ];
         }
-
         $posts = get_posts($args);
         $cardColor = $settings['card_color'];
         $wordPc = $settings['content_word_pc'];
@@ -940,11 +932,10 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $flex = 25;
         }
         $widht = $flex - 1;
-        $title_color = $settings['Title_color'];
-        if ($posts) {
+            if ($posts) {
             echo '<div class="category-filter">
-        <form method="get" action="">
-        <button type="submit" name="category" value="all" class="category-filter-button';
+         <form method="get" action="">
+            <button type="submit" name="category" value="all" class="category-filter-button';
             if (isset($_GET['category']) && $_GET['category'] == 'all') {
                 echo ' active';
             }
@@ -962,73 +953,14 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             echo '</form> </div>';
             echo '<div class="card2-container">';
             $selected_page_id = $settings['selected_page'];
-            if (wp_is_mobile()) {
-                // Codice da eseguire se la larghezza dello schermo è minore o uguale a 900 pixel
-
-                // Rendering dei post
-                foreach ($posts as $post) {
+         
+            foreach ($posts as $post) {
                     $post_title = get_the_title($post->ID);
                     $post_content = wp_trim_words($post->post_content, $wordPc);
-                    $post_date = date_i18n(get_option('date_format'), strtotime($post->post_date));
+                    $post_date = get_the_date('j F Y', $post->ID);
                     $post_link = get_permalink($post->ID);
                     $tags = get_the_tags($post->ID);
-                    if ($tags) {
-                        foreach ($tags as $tag) {
-                            echo '<a href="' . get_tag_link($tag->term_id) . '">' . $tag->name . '</a>';
-                        }                    
-                    // Check if the post has a featured image
-                    $featured_image = get_the_post_thumbnail_url($post->ID);
-                    if (!$featured_image) {
-                        // If not, use the custom default image
-                        $featured_image = $settings['default_image']['url'];
-                    }
-                    echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
-                    echo '
-        <div class="info">
-            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
-            if ($tags) {                    
-                echo '<div class="categories-links">';
-                foreach ($tags as $tag) {
-                    echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
-                }                    echo '</div>';
- } echo'
-            <p class="date">' . $post_date . '</p> ';
-                    if ($selected_page_id != 0) {
-                        $page_link = get_permalink($selected_page_id);
-                        $categories = get_the_category($post->ID);
-                        if (!empty($categories)) {
-                            echo '<div class="categories-links">';
-                            foreach ($categories as $category) {
-                                $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . '&nbsp; </a>';
-                            }
-                            echo '</div>';
-                        }
-                    } else {
-                        $categories = get_the_category($post->ID);
-                        if (!empty($categories)) {
-                            echo '<div class="categories-links">';
-                            foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> ' . $category->name . '&nbsp; </a>';
-                            }
-                            echo '</div>';
-                        }
-                    }
-                    echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
-        </div>
-        </div>';
-                }
-                wp_reset_postdata();
-                echo '</div>';
-            } 
-        }
-             else {
-                foreach ($posts as $post) {
-                    $post_title = get_the_title($post->ID);
-                    $post_content = wp_trim_words($post->post_content, $wordPc);
-                    $post_date = date_i18n(get_option('date_format'), strtotime($post->post_date));
-                    $post_link = get_permalink($post->ID);
-                    $tags = get_the_tags($post->ID);
+                    $tags_active=$settings['tag_active'];
                     // Check if the post has a featured image
                     $featured_image = get_the_post_thumbnail_url($post->ID);
                     if (!$featured_image) {
@@ -1038,49 +970,67 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     if (is_admin()) {
                         echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
                     } else {
-                        echo '       <div class="card2" style="background-image: url(' . $featured_image . '); "onclick=\'window.location.href="' . $post_link . '"\'>';
+                        echo '       <div class="card2" style="background-image: url(' . $featured_image . '); ';if (!wp_is_mobile()){echo'onclick=\'window.location.href="' . $post_link . '"\'>';}
+                        else{echo'">';}
                     }
                     echo '
-        <div class="info">
-            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
-            if ($tags) {                    
-                echo '<div class="categories-links">';
+                <div class="info">
+                <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
+                if (!empty($tags)) {        
+                if ($selected_page_id != 0) {
+                    $page_link = get_permalink($selected_page_id);
+                        foreach ($tags as $tag) {
+                            $tag_link = add_query_arg('tags', $tag->slug, $page_link);
+                            echo '<a href="' . $tag_link . '" class="tag"> ' . $tag->name . '</a> ';
+                        }   }
+                        else{    
                 foreach ($tags as $tag) {
-                    echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a>';
+                    echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
+                }  }
+            }
+            $date_parts = explode(' ', $post_date);
+            if ($selected_page_id != 0) {
+            $page_link = get_permalink($selected_page_id);
+            foreach ($date_parts as $part) {
+                $date_link = add_query_arg('date', $post_date, $page_link);
+                
+                echo ' <div><a href="' . $date_link . '" class="date"><p>' . ucfirst($part) . '</a></div>';
+                }        
+} else {
+    echo '<div>';
+    foreach ($date_parts as $part) {
+        $date_link = get_day_link($post->post_year, $post->post_month, $post->post_day, $post->ID); 
+        echo '<a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
 
-                }  
-                echo '</div>';
- } 
-                    echo'<p class="date">' . $post_date . '</p> ';
-                    if ($selected_page_id != 0) {
+    }           echo '</div>';
+
+
+}               
+            if ($selected_page_id != 0) {
                         $page_link = get_permalink($selected_page_id);
                         $categories = get_the_category($post->ID);
                         if (!empty($categories)) {
-                            echo '<div class="categories-links">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . '<br>; </a>';
+                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
                             }
-                            echo '</div>';
                         }
                     } else {
                         $categories = get_the_category($post->ID);
                         if (!empty($categories)) {
-                            echo '<div class="categories-links">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . '&nbsp; </a>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . ' </a>';
                             }
-                            echo '</div>';
                         }
                     }
                     echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
-        </div>
-        </div>';
+                 </div>
+                </div>';
                 }
                 wp_reset_postdata();
                 echo '</div>';
             }
-        } else {
+        if(!$posts) {
             // Gestisci il caso in cui $posts non è un array valido
             echo '<div class="error-message">';
             echo esc_html__('No post', 'Latest-Posts-Hover');
@@ -1194,7 +1144,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             font-size: 18px;
             color:black;
             display:none;
-            text-align: center;
+            text-align: left;
         }
         .date {
             margin-top: 0;
