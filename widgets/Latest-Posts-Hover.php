@@ -314,7 +314,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'block',
+                'return_value' => 'inline-block',
                 'default' => 'none',
                 'selectors' => [
                     '{{WRAPPER}} .tag' => 'display: {{VALUE}};',
@@ -915,7 +915,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args = [
                 'posts_per_page' => $settings['posts_per_page'],
             ];
-        } else {
+        } 
+        if(isset($_GET['category']) && (!$_GET['category']) == "all") {
             $args = [
                 'posts_per_page' => $settings['posts_per_page'],
                 'category_name' => isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '',
@@ -985,10 +986,12 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     echo '
         <div class="info">
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
-            if ($tags) {
+            if ($tags) {                    
+                echo '<div class="categories-links">';
                 foreach ($tags as $tag) {
-                    echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a>';
-                } } echo'
+                    echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
+                }                    echo '</div>';
+ } echo'
             <p class="date">' . $post_date . '</p> ';
                     if ($selected_page_id != 0) {
                         $page_link = get_permalink($selected_page_id);
@@ -1040,11 +1043,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     echo '
         <div class="info">
             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
-            if ($tags) {
+            if ($tags) {                    
+                echo '<div class="categories-links">';
                 foreach ($tags as $tag) {
                     echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a>';
-                } } echo'
-            <p class="date">' . $post_date . '</p> ';
+
+                }  
+                echo '</div>';
+ } 
+                    echo'<p class="date">' . $post_date . '</p> ';
                     if ($selected_page_id != 0) {
                         $page_link = get_permalink($selected_page_id);
                         $categories = get_the_category($post->ID);
@@ -1181,13 +1188,13 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
 
         }
         .tag {
-            margin-top: 0;
+            margin-top: 0px;
             margin-bottom: 0px;
             padding: 0 5px;
             font-size: 18px;
-            color: black;
+            color:black;
             display:none;
-            text-align: left;
+            text-align: center;
         }
         .date {
             margin-top: 0;
