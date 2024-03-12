@@ -659,7 +659,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'filter_active',
             [
-                'label' => esc_html__('Filter Active', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button Filter Active', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -704,7 +704,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_color_inactive',
             [
-                'label' => esc_html__('Inactive text color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive text color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'white',
                 'selectors' => [
@@ -715,7 +715,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_font_inactive',
             [
-                'label' => esc_html__('Inactive text Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive text Font Family', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -726,7 +726,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'background_color_inactive',
             [
-                'label' => esc_html__('Inactive background color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'black',
                 'selectors' => [
@@ -737,7 +737,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'inactive_font_size',
             [
-                'label' => esc_html__('Inactive text Font Size', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive text Font Size', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 18,
@@ -757,7 +757,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'Text_inactive_bold',
             [
-                'label' => esc_html__('Inactive text bold', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive text bold', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -771,7 +771,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_color_active',
             [
-                'label' => esc_html__('Active  text clor', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active  text clor', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'white',
                 'selectors' => [
@@ -782,7 +782,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_font_active',
             [
-                'label' => esc_html__('Active text Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active text Font Family', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -793,7 +793,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'background_color_active',
             [
-                'label' => esc_html__('Active background color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'red',
                 'selectors' => [
@@ -804,7 +804,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'active_font_size',
             [
-                'label' => esc_html__('Active text Font Size', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active text Font Size', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 18,
@@ -824,7 +824,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'Text_active_bold',
             [
-                'label' => esc_html__('Active text bold ', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active text bold ', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -838,7 +838,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_color_hover',
             [
-                'label' => esc_html__('Hover text color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Hover text color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'white',
                 'selectors' => [
@@ -849,7 +849,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_font_hover',
             [
-                'label' => esc_html__('hover text Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter hover text Font Family', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -860,7 +860,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'background_color_hover',
             [
-                'label' => esc_html__('Hover background color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Hover background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'orange',
                 'selectors' => [
@@ -872,7 +872,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'hover_font_size',
             [
-                'label' => esc_html__('Hover text Font Size', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Hover text Font Size', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 18,
@@ -892,7 +892,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'Text_hover_bold',
             [
-                'label' => esc_html__('Hover text Bold', 'Latest-Posts-Hover'),
+                'label' => esc_html__(' Button filter Hover text Bold', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -903,7 +903,20 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-
+        $this->add_control(
+            'search_active',
+            [
+                'label' => esc_html__('Search Active', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'flex',
+                'default' => 'none',
+                'selectors' => [
+                    '{{WRAPPER}} .container2' => 'display: {{VALUE}};',
+                ],
+            ]
+        );
         $this->end_controls_section();
     }
     private function get_category()
@@ -982,7 +995,12 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 }
                 echo '">' . $category_name . '</button>';
             }
-            echo '</form> </div>';
+            echo '</form> <div class="container2">
+ <div class="search">
+  <input type="text" placeholder="Search...">
+  <button type="submit"><i class="fa fa-search"></i></button>
+ </div>
+</div> </div>';
             echo '<div class="card2-container">';
             $selected_page_id = $settings['selected_page'];
 
@@ -1090,6 +1108,70 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             echo 'prova';
         }
         echo '<style>
+        * {
+	box-sizing: border-box;
+	outline: 0;
+	font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.container2 {
+	width: 400px;
+	height: 50px;
+    margin-bottom: 5px;
+     display: none;
+}
+.container2 .search {
+	position: relative;
+	height: 100%;
+
+}
+.container2 .search input {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	right: calc(50% - 25px);
+	top: 0;
+	padding: 0 25px;
+	border: 0;
+	border-radius: 25px;
+	color: #4e4e4e;
+	font-size: 18px;
+	font-weight: 300;
+	box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.1),
+		0 1px 28px 0 rgba(0, 0, 0, 0.2),
+		0 0 40px 0 rgba(0, 0, 0, 0.1);
+	transition: all 0.6s cubic-bezier(0, 2, 1, -1);
+}
+.container2 .search button {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	right: calc(50% - 25px);
+	top: 0;
+	margin: auto;
+	background: #2d2926;
+	color: #fff;
+	font-size: 15px;
+	border: 0;
+	border-radius: 50%;
+	box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.0), 0 5px 55px 0 rgba(0, 0, 0, 0.0);
+	cursor: pointer;
+	transition:all 0.6s cubic-bezier(0, 2, 1, -1);
+}
+
+.container2 .search input:focus,
+.container2 .search input:active,
+.container2 .search:hover input {
+	width: 400px;
+	right:0;
+}
+.container2 .search input:focus + button,
+.container2 .search input:active + button,
+.container2 .search:hover button {
+	right: 0;
+	box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.3), 0 5px 55px 0 rgba(0, 0, 0, 0.2);
+}
+
     .category-filter {
         display: none;
         justify-content:right; 
