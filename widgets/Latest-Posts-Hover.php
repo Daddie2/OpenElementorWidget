@@ -518,6 +518,24 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+        $this->add_control(
+            'categories_in',
+            [
+                'label' => esc_html__('Select Categories to include', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'multiple' => true,
+                'options' => $this->get_category(),
+            ]
+        );
+        $this->add_control(
+            'exclude_categories',
+            [
+                'label' => esc_html__('Select Categories to exclude', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'multiple' => true,
+                'options' => $this->get_category(),
+            ]
+        );
         $this->end_controls_section();
         $this->start_controls_section(
             'section_content',
@@ -887,6 +905,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         );
 
         $this->end_controls_section();
+    }   
+    private function get_category() 
+    {
+        $categories = get_categories();
+        $options = [];
+        foreach ($categories as $category) {
+            $options[$category->term_id] = $category->name;
+        }
+        return $options;
     }
     private function get_pages()
     {
@@ -898,7 +925,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
         return $options;
     }
-
+ 
     protected function render()
 
     {
@@ -912,15 +939,21 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             'tag' => isset($_GET['tags']) ? sanitize_text_field($_GET['tags']) : '', 
         ];
         if (isset($_GET['category']) && ($_GET['category']) == "all") {
-            $args = [
-                'posts_per_page' => $settings['posts_per_page'],
-            ];
+            unset($args['category_name']);
         } 
+        if (isset($_GET['date'])){
+            $date_query = [
+                'after' => $_GET['date'],
+                'inclusive' => true,
+              ]; 
+              $args['date_query'] = $date_query;
+                       }
         if ($settings['all_post'] == 'all') {
-            $args = [
-                'posts_per_page' => -1,
-            ];
+            $args['posts_per_page'] = -1;
         }
+        $args['category__not_in']=$settings[ 'exclude_categories'];
+        $args['category__in']=$settings[ 'categories_in'];
+        $args ['s']='2024';
         $posts = get_posts($args);
         $cardColor = $settings['card_color'];
         $wordPc = $settings['content_word_pc'];
@@ -956,11 +989,18 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
          
             foreach ($posts as $post) {
                     $post_title = get_the_title($post->ID);
-                    $post_content = wp_trim_words($post->post_content, $wordPc);
+                    if (wp_is_mobile()){
+                     $post_content = wp_trim_words($post->post_content, $wordMobile);
+                    }
+                    else{
+                        $post_content = wp_trim_words($post->post_content, $wordPc);
+
+                    }
                     $post_date = get_the_date('j F Y', $post->ID);
                     $post_link = get_permalink($post->ID);
                     $tags = get_the_tags($post->ID);
-                    $tags_active=$settings['tag_active'];
+                    $post_numb = get_the_date('Y-m-d',$post->ID);
+                    $date_array = explode('-', $post_numb);
                     // Check if the post has a featured image
                     $featured_image = get_the_post_thumbnail_url($post->ID);
                     if (!$featured_image) {
@@ -969,9 +1009,15 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     }
                     if (is_admin()) {
                         echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
-                    } else {
-                        echo '       <div class="card2" style="background-image: url(' . $featured_image . '); ';if (!wp_is_mobile()){echo'onclick=\'window.location.href="' . $post_link . '"\'>';}
-                        else{echo'">';}
+                    } 
+                    else {
+                        if (wp_is_mobile()){
+                            echo '<div class="card2" style="background-image: url(' . $featured_image . '); >';
+
+                        }  
+                        else{
+                            echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
+                        }
                     }
                     echo '
                 <div class="info">
@@ -985,26 +1031,36 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                         }   }
                         else{    
                 foreach ($tags as $tag) {
+                    
                     echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
                 }  }
             }
             $date_parts = explode(' ', $post_date);
+            $i=2;
+            $date_array[1]=$date_array[0].'/'.$date_array[1];
+            $date_array[2]=$date_array[1].'/'.$date_array[2];
             if ($selected_page_id != 0) {
             $page_link = get_permalink($selected_page_id);
+            echo '<div>';
             foreach ($date_parts as $part) {
-                $date_link = add_query_arg('date', $post_date, $page_link);
-                
-                echo ' <div><a href="' . $date_link . '" class="date"><p>' . ucfirst($part) . '</a></div>';
-                }        
+                if($i==1){
+                    $date_array[1]= $date_array[1].'/01';
+                }
+                $date_link = add_query_arg('date', $date_array[$i], $page_link);
+                echo ' <a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';                
+                $i-=1;
+
+                } 
+                echo '</div>';       
 } else {
     echo '<div>';
+    $i=2;
     foreach ($date_parts as $part) {
-        $date_link = get_day_link($post->post_year, $post->post_month, $post->post_day, $post->ID); 
+        $date_link = home_url().'/'.$date_array[$i]; 
         echo '<a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
+        $i-=1;
 
     }           echo '</div>';
-
-
 }               
             if ($selected_page_id != 0) {
                         $page_link = get_permalink($selected_page_id);
