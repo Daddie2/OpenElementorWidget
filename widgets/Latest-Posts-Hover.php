@@ -659,7 +659,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'filter_active',
             [
-                'label' => esc_html__('Filter Active', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button Filter Active', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -704,7 +704,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_color_inactive',
             [
-                'label' => esc_html__('Inactive text color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive text color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'white',
                 'selectors' => [
@@ -715,7 +715,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_font_inactive',
             [
-                'label' => esc_html__('Inactive text Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive text Font Family', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -726,7 +726,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'background_color_inactive',
             [
-                'label' => esc_html__('Inactive background color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'black',
                 'selectors' => [
@@ -737,7 +737,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'inactive_font_size',
             [
-                'label' => esc_html__('Inactive text Font Size', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive text Font Size', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 18,
@@ -757,7 +757,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'Text_inactive_bold',
             [
-                'label' => esc_html__('Inactive text bold', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Inactive text bold', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -771,7 +771,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_color_active',
             [
-                'label' => esc_html__('Active  text clor', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active  text clor', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'white',
                 'selectors' => [
@@ -782,7 +782,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_font_active',
             [
-                'label' => esc_html__('Active text Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active text Font Family', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -793,7 +793,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'background_color_active',
             [
-                'label' => esc_html__('Active background color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'red',
                 'selectors' => [
@@ -804,7 +804,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'active_font_size',
             [
-                'label' => esc_html__('Active text Font Size', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active text Font Size', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 18,
@@ -824,7 +824,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'Text_active_bold',
             [
-                'label' => esc_html__('Active text bold ', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Active text bold ', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -838,7 +838,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_color_hover',
             [
-                'label' => esc_html__('Hover text color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Hover text color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'white',
                 'selectors' => [
@@ -849,7 +849,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'text_font_hover',
             [
-                'label' => esc_html__('hover text Font Family', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter hover text Font Family', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::FONT,
                 'default' => "Work Sans",
                 'selectors' => [
@@ -860,7 +860,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'background_color_hover',
             [
-                'label' => esc_html__('Hover background color', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Hover background color', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'orange',
                 'selectors' => [
@@ -872,7 +872,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'hover_font_size',
             [
-                'label' => esc_html__('Hover text Font Size', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button filter Hover text Font Size', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'default' => [
                     'size' => 18,
@@ -892,7 +892,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $this->add_control(
             'Text_hover_bold',
             [
-                'label' => esc_html__('Hover text Bold', 'Latest-Posts-Hover'),
+                'label' => esc_html__(' Button filter Hover text Bold', 'Latest-Posts-Hover'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -903,10 +903,23 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
-
+        $this->add_control(
+            'search_active',
+            [
+                'label' => esc_html__('Search Active', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'flex',
+                'default' => 'none',
+                'selectors' => [
+                    '{{WRAPPER}} .container2' => 'display: {{VALUE}};',
+                ],
+            ]
+        );
         $this->end_controls_section();
-    }   
-    private function get_category() 
+    }
+    private function get_category()
     {
         $categories = get_categories();
         $options = [];
@@ -925,7 +938,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
         return $options;
     }
- 
+
     protected function render()
 
     {
@@ -936,24 +949,23 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         $args = [
             'posts_per_page' => $settings['posts_per_page'],
             'category_name' => isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '',
-            'tag' => isset($_GET['tags']) ? sanitize_text_field($_GET['tags']) : '', 
+            'tag' => isset($_GET['tags']) ? sanitize_text_field($_GET['tags']) : '',
         ];
         if (isset($_GET['category']) && ($_GET['category']) == "all") {
             unset($args['category_name']);
-        } 
-        if (isset($_GET['date'])){
+        }
+        if (isset($_GET['date'])) {
             $date_query = [
                 'after' => $_GET['date'],
                 'inclusive' => true,
-              ]; 
-              $args['date_query'] = $date_query;
-                       }
+            ];
+            $args['date_query'] = $date_query;
+        }
         if ($settings['all_post'] == 'all') {
             $args['posts_per_page'] = -1;
         }
-        $args['category__not_in']=$settings[ 'exclude_categories'];
-        $args['category__in']=$settings[ 'categories_in'];
-        $args ['s']='2024';
+        $args['category__not_in'] = $settings['exclude_categories'];
+        $args['category__in'] = $settings['categories_in'];
         $posts = get_posts($args);
         $cardColor = $settings['card_color'];
         $wordPc = $settings['content_word_pc'];
@@ -965,15 +977,24 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $flex = 25;
         }
         $widht = $flex - 1;
-            if ($posts) {
+        if ($posts) {
             echo '<div class="category-filter">
-         <form method="get" action="">
-            <button type="submit" name="category" value="all" class="category-filter-button';
+         <form method="get" action="">';
+            $args_C ['taxonomy']= 'category';
+            $args_C['hide_empty'] = true;
+            $args_C['exclude']= $settings['exclude_categories'];
+            $args_C['include'] = $settings['categories_in'];
+            if($args_C['include']==null && $args_C['exclude']==null){
+                echo '<button type="submit" name="category" value="all" class="category-filter-button';
             if (isset($_GET['category']) && $_GET['category'] == 'all') {
                 echo ' active';
             }
-            echo '">All</button>';
-            $categories = get_categories(['hide_empty' => 0]);
+                            echo '">All</button>';
+
+            }
+
+
+            $categories = get_terms($args_C);
             foreach ($categories as $category) {
                 $category_name = $category->name;
                 $category_slug = $category->slug;
@@ -983,110 +1004,113 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 }
                 echo '">' . $category_name . '</button>';
             }
-            echo '</form> </div>';
+            if(!$args_C['include'] == null || !$args_C['exclude'] == null){
+                
+            }
+            echo '</form> <div class="container2">
+ <div class="search">
+  <input type="text" placeholder="Search...">
+  <button type="submit"><i class="fa fa-search"></i></button>
+ </div>
+</div> </div>';
             echo '<div class="card2-container">';
             $selected_page_id = $settings['selected_page'];
-         
+
             foreach ($posts as $post) {
-                    $post_title = get_the_title($post->ID);
-                    if (wp_is_mobile()){
-                     $post_content = wp_trim_words($post->post_content, $wordMobile);
+                $post_title = get_the_title($post->ID);
+                if (wp_is_mobile()) {
+                    $post_content = wp_trim_words($post->post_content, $wordMobile);
+                } else {
+                    $post_content = wp_trim_words($post->post_content, $wordPc);
+                }
+                $post_date = get_the_date('j F Y', $post->ID);
+                $post_link = get_permalink($post->ID);
+                $tags = get_the_tags($post->ID);
+                $post_numb = get_the_date('Y-m-d', $post->ID);
+                $date_array = explode('-', $post_numb);
+                // Check if the post has a featured image
+                $featured_image = get_the_post_thumbnail_url($post->ID);
+                if (!$featured_image) {
+                    // If not, use the custom default image
+                    $featured_image = $settings['default_image']['url'];
+                }
+                if (is_admin()) {
+                    echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
+                } else {
+                    if (wp_is_mobile()) {
+                        echo '<div class="card2" style="background-image: url(' . $featured_image . ')" >';
+                    } else {
+                        echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
                     }
-                    else{
-                        $post_content = wp_trim_words($post->post_content, $wordPc);
-
-                    }
-                    $post_date = get_the_date('j F Y', $post->ID);
-                    $post_link = get_permalink($post->ID);
-                    $tags = get_the_tags($post->ID);
-                    $post_numb = get_the_date('Y-m-d',$post->ID);
-                    $date_array = explode('-', $post_numb);
-                    // Check if the post has a featured image
-                    $featured_image = get_the_post_thumbnail_url($post->ID);
-                    if (!$featured_image) {
-                        // If not, use the custom default image
-                        $featured_image = $settings['default_image']['url'];
-                    }
-                    if (is_admin()) {
-                        echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
-                    } 
-                    else {
-                        if (wp_is_mobile()){
-                            echo '<div class="card2" style="background-image: url(' . $featured_image . '); >';
-
-                        }  
-                        else{
-                            echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
-                        }
-                    }
-                    echo '
+                }
+                echo '
                 <div class="info">
                 <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
-                if (!empty($tags)) {        
-                if ($selected_page_id != 0) {
-                    $page_link = get_permalink($selected_page_id);
+                if (!empty($tags)) {
+                    if ($selected_page_id != 0) {
+                        $page_link = get_permalink($selected_page_id);
                         foreach ($tags as $tag) {
                             $tag_link = add_query_arg('tags', $tag->slug, $page_link);
                             echo '<a href="' . $tag_link . '" class="tag"> ' . $tag->name . '</a> ';
-                        }   }
-                        else{    
-                foreach ($tags as $tag) {
-                    
-                    echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
-                }  }
-            }
-            $date_parts = explode(' ', $post_date);
-            $i=2;
-            $date_array[1]=$date_array[0].'/'.$date_array[1];
-            $date_array[2]=$date_array[1].'/'.$date_array[2];
-            if ($selected_page_id != 0) {
-            $page_link = get_permalink($selected_page_id);
-            echo '<div>';
-            foreach ($date_parts as $part) {
-                if($i==1){
-                    $date_array[1]= $date_array[1].'/01';
-                }
-                $date_link = add_query_arg('date', $date_array[$i], $page_link);
-                echo ' <a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';                
-                $i-=1;
-
-                } 
-                echo '</div>';       
-} else {
-    echo '<div>';
-    $i=2;
-    foreach ($date_parts as $part) {
-        $date_link = home_url().'/'.$date_array[$i]; 
-        echo '<a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
-        $i-=1;
-
-    }           echo '</div>';
-}               
-            if ($selected_page_id != 0) {
-                        $page_link = get_permalink($selected_page_id);
-                        $categories = get_the_category($post->ID);
-                        if (!empty($categories)) {
-                            foreach ($categories as $category) {
-                                $category_link = add_query_arg('category', $category->slug, $page_link);
-                                echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
-                            }
                         }
                     } else {
-                        $categories = get_the_category($post->ID);
-                        if (!empty($categories)) {
-                            foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . ' </a>';
-                            }
+                        foreach ($tags as $tag) {
+
+                            echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
                         }
                     }
-                    echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
+                }
+                $date_parts = explode(' ', $post_date);
+                $i = 2;
+                $date_array[1] = $date_array[0] . '/' . $date_array[1];
+                $date_array[2] = $date_array[1] . '/' . $date_array[2];
+                if ($selected_page_id != 0) {
+                    $page_link = get_permalink($selected_page_id);
+                    echo '<div>';
+                    foreach ($date_parts as $part) {
+                        if ($i == 1) {
+                            $date_array[1] = $date_array[1] . '/01';
+                        }
+                        $date_link = add_query_arg('date', $date_array[$i], $page_link);
+                        echo ' <a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
+                        $i -= 1;
+                    }
+                    echo '</div>';
+                } else {
+                    echo '<div>';
+                    $i = 2;
+                    foreach ($date_parts as $part) {
+                        $date_link = home_url() . '/' . $date_array[$i];
+                        echo '<a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
+                        $i -= 1;
+                    }
+                    echo '</div>';
+                }
+                if ($selected_page_id != 0) {
+                    $page_link = get_permalink($selected_page_id);
+                    $categories = get_the_category($post->ID);
+                    if (!empty($categories)) {
+                        foreach ($categories as $category) {
+                            $category_link = add_query_arg('category', $category->slug, $page_link);
+                            echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
+                        }
+                    }
+                } else {
+                    $categories = get_the_category($post->ID);
+                    if (!empty($categories)) {
+                        foreach ($categories as $category) {
+                            echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . ' </a>';
+                        }
+                    }
+                }
+                echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
                  </div>
                 </div>';
-                }
-                wp_reset_postdata();
-                echo '</div>';
             }
-        if(!$posts) {
+            wp_reset_postdata();
+            echo '</div>';
+        }
+        if (!$posts) {
             // Gestisci il caso in cui $posts non è un array valido
             echo '<div class="error-message">';
             echo esc_html__('No post', 'Latest-Posts-Hover');
@@ -1096,6 +1120,70 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             echo 'prova';
         }
         echo '<style>
+        * {
+	box-sizing: border-box;
+	outline: 0;
+	font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.container2 {
+	width: 400px;
+	height: 50px;
+    margin-bottom: 5px;
+     display: none;
+}
+.container2 .search {
+	position: relative;
+	height: 100%;
+
+}
+.container2 .search input {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	right: calc(50% - 25px);
+	top: 0;
+	padding: 0 25px;
+	border: 0;
+	border-radius: 25px;
+	color: #4e4e4e;
+	font-size: 18px;
+	font-weight: 300;
+	box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.1),
+		0 1px 28px 0 rgba(0, 0, 0, 0.2),
+		0 0 40px 0 rgba(0, 0, 0, 0.1);
+	transition: all 0.6s cubic-bezier(0, 2, 1, -1);
+}
+.container2 .search button {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	right: calc(50% - 25px);
+	top: 0;
+	margin: auto;
+	background: #2d2926;
+	color: #fff;
+	font-size: 15px;
+	border: 0;
+	border-radius: 50%;
+	box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.0), 0 5px 55px 0 rgba(0, 0, 0, 0.0);
+	cursor: pointer;
+	transition:all 0.6s cubic-bezier(0, 2, 1, -1);
+}
+
+.container2 .search input:focus,
+.container2 .search input:active,
+.container2 .search:hover input {
+	width: 400px;
+	right:0;
+}
+.container2 .search input:focus + button,
+.container2 .search input:active + button,
+.container2 .search:hover button {
+	right: 0;
+	box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.3), 0 5px 55px 0 rgba(0, 0, 0, 0.2);
+}
+
     .category-filter {
         display: none;
         justify-content:right; 
@@ -1146,6 +1234,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             background-position: center center;
             background-size: cover;
             cursor: pointer;
+
         }
     
         .info {
