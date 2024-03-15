@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <?php
 class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
 {
@@ -663,10 +664,10 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'flex',
+                'return_value' => 'inline-block',
                 'default' => 'none',
                 'selectors' => [
-                    '{{WRAPPER}} .category-filter' => 'display: {{VALUE}};',
+                    '{{WRAPPER}} .category-filter-button' => 'display: {{VALUE}};',
                 ],
             ]
         );
@@ -910,11 +911,22 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'flex',
+                'return_value' => 'inline-block',
                 'default' => 'none',
                 'selectors' => [
                     '{{WRAPPER}} .container2' => 'display: {{VALUE}};',
                 ],
+            ]
+        );
+        $this->add_control(
+            'related_category',
+            [
+                'label' => esc_html__('Show categories related to the one one you selected', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'on',
+                'default' => 'off',
             ]
         );
         $this->end_controls_section();
@@ -980,6 +992,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         if ($posts) {
             echo '<div class="category-filter">
          <form method="get" action="">';
+         if($settings['related_category']!='on' || $settings['related_category']=='on'&& $settings['categories_in']==null){
             $args_C ['taxonomy']= 'category';
             $args_C['hide_empty'] = true;
             $args_C['exclude']= $settings['exclude_categories'];
@@ -991,9 +1004,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             }
                             echo '">All</button>';
 
+
             }
-
-
+            
             $categories = get_terms($args_C);
             foreach ($categories as $category) {
                 $category_name = $category->name;
@@ -1004,11 +1017,32 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 }
                 echo '">' . $category_name . '</button>';
             }
-            if(!$args_C['include'] == null || !$args_C['exclude'] == null){
-                
-            }
-            echo '</form> <div class="container2">
- <div class="search">
+        }
+        if($settings['related_category']=='on' && $settings['categories_in']!=null){
+$other_category_id = $settings['categories_in'];
+            $categories_with_posts = get_categories(array(
+                'hide_empty' => 0, 
+                'child_of' => 0, 
+                ));
+foreach ($categories_with_posts as $category) {
+    $posts_in_category = get_posts(array(
+        'category' => $category->term_id,
+        'category__in' => $other_category_id,
+        'posts_per_page' => 1, 
+    ));
+
+    if ($posts_in_category) {
+        $category_name = $category->name;
+                $category_slug = $category->slug;
+                echo '<button type="submit" name="category" value="' . $category_slug . '" class="category-filter-button';
+                if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
+                    echo ' active';
+                }
+                echo '">' . $category_name . '</button>';
+            }    }
+}
+            echo '</form> <div class="container2"> 
+        <div class="search">
   <input type="text" placeholder="Search...">
   <button type="submit"><i class="fa fa-search"></i></button>
  </div>
@@ -1109,7 +1143,6 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             }
             wp_reset_postdata();
             echo '</div>';
-        }
         if (!$posts) {
             // Gestisci il caso in cui $posts non è un array valido
             echo '<div class="error-message">';
@@ -1120,24 +1153,33 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             echo 'prova';
         }
         echo '<style>
-        * {
-	box-sizing: border-box;
-	outline: 0;
-	font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-}
-
 .container2 {
-	width: 400px;
+	width: 394px;
 	height: 50px;
-    margin-bottom: 5px;
-     display: none;
+    display: none;
+    justify-content: end;';
+    if(!wp_is_mobile()){
+        echo'margin-top: 9px;';
+        echo'margin-bottom: 5px;';
+
+    }
+    else{
+        echo'margin-bottom: 5px;';
+        echo'margin-right: 19px;';
+    }
+echo'
 }
 .container2 .search {
 	position: relative;
 	height: 100%;
-
+    pointer-events: stroke;
 }
-.container2 .search input {
+.container2 input[type="text"]:focus {
+    caret-color: white; 
+    
+  }
+  
+ .search input {
 	width: 50px;
 	height: 50px;
 	position: absolute;
@@ -1149,43 +1191,54 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
 	color: #4e4e4e;
 	font-size: 18px;
 	font-weight: 300;
-	box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.1),
-		0 1px 28px 0 rgba(0, 0, 0, 0.2),
-		0 0 40px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: none;
 	transition: all 0.6s cubic-bezier(0, 2, 1, -1);
+    margin: 5;
 }
-.container2 .search button {
+ .search button {
 	width: 50px;
 	height: 50px;
 	position: absolute;
-	right: calc(50% - 25px);
+	right: calc(50% - 35px);
 	top: 0;
-	margin: auto;
+	margin: 5;
 	background: #2d2926;
 	color: #fff;
 	font-size: 15px;
 	border: 0;
 	border-radius: 50%;
-	box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.0), 0 5px 55px 0 rgba(0, 0, 0, 0.0);
 	cursor: pointer;
-	transition:all 0.6s cubic-bezier(0, 2, 1, -1);
+	transition:all 0.6s cubic-bezier(0, 2, 1, -1);  
 }
+.search input:focus {
+    right: 0;
+    border: 2px solid #007BFF; /* Add a colored border when in focus */
+    background-color: #f0f0f0; /* Change the background color when in focus */
 
+  }
 .container2 .search input:focus,
 .container2 .search input:active,
-.container2 .search:hover input {
-	width: 400px;
-	right:0;
+.container2 .search:hover input {';	
+    if(wp_is_mobile()){
+     echo'       width: 300px;';
+
+    }
+ else{
+        echo'       width: 400px;';
+   
+       }
+    echo'
+	right:0%;    
+    background:red;
 }
 .container2 .search input:focus + button,
 .container2 .search input:active + button,
 .container2 .search:hover button {
 	right: 0;
-	box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.3), 0 5px 55px 0 rgba(0, 0, 0, 0.2);
 }
 
     .category-filter {
-        display: none;
+        display: flex;
         justify-content:right; 
         flex-wrap: wrap;
         }
@@ -1204,6 +1257,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
   font-weight: normal;
   font-family:Work Sans;
   font: size 15px;
+  display:none;
 }
 
 .category-filter-button:hover {
@@ -1352,4 +1406,5 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     
         </style>';
     }
+}
 }
