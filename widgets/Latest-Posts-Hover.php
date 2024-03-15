@@ -1166,13 +1166,22 @@ foreach ($categories_with_posts as $category) {
     else{
         echo'margin-bottom: 5px;';
         echo'margin-right: 19px;';
+
     }
+    
 echo'
+pointer-events: none;
 }
 .container2 .search {
 	position: relative;
 	height: 100%;
-    pointer-events: stroke;
+}
+
+.container2:hover {
+    pointer-events: initial;
+}
+button{
+    pointer-events: fill; 
 }
 .container2 input[type="text"]:focus {
     caret-color: white; 
