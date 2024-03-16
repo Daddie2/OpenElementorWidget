@@ -652,9 +652,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
 
         $this->end_controls_section();
         $this->start_controls_section(
-            'section_filter',
+            'section_Button_filter',
             [
-                'label' => esc_html__('Filter', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button Filter', 'Latest-Posts-Hover'),
             ]
         );
         $this->add_control(
@@ -904,6 +904,36 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+    
+        $this->add_control(
+            'related_category',
+            [
+                'label' => esc_html__('Show categories related to the one one you selected', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'on',
+                'default' => 'off',
+            ]
+        );
+        $this->add_control(
+            'include_all',
+            [
+                'label' => esc_html__('Show all even if someone is excluded', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('on', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'on',
+                'default' => 'off',
+            ]
+        );
+        $this->end_controls_section();
+        $this->start_controls_section(
+            'section_search',
+            [
+                'label' => esc_html__('search', 'Latest-Posts-Hover'),
+            ]
+        );    
         $this->add_control(
             'search_active',
             [
@@ -917,19 +947,22 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     '{{WRAPPER}} .container2' => 'display: {{VALUE}};',
                 ],
             ]
-        );
+        );       
         $this->add_control(
-            'related_category',
+            'background_color_input',
             [
-                'label' => esc_html__('Show categories related to the one one you selected', 'Latest-Posts-Hover'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
-                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'on',
-                'default' => 'off',
+                'label' => esc_html__('Input background color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'red',
+                'selectors' => [
+                    '{{WRAPPER}} 
+                    .container2 .search input:focus,.container2 .search input:active,.container2 .search:hover input' => '  background-color: {{VALUE}};',
+                ],
             ]
         );
+        
         $this->end_controls_section();
+
     }
     private function get_category()
     {
@@ -997,7 +1030,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             $args_C['hide_empty'] = true;
             $args_C['exclude']= $settings['exclude_categories'];
             $args_C['include'] = $settings['categories_in'];
-            if($args_C['include']==null && $args_C['exclude']==null){
+            if($args_C['include']==null && $args_C['exclude']==null || $args_C['include']==null && $settings['include_all']=='on'){
                 echo '<button type="submit" name="category" value="all" class="category-filter-button';
             if (isset($_GET['category']) && $_GET['category'] == 'all') {
                 echo ' active';
@@ -1009,6 +1042,17 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             
             $categories = get_terms($args_C);
             foreach ($categories as $category) {
+                if (in_array($category->term_id, $settings['exclude_categories'])) {
+                    continue; // Salta la categoria se è esclusa
+                }
+            
+                // Controlla se la categoria ha almeno un post che non è escluso
+                $posts_in_category = get_posts(array(
+                    'category' => $category->term_id,
+                    'posts_per_page' => 1, // Controlla solo se ci sono post
+                    'category__not_in' =>  $settings['exclude_categories'],
+                ));
+                 if ($posts_in_category) {
                 $category_name = $category->name;
                 $category_slug = $category->slug;
                 echo '<button type="submit" name="category" value="' . $category_slug . '" class="category-filter-button';
@@ -1016,8 +1060,8 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                     echo ' active';
                 }
                 echo '">' . $category_name . '</button>';
-            }
-        }
+           
+        
         if($settings['related_category']=='on' && $settings['categories_in']!=null){
 $other_category_id = $settings['categories_in'];
             $categories_with_posts = get_categories(array(
@@ -1040,6 +1084,8 @@ foreach ($categories_with_posts as $category) {
                 }
                 echo '">' . $category_name . '</button>';
             }    }
+}
+ }
 }
             echo '</form> <div class="container2"> 
         <div class="search">
@@ -1149,12 +1195,9 @@ foreach ($categories_with_posts as $category) {
             echo esc_html__('No post', 'Latest-Posts-Hover');
             echo '</div>';
         }
-        if (isset($_GET['action'])  && $_GET['action'] === 'edit') {
-            echo 'prova';
-        }
         echo '<style>
 .container2 {
-	width: 394px;
+	width: 100%;
 	height: 50px;
     display: none;
     justify-content: end;';
@@ -1183,11 +1226,13 @@ pointer-events: none;
 button{
     pointer-events: fill; 
 }
+
 .container2 input[type="text"]:focus {
     caret-color: white; 
-    
   }
-  
+  .container2 button i {
+    margin-right: 5px; }
+    
  .search input {
 	width: 50px;
 	height: 50px;
@@ -1203,14 +1248,16 @@ button{
 	box-shadow: none;
 	transition: all 0.6s cubic-bezier(0, 2, 1, -1);
     margin: 5;
+    align-items: center;
 }
+
  .search button {
 	width: 50px;
 	height: 50px;
 	position: absolute;
 	right: calc(50% - 35px);
 	top: 0;
-	margin: 5;
+    padding: 0 15px;
 	background: #2d2926;
 	color: #fff;
 	font-size: 15px;
@@ -1218,6 +1265,7 @@ button{
 	border-radius: 50%;
 	cursor: pointer;
 	transition:all 0.6s cubic-bezier(0, 2, 1, -1);  
+    
 }
 .search input:focus {
     right: 0;
@@ -1227,23 +1275,20 @@ button{
   }
 .container2 .search input:focus,
 .container2 .search input:active,
-.container2 .search:hover input {';	
-    if(wp_is_mobile()){
-     echo'       width: 300px;';
-
-    }
- else{
-        echo'       width: 400px;';
-   
-       }
-    echo'
+.container2 .search:hover input {
+    width: 100%; 
 	right:0%;    
-    background:red;
 }
+
 .container2 .search input:focus + button,
 .container2 .search input:active + button,
 .container2 .search:hover button {
 	right: 0;
+}
+
+.container2 .search input {
+    padding-right: 70px; 
+ 
 }
 
     .category-filter {
@@ -1412,8 +1457,9 @@ button{
               flex-basis: 100%;
             }
                   }
-    
+        
         </style>';
     }
 }
-}
+        }
+    }
