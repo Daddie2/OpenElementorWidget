@@ -1,3 +1,4 @@
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <?php
 class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
 {
@@ -96,7 +97,37 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'default' => 0,
             ]
         );
-
+        $this->add_control(
+            'filter_alignment',
+            [
+                'label' => esc_html__('Filter Alignment', 'OpenWidget'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignleft',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-aligncenter',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'OpenWidget'),
+                        'icon' => 'mce-ico mce-i-alignright',
+                    ],
+                ],
+                'default' => 'left',
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .category-filter' => 'justify-content: {{VALUE}};',
+                ],
+                'icon_colors' => [
+                    'left' => 'white',
+                    'center' => 'white',
+                    'right' => 'white',
+                ],
+            ]
+        );
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -291,7 +322,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'default' => 'left',
                 'toggle' => true,
                 'selectors' => [
-                    '{{WRAPPER}} .date' => 'text-align: {{VALUE}};',
+                    '{{WRAPPER}} .date-card2' => 'justify-content: {{VALUE}};',
                 ],
                 'icon_colors' => [
                     'left' => 'white',
@@ -399,7 +430,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'default' => 'left',
                 'toggle' => true,
                 'selectors' => [
-                    '{{WRAPPER}} .tag' => 'text-align: {{VALUE}};',
+                    '{{WRAPPER}} .tag-card2' => 'justify-content: {{VALUE}};',
                 ],
                 'icon_colors' => [
                     'left' => 'white',
@@ -507,7 +538,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'default' => 'left',
                 'toggle' => true,
                 'selectors' => [
-                    '{{WRAPPER}} .category' => 'text-align: {{VALUE}};',
+                    '{{WRAPPER}} .category-card2' => 'justify-content: {{VALUE}};',
 
 
                 ],
@@ -651,9 +682,9 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
 
         $this->end_controls_section();
         $this->start_controls_section(
-            'section_filter',
+            'section_Button_filter',
             [
-                'label' => esc_html__('Filter', 'Latest-Posts-Hover'),
+                'label' => esc_html__('Button Filter', 'Latest-Posts-Hover'),
             ]
         );
         $this->add_control(
@@ -663,44 +694,14 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'flex',
+                'return_value' => 'inline-block',
                 'default' => 'none',
                 'selectors' => [
-                    '{{WRAPPER}} .category-filter' => 'display: {{VALUE}};',
+                    '{{WRAPPER}} .category-filter-button' => 'display: {{VALUE}};',
                 ],
             ]
         );
-        $this->add_control(
-            'filter_alignment',
-            [
-                'label' => esc_html__('Filter Alignment', 'OpenWidget'),
-                'type' => \Elementor\Controls_Manager::CHOOSE,
-                'options' => [
-                    'left' => [
-                        'title' => esc_html__('Left', 'OpenWidget'),
-                        'icon' => 'mce-ico mce-i-alignleft',
-                    ],
-                    'center' => [
-                        'title' => esc_html__('Center', 'OpenWidget'),
-                        'icon' => 'mce-ico mce-i-aligncenter',
-                    ],
-                    'right' => [
-                        'title' => esc_html__('Right', 'OpenWidget'),
-                        'icon' => 'mce-ico mce-i-alignright',
-                    ],
-                ],
-                'default' => 'left',
-                'toggle' => true,
-                'selectors' => [
-                    '{{WRAPPER}} .category-filter' => 'justify-content: {{VALUE}};',
-                ],
-                'icon_colors' => [
-                    'left' => 'white',
-                    'center' => 'white',
-                    'right' => 'white',
-                ],
-            ]
-        );
+
         $this->add_control(
             'text_color_inactive',
             [
@@ -903,6 +904,36 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 ],
             ]
         );
+
+        $this->add_control(
+            'related_category',
+            [
+                'label' => esc_html__('Show categories related to the one one you selected', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'on',
+                'default' => 'off',
+            ]
+        );
+        $this->add_control(
+            'include_all',
+            [
+                'label' => esc_html__('Show all even if someone is excluded', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('on', 'Latest-Posts-Hover'),
+                'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                'return_value' => 'on',
+                'default' => 'off',
+            ]
+        );
+        $this->end_controls_section();
+        $this->start_controls_section(
+            'section_search',
+            [
+                'label' => esc_html__('Search', 'Latest-Posts-Hover'),
+            ]
+        );
         $this->add_control(
             'search_active',
             [
@@ -910,13 +941,26 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                 'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                'return_value' => 'flex',
+                'return_value' => 'inline-block',
                 'default' => 'none',
                 'selectors' => [
                     '{{WRAPPER}} .container2' => 'display: {{VALUE}};',
                 ],
             ]
         );
+        $this->add_control(
+            'background_color_input',
+            [
+                'label' => esc_html__('Input background color', 'Latest-Posts-Hover'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => 'red',
+                'selectors' => [
+                    '{{WRAPPER}} 
+                    .container2 .search2 input:focus,.container2 .search2 input:active,.container2 .search2:hover input' => '  background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
     }
     private function get_category()
@@ -964,6 +1008,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         if ($settings['all_post'] == 'all') {
             $args['posts_per_page'] = -1;
         }
+        $selected_page_id = $settings['selected_page'];
         $args['category__not_in'] = $settings['exclude_categories'];
         $args['category__in'] = $settings['categories_in'];
         $posts = get_posts($args);
@@ -978,206 +1023,221 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
         $widht = $flex - 1;
         if ($posts) {
-            echo '<div class="category-filter">
-         <form method="get" action="">
-            <button type="submit" name="category" value="all" class="category-filter-button';
-            if (isset($_GET['category']) && $_GET['category'] == 'all') {
-                echo ' active';
-            }
-            echo '">All</button>';
-            $categories = get_categories(['hide_empty' => 0]);
-            foreach ($categories as $category) {
-                $category_name = $category->name;
-                $category_slug = $category->slug;
-                echo '<button type="submit" name="category" value="' . $category_slug . '" class="category-filter-button';
-                if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
-                    echo ' active';
-                }
-                echo '">' . $category_name . '</button>';
-            }
-            echo '</form> <div class="container2">
- <div class="search">
-  <input type="text" placeholder="Search...">
-  <button type="submit"><i class="fa fa-search"></i></button>
- </div>
-</div> </div>';
-            echo '<div class="card2-container">';
-            $selected_page_id = $settings['selected_page'];
+            echo '<div class="category-filter">';
+            if ($selected_page_id != 0) {
+                $page_link = get_permalink($selected_page_id);
 
-            foreach ($posts as $post) {
-                $post_title = get_the_title($post->ID);
-                if (wp_is_mobile()) {
-                    $post_content = wp_trim_words($post->post_content, $wordMobile);
-                } else {
-                    $post_content = wp_trim_words($post->post_content, $wordPc);
+                echo '   <form method="get" action="' . $page_link . '">';
+            } else {
+                echo '   <form method="get" action="">';
+            }
+            echo '
+         <form method="get" action="">';
+            if ($settings['related_category'] != 'on' || $settings['related_category'] == 'on' && $settings['categories_in'] == null) {
+                $args_C['taxonomy'] = 'category';
+                $args_C['hide_empty'] = true;
+                $args_C['exclude'] = $settings['exclude_categories'];
+                $args_C['include'] = $settings['categories_in'];
+                if ($args_C['include'] == null && $args_C['exclude'] == null || $settings['include_all'] == 'on') {
+                    echo '<button type="submit" name="category" value="all" class="category-filter-button';
+                    if (isset($_GET['category']) && $_GET['category'] == 'all') {
+                        echo ' active';
+                    }
+                    echo '">All</button>';
                 }
-                $post_date = get_the_date('j F Y', $post->ID);
-                $post_link = get_permalink($post->ID);
-                $tags = get_the_tags($post->ID);
-                $post_numb = get_the_date('Y-m-d', $post->ID);
-                $date_array = explode('-', $post_numb);
-                // Check if the post has a featured image
-                $featured_image = get_the_post_thumbnail_url($post->ID);
-                if (!$featured_image) {
-                    // If not, use the custom default image
-                    $featured_image = $settings['default_image']['url'];
-                }
-                if (is_admin()) {
-                    echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
-                } else {
-                    if (wp_is_mobile()) {
-                        echo '<div class="card2" style="background-image: url(' . $featured_image . ')" >';
-                    } else {
-                        echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
+
+                $categories = get_terms($args_C);
+                foreach ($categories as $category) {
+                    if (in_array($category->term_id, $settings['exclude_categories'])) {
+                        continue; // Salta la categoria se è esclusa
+                    }
+
+                    // Controlla se la categoria ha almeno un post che non è escluso
+                    $posts_in_category = get_posts(array(
+                        'category' => $category->term_id,
+                        'posts_per_page' => 1, // Controlla solo se ci sono post
+                        'category__not_in' =>  $settings['exclude_categories'],
+                    ));
+                    if ($posts_in_category) {
+                        $category_name = $category->name;
+                        $category_slug = $category->slug;
+                        echo '<button type="submit" name="category" value="' . $category_slug . '" class="category-filter-button';
+                        if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
+                            echo ' active';
+                        }
+                        echo '">' . $category_name . '</button>';
                     }
                 }
-                echo '
+            }
+            if ($settings['related_category'] == 'on' && $settings['categories_in'] != null) {
+                $other_category_id = $settings['categories_in'];
+                $categories_with_posts = get_categories(array(
+                    'hide_empty' => 0,
+                    'child_of' => 0,
+                ));
+                foreach ($categories_with_posts as $category) {
+                    $posts_in_category = get_posts(array(
+                        'category' => $category->term_id,
+                        'category__in' => $other_category_id,
+                        'posts_per_page' => 1,
+                    ));
+
+                    if ($posts_in_category) {
+                        $category_name = $category->name;
+                        $category_slug = $category->slug;
+                        echo '<button type="submit" name="category" value="' . $category_slug . '" class="category-filter-button';
+                        if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
+                            echo ' active';
+                        }
+                        echo '">' . $category_name . '</button>';
+                    }
+                }
+            }
+        }
+
+        echo '</form>
+    
+    <div class="container2">
+<div class="input-icons">
+        <i class="fa fa-search"></i>
+        <input class="input" type="text" placeholder="Cerca...">
+    </div>
+</div>
+</div> </div>';
+        echo '<div class="card2-container">';
+
+        foreach ($posts as $post) {
+            $post_title = get_the_title($post->ID);
+            if (wp_is_mobile()) {
+                $post_content = wp_trim_words($post->post_content, $wordMobile);
+            } else {
+                $post_content = wp_trim_words($post->post_content, $wordPc);
+            }
+            $post_date = get_the_date('j F Y', $post->ID);
+            $post_link = get_permalink($post->ID);
+            $tags = get_the_tags($post->ID);
+            $post_numb = get_the_date('Y-m-d', $post->ID);
+            $date_array = explode('-', $post_numb);
+            // Check if the post has a featured image
+            $featured_image = get_the_post_thumbnail_url($post->ID);
+            if (!$featured_image) {
+                // If not, use the custom default image
+                $featured_image = $settings['default_image']['url'];
+            }
+            if (is_admin()) {
+                echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
+            } else {
+                if (wp_is_mobile()) {
+                    echo '<div class="card2" style="background-image: url(' . $featured_image . ')" >';
+                } else {
+                    echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
+                }
+            }
+            echo '
                 <div class="info">
                 <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
-                if (!empty($tags)) {
-                    if ($selected_page_id != 0) {
-                        $page_link = get_permalink($selected_page_id);
-                        foreach ($tags as $tag) {
-                            $tag_link = add_query_arg('tags', $tag->slug, $page_link);
-                            echo '<a href="' . $tag_link . '" class="tag"> ' . $tag->name . '</a> ';
-                        }
-                    } else {
-                        foreach ($tags as $tag) {
+            if (!empty($tags)) {
+                if ($selected_page_id != 0) {
+                    echo '<div class="tag-card2">';
+                    $page_link = get_permalink($selected_page_id);
+                    foreach ($tags as $tag) {
+                        $tag_link = add_query_arg('tags', $tag->slug, $page_link);
+                        echo '<a href="' . $tag_link . '" class="tag"> ' . $tag->name . '</a> ';
+                    }
+                    echo '</div>';
+                } else {
+                    echo '<div class="tag-card2">';
 
-                            echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
-                        }
+                    foreach ($tags as $tag) {
+
+                        echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
                     }
+                    echo '</div>';
                 }
-                $date_parts = explode(' ', $post_date);
+            }
+            $date_parts = explode(' ', $post_date);
+            $i = 2;
+            $date_array[1] = $date_array[0] . '/' . $date_array[1];
+            $date_array[2] = $date_array[1] . '/' . $date_array[2];
+            if ($selected_page_id != 0) {
+                $page_link = get_permalink($selected_page_id);
+                echo '<div class="date-card2">';
+
+                foreach ($date_parts as $part) {
+                    if ($i == 1) {
+                        $date_array[1] = $date_array[1] . '/01';
+                    }
+                    $date_link = add_query_arg('date', $date_array[$i], $page_link);
+                    echo ' <a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
+                    $i -= 1;
+                }
+                echo '</div>';
+            } else {
+                echo '<div class="date-card2">';
                 $i = 2;
-                $date_array[1] = $date_array[0] . '/' . $date_array[1];
-                $date_array[2] = $date_array[1] . '/' . $date_array[2];
-                if ($selected_page_id != 0) {
-                    $page_link = get_permalink($selected_page_id);
-                    echo '<div>';
-                    foreach ($date_parts as $part) {
-                        if ($i == 1) {
-                            $date_array[1] = $date_array[1] . '/01';
-                        }
-                        $date_link = add_query_arg('date', $date_array[$i], $page_link);
-                        echo ' <a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
-                        $i -= 1;
-                    }
-                    echo '</div>';
-                } else {
-                    echo '<div>';
-                    $i = 2;
-                    foreach ($date_parts as $part) {
-                        $date_link = home_url() . '/' . $date_array[$i];
-                        echo '<a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
-                        $i -= 1;
-                    }
-                    echo '</div>';
+                foreach ($date_parts as $part) {
+                    $date_link = home_url() . '/' . $date_array[$i];
+                    echo '<a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
+                    $i -= 1;
                 }
-                if ($selected_page_id != 0) {
-                    $page_link = get_permalink($selected_page_id);
-                    $categories = get_the_category($post->ID);
-                    if (!empty($categories)) {
-                        foreach ($categories as $category) {
-                            $category_link = add_query_arg('category', $category->slug, $page_link);
-                            echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
-                        }
+                echo '</div>';
+            }
+
+            if ($selected_page_id != 0) {
+                $page_link = get_permalink($selected_page_id);
+                $categories = get_the_category($post->ID);
+                if (!empty($categories)) {
+                    echo '<div class="category-card2">';
+                    foreach ($categories as $category) {
+                        $category_link = add_query_arg('category', $category->slug, $page_link);
+                        echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
                     }
-                } else {
-                    $categories = get_the_category($post->ID);
-                    if (!empty($categories)) {
-                        foreach ($categories as $category) {
-                            echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . ' </a>';
-                        }
+                    echo    '</div>';
+                }
+            } else {
+                $categories = get_the_category($post->ID);
+                if (!empty($categories)) {
+                    echo '<div class="category-card2">';
+                    foreach ($categories as $category) {
+                        echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . ' </a> <br>';
                     }
                 }
-                echo '<a class="description" href="' . $post_link . '">' . $post_content . ' </a> 
+                echo    '</div>';
+            }
+            echo '<p class="description" href="' . $post_link . '">' . $post_content . ' </p> 
                  </div>
                 </div>';
-            }
-            wp_reset_postdata();
-            echo '</div>';
         }
+        wp_reset_postdata();
+        echo '</div>';
         if (!$posts) {
             // Gestisci il caso in cui $posts non è un array valido
             echo '<div class="error-message">';
             echo esc_html__('No post', 'Latest-Posts-Hover');
             echo '</div>';
         }
-        if (isset($_GET['action'])  && $_GET['action'] === 'edit') {
-            echo 'prova';
-        }
         echo '<style>
-        * {
-	box-sizing: border-box;
-	outline: 0;
-	font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-}
-
-.container2 {
-	width: 400px;
-	height: 50px;
-    margin-bottom: 5px;
-     display: none;
-}
-.container2 .search {
-	position: relative;
-	height: 100%;
-
-}
-.container2 .search input {
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	right: calc(50% - 25px);
-	top: 0;
-	padding: 0 25px;
-	border: 0;
-	border-radius: 25px;
-	color: #4e4e4e;
-	font-size: 18px;
-	font-weight: 300;
-	box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.1),
-		0 1px 28px 0 rgba(0, 0, 0, 0.2),
-		0 0 40px 0 rgba(0, 0, 0, 0.1);
-	transition: all 0.6s cubic-bezier(0, 2, 1, -1);
-}
-.container2 .search button {
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	right: calc(50% - 25px);
-	top: 0;
-	margin: auto;
-	background: #2d2926;
-	color: #fff;
-	font-size: 15px;
-	border: 0;
-	border-radius: 50%;
-	box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.0), 0 5px 55px 0 rgba(0, 0, 0, 0.0);
-	cursor: pointer;
-	transition:all 0.6s cubic-bezier(0, 2, 1, -1);
-}
-
-.container2 .search input:focus,
-.container2 .search input:active,
-.container2 .search:hover input {
-	width: 400px;
-	right:0;
-}
-.container2 .search input:focus + button,
-.container2 .search input:active + button,
-.container2 .search:hover button {
-	right: 0;
-	box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.3), 0 5px 55px 0 rgba(0, 0, 0, 0.2);
-}
 
     .category-filter {
-        display: none;
+        display: flex;
         justify-content:right; 
         flex-wrap: wrap;
         }
-
+ .category-card2 {
+        display: flex;
+        justify-content:right; 
+        flex-wrap: wrap;
+        }
+         .date-card2 {
+        display: flex;
+        justify-content:right; 
+        flex-wrap: wrap;
+        }
+        .tag-card2 {
+        display: flex;
+        justify-content:right; 
+        flex-wrap: wrap;
+        }
 .category-filter-button {
   background-color: #007BFF;
   color: #fff;
@@ -1192,6 +1252,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
   font-weight: normal;
   font-family:Work Sans;
   font: size 15px;
+  display:none;
 }
 
 .category-filter-button:hover {
@@ -1277,7 +1338,7 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             font-size: 18px;
             color:black;
             display:none;
-            text-align: left;
+            text-align: center;
         }
         .date {
             margin-top: 0;
@@ -1290,13 +1351,12 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
         }
         .category {
             margin-top: 0px;
-            margin-bottom: 0px;
+            margin-bottom: 00px;
             padding: 0 5px;
             font-size: 18px;
             color:black;
             display:none;
-            text-align: center;
-        }
+}
     
         .description {
             margin-top: 0px;
@@ -1304,15 +1364,12 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
             padding: 0 15px;
             font-size: 19px;
             color: black;
-            display:block;            
             overflow-wrap: break-word;
             text-align: left;
 
         }
-    
-        .card2:hover .description {
-            display: block;
-        }
+        
+
 
         .card2-container {
             display: flex;
@@ -1337,7 +1394,56 @@ class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
               flex-basis: 100%;
             }
                   }
-    
+
+
+ .container2 {
+  position: relative;
+  padding: 10px;
+  --size-button: 40px;
+  color: red;
+
+}
+
+
+.input  {
+  padding-left: var(--size-button);
+  height: var(--size-button);
+    width: 10dvh;
+  font-size: 15px;
+  border-color: red;
+  color: red;
+  border-radius: 50px;
+  cursor: pointer;
+      box-shadow: none, none, none; /* Aggiungi altre none se necessario */
+
+}
+
+.input:focus,
+.input:not(:invalid) {
+  width: 50dvh;
+  cursor: text;
+  box-shadow: 0px 0px 0px #0e0e0e, 0px 0px 0px rgb(95 94 94 / 25%), inset 1.5px 1.5px 3px #0e0e0e, inset -1.5px -1.5px 3px #5f5e5e;
+}
+
+.input:focus + .icon,
+                          .input:not(:invalid) + .icon {
+  pointer-events: all;
+  cursor: pointer;
+}
+
+
+    .input-icons {
+            position: relative;
+        }
+        .input-icons i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .input-field {
+            padding-left: 30px;
+        }
         </style>';
     }
 }
