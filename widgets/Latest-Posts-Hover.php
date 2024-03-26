@@ -74,6 +74,9 @@
                             'label' => esc_html__('Background color', 'Latest-Posts-Hover'),
                             'type' => \Elementor\Controls_Manager::COLOR,
                             'default' => '#f8f8f8',
+                            'selectors' => [
+                                '{{WRAPPER}} .info' => 'background-color:{{VALUE}}!important;',
+                            ],
                         ]
                     );
                     $this->add_control(
@@ -81,12 +84,11 @@
                         [
                             'label' => esc_html__('Card opacity', 'Latest-Posts-Hover'),
                             'type' => \Elementor\Controls_Manager::NUMBER,
-                            'default' => 0.8,
                             'min' => 0,
                             'max' => 1,
                             'step' => 0.1,
                             'selectors' => [
-                                '{{WRAPPER}} .info' => 'filter:{{VALUE}}!important;',
+                                '{{WRAPPER}} .info' => 'filter:opacity({{VALUE}})!important;',
                             ],
                         ]
                     );
@@ -1095,7 +1097,6 @@
 
                     }
                     $posts = get_posts($args);
-                    $cardColor = $settings['card_color'];
                     $wordPc = $settings['content_word_pc'];
                     $wordMobile = $settings['content_word_mobile'];
                     $place=$settings['Search_place'];
@@ -1390,7 +1391,7 @@
                         overflow: hidden; 
                         width: ' . $width . '%; 
                         margin-bottom: 20px;
-                        background-position: center center;
+                        background-position:  center;
                         background-size: cover;
                         cursor: pointer;
 
