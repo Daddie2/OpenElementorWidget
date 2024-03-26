@@ -63,9 +63,6 @@
                     'default' => [
                         'url' => \Elementor\Utils::get_placeholder_image_src(),
                     ],
-                    'selectors' => [
-                        '{{WRAPPER}} .info' => 'background-color:{{VALUE}}!important;',
-                    ],
                 ]
             );
             $this->add_control(
@@ -87,6 +84,7 @@
                     'min' => 0,
                     'max' => 1,
                     'step' => 0.1,
+                    'default'=>0.8,
                     'selectors' => [
                         '{{WRAPPER}} .info' => 'filter:opacity({{VALUE}})!important;',
                     ],
@@ -134,7 +132,6 @@
                 ]
             );
             $this->end_controls_section();
-
             $this->start_controls_section(
                 'section_error',
                 [
@@ -1336,15 +1333,12 @@
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-                    if (is_admin()) {
-                        echo '<div class="card2" style="background-image: url(' . $featured_image . '); ">';
-                    } else {
-                        if (wp_is_mobile()) {
+              
+                        if (wp_is_mobile() || is_admin()) {
                             echo '<div class="card2" style="background-image: url(' . $featured_image . ')" >';
                         } else {
                             echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
                         }
-                    }
                     echo '
                             <div class="info">
                             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
@@ -1453,7 +1447,6 @@
             }
         }
             echo '<style>
-
                 .category-filter {
                     display: flex;
                     justify-content:right; 
