@@ -63,6 +63,9 @@
                             'default' => [
                                 'url' => \Elementor\Utils::get_placeholder_image_src(),
                             ],
+                            'selectors' => [
+                                '{{WRAPPER}} .info' => 'background-color:{{VALUE}}!important;',
+                            ],
                         ]
                     );
                     $this->add_control(
@@ -83,7 +86,7 @@
                             'max' => 1,
                             'step' => 0.1,
                             'selectors' => [
-                                '{{WRAPPER}} .title' => 'filter:{{VALUE}}!important;',
+                                '{{WRAPPER}} .info' => 'filter:{{VALUE}}!important;',
                             ],
                         ]
                     );
@@ -1397,7 +1400,7 @@
                         position: relative;
                         width: 100%;
                         height: 600px;
-                        background-color: ' . $cardColor . ';
+                        background-color: white;
                         filter:opacity(0.8); 
                         transform: translateY(100%)
                             translateY(-170px)
