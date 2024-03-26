@@ -755,6 +755,17 @@
                 ]
             );
             $this->add_control(
+                'remove_title',
+                [
+                    'label' => esc_html__('Remove title', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                    'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                    'return_value' => 'on',
+                    'default' => 'off',
+                ]
+            );
+            $this->add_control(
                 'content_alignment',
                 [
                     'label' => esc_html__('Content Alignment', 'OpenWidget'),
@@ -1318,10 +1329,27 @@
                 foreach ($posts as $post) {
                     $post_title = get_the_title($post->ID);
                     if (wp_is_mobile()) {
-                        $post_content = wp_trim_words($post->post_content, $wordMobile);
-                    } else {
+                        if($settings['remove_title']=='on'){
+                            $post_content = str_replace($post_title, '', $post->post_content);
+                            $post_content = wp_trim_words($post_content, $wordMobile);
+
+                        }
+                        if($settings['remove_title']!='on'){
+
                         $post_content = wp_trim_words($post->post_content, $wordPc);
-                    }
+                        }
+                    } else {
+                        if($settings['remove_title']=='on'){
+                            $post_content = str_replace($post_title, '', $post->post_content);
+                            $post_content = wp_trim_words($post_content, $wordPc);
+
+                        }
+                        if($settings['remove_title']!='on'){
+                        $post_content = wp_trim_words($post->post_content, $wordPc);
+                        }                    }
+                    if($settings['remove_title']=='on'){
+                        $post_content = str_replace($post_title, '', $post_content);
+                    }                   
                     $post_date = get_the_date('j F Y', $post->ID);
                     $post_link = get_permalink($post->ID);
                     $tags = get_the_tags($post->ID);
