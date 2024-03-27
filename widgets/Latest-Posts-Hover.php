@@ -1226,14 +1226,37 @@
                 'category_name' => isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '',
                 'tag' => isset($_GET['tags']) ? sanitize_text_field($_GET['tags']) : '',
             ];
+            $args['s']=null;
             if (isset($_GET['category']) && ($_GET['category']) == "all") {
                 unset($args['category_name']);
             }
             if (isset($_GET['date'])) {
-                $date_query = [
-                    'after' => $_GET['date'],
+
+                // Check the format of the provided date
+                if (substr($_GET['date'], -1) == 'm') {
+                    $date_query = [
+                        'year'  => intval(substr($_GET['date'], 0, 4)),
+                        'month' => intval(substr($_GET['date'], 5, 2)),
+                        'day'   => array(
+                            'start' => 1,
+                            'end'   => cal_days_in_month(CAL_GREGORIAN, intval(substr($_GET['date'], 5, 2)), intval(substr($_GET['date'], 0, 4))),
+                        ),                    ];
+                }
+                if (strlen($_GET['date']) === 4) {
+                    // Only year provided (YYYY)
+                    $date_query = [
+                      'year' => intval($_GET['date']),
+                    ];
+                  } 
+                  else if(!substr($_GET['date'], -1) == 'm') {
+                  // Full date provided (YYYY-MM-DD) - reuse previous logic
+                  $date_query = [
+                    'year' => intval(substr($_GET['date'], 0, 4)),
+                    'month' => intval(substr($_GET['date'], 5, 2)),
+                    'day' => intval(substr($_GET['date'], 8, 2)),
                     'inclusive' => true,
-                ];
+                  ];
+                }
                 $args['date_query'] = $date_query;
             }
             if ($settings['all_post'] == 'all') {
@@ -1443,7 +1466,7 @@
 
                         foreach ($date_parts as $part) {
                             if ($i == 1) {
-                                $date_array[1] = $date_array[1] . '/01';
+                                $date_array[1] = $date_array[1] . '/01 m';
                             }
                             $date_link = add_query_arg('date', $date_array[$i], $page_link);
                             echo ' <a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
