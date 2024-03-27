@@ -1248,13 +1248,12 @@
                       'year' => intval($_GET['date']),
                     ];
                   } 
-                  else if(!substr($_GET['date'], -1) == 'm') {
-                  // Full date provided (YYYY-MM-DD) - reuse previous logic
+                  else if ( strlen($_GET['date']) === 10) {
+                    // Full date provided (YYYY-MM-DD) - reuse previous logic
                   $date_query = [
                     'year' => intval(substr($_GET['date'], 0, 4)),
                     'month' => intval(substr($_GET['date'], 5, 2)),
                     'day' => intval(substr($_GET['date'], 8, 2)),
-                    'inclusive' => true,
                   ];
                 }
                 $args['date_query'] = $date_query;
