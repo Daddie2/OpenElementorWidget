@@ -1329,22 +1329,27 @@
                 foreach ($posts as $post) {
                     $post_title = get_the_title($post->ID);
                     $dom = new DOMDocument();
-                    if($settings['remove_title']=='on'){
-                    if (!empty($post->post_content)) {
-@$dom->loadHTML($post->post_content); // Suppress warnings due to invalid HTML
-$elements = $dom->getElementsByTagName('h2');
-
-// Loop through h2 elements and remove them
-foreach ($elements as $element) {
-    $element->parentNode->removeChild($element);
-}
-
-// Save the modified content back to the variable
-$post->post_content = $dom->saveHTML();
+                    libxml_use_internal_errors(true) AND libxml_clear_errors();
+                    if ($settings['remove_title'] == 'on') {
+                        if (!empty($post->post_content)) {
+                            // Set the charset to UTF-8
+                            $dom->recover = true;
+                            $dom->strictErrorChecking = false;
+                            $dom->substituteEntities = false;
+                            $dom->loadHTML('<?xml encoding="UTF-8">' . $post->post_content);
+                            $elements = $dom->getElementsByTagName('h2');
+                    
+                            // Loop through h2 elements and remove them
+                            foreach ($elements as $element) {
+                                $element->parentNode->removeChild($element);
+                            }
+                            $dom->encoding = 'UTF-8';
+                            $post->post_content = $dom->saveHTML();
+                        }
                     }
-                }
+
                     if (wp_is_mobile()) {
-                        $post_content = wp_trim_words($post->post_content, $wordPc);
+                        $post_content = wp_trim_words($post->post_content, $wordMobile);
                         
                     } 
                     else {
