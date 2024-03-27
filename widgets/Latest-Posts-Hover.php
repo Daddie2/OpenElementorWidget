@@ -131,23 +131,23 @@
                     ],
                 ]
             );
-            $this->add_control(
+                $this->add_control(
                 'height_card',
                 [
                     'label' => esc_html__('Height card', 'Latest-Posts-Hover'),
                     'type' => \Elementor\Controls_Manager::SLIDER,
                     'default' => [
-                        'size' => 50,
-                        'unit' => 'dvh',
+                        'size' => 450,
+                        'unit' => 'px',
                     ],
                     'range' => [
                         'px' => [
                             'min' => 1,
-                            'max' => 100,
+                            'max' => 1000,
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .card2' => 'height: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .card2' => 'height: {{SIZE}}{{UNIT}} !important;',
                     ],
                 ]
             );
@@ -1606,7 +1606,7 @@
                         background-position:  center;
                         background-size: cover;
                         cursor: pointer;
-                        height:50dvh;
+                        height:450px;
                     }
                 
                     .info {
