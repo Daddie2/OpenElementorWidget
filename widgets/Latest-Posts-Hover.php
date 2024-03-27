@@ -84,7 +84,7 @@
                     'min' => 0,
                     'max' => 1,
                     'step' => 0.1,
-                    'default'=>0.8,
+                    'default' => 0.8,
                     'selectors' => [
                         '{{WRAPPER}} .info' => 'filter:opacity({{VALUE}})!important;',
                     ],
@@ -128,6 +128,46 @@
                         'left' => 'white',
                         'center' => 'white',
                         'right' => 'white',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'height_card',
+                [
+                    'label' => esc_html__('Height card', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'default' => [
+                        'size' => 50,
+                        'unit' => 'dvh',
+                    ],
+                    'range' => [
+                        'px' => [
+                            'min' => 1,
+                            'max' => 100,
+                        ],
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .card2' => 'height: {{SIZE}}{{UNIT}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'content_card',
+                [
+                    'label' => esc_html__('Height card content pre animation(smaller is higher)', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'default' => [
+                        'size' => 500,
+                        'unit' => 'px',
+                    ],
+                    'range' => [
+                        'px' => [
+                            'min' => 1,
+                            'max' => 1000,
+                        ],
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .info' => 'height: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1329,7 +1369,7 @@
                 foreach ($posts as $post) {
                     $post_title = get_the_title($post->ID);
                     $dom = new DOMDocument();
-                    libxml_use_internal_errors(true) AND libxml_clear_errors();
+                    libxml_use_internal_errors(true) and libxml_clear_errors();
                     if ($settings['remove_title'] == 'on') {
                         if (!empty($post->post_content)) {
                             // Set the charset to UTF-8
@@ -1338,7 +1378,7 @@
                             $dom->substituteEntities = false;
                             $dom->loadHTML('<?xml encoding="UTF-8">' . $post->post_content);
                             $elements = $dom->getElementsByTagName('h2');
-                    
+
                             // Loop through h2 elements and remove them
                             foreach ($elements as $element) {
                                 $element->parentNode->removeChild($element);
@@ -1350,12 +1390,10 @@
 
                     if (wp_is_mobile()) {
                         $post_content = wp_trim_words($post->post_content, $wordMobile);
-                        
-                    } 
-                    else {
-                    
+                    } else {
+
                         $post_content = wp_trim_words($post->post_content, $wordPc);
-                                    }         
+                    }
                     $post_date = get_the_date('j F Y', $post->ID);
                     $post_link = get_permalink($post->ID);
                     $tags = get_the_tags($post->ID);
@@ -1367,12 +1405,12 @@
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-              
-                        if (wp_is_mobile() || is_admin()) {
-                            echo '<div class="card2" style="background-image: url(' . $featured_image . ')" >';
-                        } else {
-                            echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
-                        }
+
+                    if (wp_is_mobile() || is_admin()) {
+                        echo '<div class="card2" style="background-image: url(' . $featured_image . ')" >';
+                    } else {
+                        echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
+                    }
                     echo '
                             <div class="info">
                             <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
@@ -1452,20 +1490,19 @@
                 echo '</div>';
             }
             if (!$posts) {
-                
-                echo '<a class="error-message">'.$settings['error_message'];
-                echo '</a>';
-                if ($args['s']!=null) {
-                    echo' <div class="container2">';
-                if ($selected_page_id != 0) {
-                    $page_link = get_permalink($selected_page_id);
 
-                    echo '   <form id="form2" action="' . $page_link . '">';
-                } 
-                else {
-                    echo '   <form id="form2" action="">';
-                }
-                echo '
+                echo '<a class="error-message">' . $settings['error_message'];
+                echo '</a>';
+                if ($args['s'] != null) {
+                    echo ' <div class="container2">';
+                    if ($selected_page_id != 0) {
+                        $page_link = get_permalink($selected_page_id);
+
+                        echo '   <form id="form2" action="' . $page_link . '">';
+                    } else {
+                        echo '   <form id="form2" action="">';
+                    }
+                    echo '
                 <input type="text" id="input2"name="input2"  class="input2"  placeholder="' . $place . '">
                 <div class="icon2">
             <button type="submit"  class="submit-button" value="input2">
@@ -1478,8 +1515,8 @@
         </div>
                 </div>
             </div> ';
+                }
             }
-        }
             echo '<style>
                 .category-filter {
                     display: flex;
@@ -1536,7 +1573,8 @@
                     }
                     .card2 {
                         border-radius: 16px;
-                        margin: 0 auto;
+                                margin-left: 0.5%;
+                        margin-right: 0.5%;
                         box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.5),
                             1px 5px 8px 0px rgba(0, 0, 0, 0.14),
                             1px 1px 14px 0px rgba(0, 0, 0, 0.12);
@@ -1546,13 +1584,13 @@
                         background-position:  center;
                         background-size: cover;
                         cursor: pointer;
-
+                        height:50dvh;
                     }
                 
                     .info {
                         position: relative;
                         width: 100%;
-                        height: 600px;
+                        height: 500px;
                         background-color: white;
                         filter:opacity(0.8); 
                         transform: translateY(100%)
@@ -1643,8 +1681,6 @@
                     .card2-container {
                         display: flex;
                         flex-wrap: wrap;
-                        justify-content: left;
-                        flex-basis: (' . $flex . '- 20px);
                     }
                                         }
                             }';
