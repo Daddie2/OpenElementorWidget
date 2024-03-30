@@ -1409,7 +1409,7 @@
                             $post->post_content = $dom->saveHTML();
                         }
                     }
-
+                    $post->post_content=wpautop( $post->post_content);
                     if (wp_is_mobile()) {
                         $post_content = wp_trim_words($post->post_content, $wordMobile);
                     } else {
