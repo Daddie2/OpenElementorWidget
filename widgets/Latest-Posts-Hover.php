@@ -1504,7 +1504,7 @@
                         }
                         echo    '</div>';
                     }
-                    echo '<p class="description" href="' . $post_link . '">' . $post_content . ' </p> 
+                    echo '<p class="description"  onclick="window.location.href=\'' . $post_link . '\'">' . $post_content . ' </p> 
                             </div>
                             </div>';
                 }
