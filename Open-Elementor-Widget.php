@@ -55,5 +55,5 @@ function register_OpenElementorWidget_widgets($widgets_manager)
   require_once(plugin_dir_path(__FILE__) . 'widgets/Animated-Text.php');
   $widgets_manager->register_widget_type(new \Animated_Text_Widget());
   require_once(plugin_dir_path(__FILE__) . 'widgets/Image-hover.php');
-  $widgets_manager->register_widget_type(new \Image_HoverWidget());
+  $widgets_manager->register_widget_type(new \Image_Hover_Widget());
 }

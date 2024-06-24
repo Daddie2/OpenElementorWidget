@@ -25,122 +25,161 @@
         {
             return ['OpenWidget'];
         }
+        protected function _register_controls()
+        {
+            $this->start_controls_section(
+                'section_general',
+                [
+                    'label' => esc_html__('General', 'Image-Hover'),
+                ]
+            );
+    
+            $this->add_control(
+                'image_1',
+                [
+                    'label' => esc_html__('Image 1', 'Image-Hover'),
+                    'type' => \Elementor\Controls_Manager::MEDIA,
+                    'default' => [
+                        'url' => \Elementor\Utils::get_placeholder_image_src(),
+                    ],
+                ]
+            );
+    
+            $this->add_control(
+                'image_2',
+                [
+                    'label' => esc_html__('Image 2', 'Image-Hover'),
+                    'type' => \Elementor\Controls_Manager::MEDIA,
+                    'default' => [
+                        'url' => \Elementor\Utils::get_placeholder_image_src(),
+                    ],
+                ]
+            );
+    
+            $this->add_responsive_control(
+                'circle_size',
+                [
+                    'label' => esc_html__('Circle Size', 'Image-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'size_units' => ['px', '%'],
+                    'range' => [
+                        'px' => [
+                            'min' => 50,
+                            'max' => 500,
+                            'step' => 10,
+                        ],
+                        '%' => [
+                            'min' => 10,
+                            'max' => 100,
+                        ],
+                    ],
+                    'default' => [
+                        'unit' => 'px',
+                        'size' => 200,
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .card-circle' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+                    ],
+                ]
+            );
+    
+            $this->end_controls_section();
+        }
+    
         protected function render()
-      {
-  echo'
-  <div class="circle3">
-      <div class="card-circle">
-        <div class="wrapper">
-          <img
-            src="https://www.unionegiovanidisinistra.it/wp-content/webp-express/webp-images/uploads/elementor/thumbs/testoni-qijcojt7h8u7xkgwf7ncw5nb4lz81ti99o0gddvimo.png.webp"
-            class="cover-image"/>
-        </div>
-        <img
-          src="C:\Users\david\Downloads\testoni-removebg.png"
-          class="character"
-        />
-      </div>
-  <style>
-    :root {
-      --card-height: 200px;
-      --card-width: calc(var(--card-height) / 1.5);
-        border-radius: 50%;
-
-    }
-  
-    .circle3 {
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-    }
-    .card-circle {
-      width: var(--card-width);
-      height: var(--card-height);
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      padding: 0 36px;
-      perspective: 2500px;
-      margin: 0 50px;
-      border-radius: 50%;
-    }
-
-    .cover-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      
-    }
-
-    .wrapper {
-      transition: all 0.5s;
-      position: absolute;
-      width: 100%;
-      z-index: -1;
-    }
-
-    .card-circle:hover .wrapper {
-      transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
-    }
-
-    .wrapper::before,
-    .wrapper::after {
-      content: "";
-      opacity: 0;
-      width: 100%;
-      height: 80px;
-      transition: all 0.5s;
-      position: absolute;
-      left: 0;
-    }
-    .wrapper::before {
-      top: 0;
-      height: 100%;
-      background-color: 
-        rgba(12, 13, 19, 0.6);
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background-position: center center;
-    }
-    .card-circle:hover .wrapper::before,
-    .wrapper::after {
-      opacity: 1;
-    }
-
-    .card-circle:hover .wrapper::after {
-      height: 120px;
-    }
-    .title {
-      width: 100%;
-      transition: transform 0.5s;
-    }
-    .card-circle:hover .title {
-      transform: translate3d(0%, -50px, 100px);
-    }
-
-    .character {
-      top:0;
-      bottom: 0;
-      width: 100%;
-      opacity: 0;
-      transition: all 0.5s;
-      position: absolute;
-      z-index: -1;
-      object-fit: cover;
-      filter: drop-shadow(3px 3px 5px black);
-    }
-
-    .card-circle:hover .character {
-      opacity: 1;
-      transform: translate3d(0%, -30%, 50px);
-    }
-  </style>';
-}
+        {
+            $settings = $this->get_settings_for_display();
+            $img1 = $settings['image_1']['url'];
+            $img2 = $settings['image_2']['url'];
+    
+            echo '
+            <div class="circle3">
+              <div class="card-circle">
+                <div class="wrappettozzo">
+                  <div class="cover-image"></div>
+                </div>
+                <div class="character-wrapper">
+                  <img src="' . $img2 . '" class="character"/>
+                </div>
+              </div>
+            </div>
+            <style>
+              .circle3 {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+              }
+              
+              .card-circle {
+                position: relative;
+                border-radius: 50%;
+                overflow: hidden;
+                perspective: 2500px;
+              }
+              
+              .cover-image {
+                width: 100%;
+                height: 100%;
+                background-image: url("' . $img1 . '");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+              }
+              
+              .character {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+              
+              .wrappettozzo, .character-wrapper {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                transition: all 0.8s ease;
+                border-radius: 50%;
+                overflow: hidden;
+              }
+              
+              .wrappettozzo {
+                z-index: 1;
+              }
+              
+              .character-wrapper {
+                z-index: 2;
+                transform: translateY(100%);
+                opacity: 0;
+              }
+              
+              .card-circle:hover {
+                overflow: visible;
+              }
+              
+              .card-circle:hover .wrappettozzo {
+                transform: perspective(900px) translateY(0) rotateX(25deg) translateZ(0);
+              }
+              
+              .card-circle:hover .character-wrapper {
+                transform: translateY(-25%);
+                opacity: 1;
+              }
+              
+              .wrappettozzo::before {
+                content: "";
+                opacity: 0;
+                width: 100%;
+                height: 100%;
+                transition: all 0.8s ease;
+                position: absolute;
+                left: 0;
+                top: 0;
+                background-color: rgba(12, 13, 19, 0.6);
+              }
+              
+              .card-circle:hover .wrappettozzo::before {
+                opacity: 1;
+              }
+            </style>';
+        }
     }

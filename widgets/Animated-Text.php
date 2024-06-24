@@ -37,13 +37,13 @@ class Animated_Text_Widget extends \Elementor\Widget_Base {
           [
               'label' =>esc_html__('Text', 'animated-text-widget'),
               'type' => \Elementor\Controls_Manager::TEXT,
-              'default' => 'Si va a letto!',
+              'default' => 'Test',
           ]
       );
       $this->add_control(
         'width',
         [
-            'label' => esc_html__('width', 'Latest-Posts-Hover'),
+            'label' => esc_html__('width', 'animated-text-widget'),
             'type' => \Elementor\Controls_Manager::SLIDER,
             'default' => [
                 'size' => 500,
@@ -63,7 +63,7 @@ class Animated_Text_Widget extends \Elementor\Widget_Base {
     $this->add_control(
       'font_size',
       [
-          'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
+          'label' => esc_html__('Font Size', 'animated-text-widget'),
           'type' => \Elementor\Controls_Manager::SLIDER,
           'default' => [
               'size' => 30,
@@ -77,12 +77,22 @@ class Animated_Text_Widget extends \Elementor\Widget_Base {
           ],
       ]
   );
+  $this->add_control(
+    'Second_Color',
+    [
+        'label' => esc_html__('Second Color', 'animated-text-widget'),
+        'type' => \Elementor\Controls_Manager::COLOR,
+        'default' => '#f8f8f8',
+    ]
+);
 
       $this->end_controls_section();
   }
 
-    protected function render() {  
+    protected function render() { 
+
 $settings = $this->get_settings_for_display();
+$left=$settings['Second_Color'];
 $font=$settings['font_size']['size'].$settings['font_size']['unit'];
 echo'
   <div class="container-text">
@@ -97,7 +107,7 @@ echo'
     align-items: center;
   }
   .square-text {
-    background: linear-gradient(to left, #cc1922 50%, #f1b10f 50%);
+    background: linear-gradient(to left, '.$left.' 50%, #f1b10f 50%);
     background-size: 200% 100%;
     /* Imposta la posizione iniziale dello sfondo */
     background-position: left bottom;
