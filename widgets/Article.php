@@ -1641,8 +1641,13 @@
                 color: #666;
             }
             
-            .article-title {
+          .article-title {
                 margin: 10px 0;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+                width: 100%;
+                display: block;
             }
             
             .description {
