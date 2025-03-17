@@ -1,6 +1,5 @@
-    
-    <?php
-    class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
+<?php
+        class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     {
 
         public function __construct($data = [], $args = null)
@@ -100,37 +99,7 @@
                     'default' => 0,
                 ]
             );
-            $this->add_control(
-                'filter_alignment',
-                [
-                    'label' => esc_html__('Filter Alignment', 'OpenWidget'),
-                    'type' => \Elementor\Controls_Manager::CHOOSE,
-                    'options' => [
-                        'left' => [
-                            'title' => esc_html__('Left', 'OpenWidget'),
-                            'icon' => 'mce-ico mce-i-alignleft',
-                        ],
-                        'center' => [
-                            'title' => esc_html__('Center', 'OpenWidget'),
-                            'icon' => 'mce-ico mce-i-aligncenter',
-                        ],
-                        'right' => [
-                            'title' => esc_html__('Right', 'OpenWidget'),
-                            'icon' => 'mce-ico mce-i-alignright',
-                        ],
-                    ],
-                    'default' => 'left',
-                    'toggle' => true,
-                    'selectors' => [
-                        '{{WRAPPER}} .category-filter' => 'justify-content: {{VALUE}};',
-                    ],
-                    'icon_colors' => [
-                        'left' => 'white',
-                        'center' => 'white',
-                        'right' => 'white',
-                    ],
-                ]
-            );
+            
                 $this->add_control(
                 'height_card',
                 [
@@ -147,7 +116,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .card2' => 'height: {{SIZE}}{{UNIT}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-card2' => 'height: {{SIZE}}{{UNIT}} !important;',
                     ],
                 ]
             );
@@ -288,7 +257,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'color: {{VALUE}}!important;',
+                        '{{WRAPPER}} .latest-posts-hover-widget-title' => 'color: {{VALUE}}!important;',
                     ],
                 ]
             );
@@ -308,7 +277,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-title' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -319,7 +288,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .latest-posts-hover-widget-title' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -333,7 +302,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-title' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -359,7 +328,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'text-align: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-title' => 'text-align: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -385,7 +354,7 @@
                     'return_value' => 'inline-block',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-date' => 'display: {{VALUE}};',
                     ],
                 ]
             );
@@ -396,7 +365,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'color: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-date' => 'color: {{VALUE}};',
                     ],
                 ]
             );
@@ -416,7 +385,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-date' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -427,7 +396,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .latest-posts-hover-widget-date' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -441,7 +410,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-date' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -601,8 +570,8 @@
                     'return_value' => 'flex',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'display: {{VALUE}};',
-                        '{{WRAPPER}} .category-card2' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-category' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-category-card2' => 'display: {{VALUE}};',
                     ],
                 ]
             );
@@ -613,7 +582,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'color: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-category' => 'color: {{VALUE}};',
                     ],
                 ]
             );
@@ -633,7 +602,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-category' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -644,7 +613,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .latest-posts-hover-widget-category' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -658,7 +627,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-category' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -684,7 +653,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .category-card2' => 'justify-content: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-category-card2' => 'justify-content: {{VALUE}};',
 
 
                     ],
@@ -847,18 +816,75 @@
             $this->add_control(
                 'filter_active',
                 [
-                    'label' => esc_html__('Button Filter Active', 'Latest-Posts-Hover'),
+                    'label' => esc_html__('Button filter Active', 'Latest-Posts-Hover'),
                     'type' => \Elementor\Controls_Manager::SWITCHER,
                     'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                     'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                    'return_value' => 'inline-block',
+                    'return_value' => 'flex', // Cambiato da 'inline-block' a 'flex'
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-filter' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-button' => 'display: inline-block;', // Mantiene i pulsanti come inline-block
                     ],
                 ]
             );
-
+            $this->add_control(
+                'filter_alignment',
+                [
+                    'label' => esc_html__(' Button filter Alignment', 'OpenWidget'),
+                    'type' => \Elementor\Controls_Manager::CHOOSE,
+                    'options' => [
+                        'flex-start' => [
+                            'title' => esc_html__('Left', 'OpenWidget'),
+                            'icon' => 'mce-ico mce-i-alignleft',
+                        ],
+                        'center' => [
+                            'title' => esc_html__('Center', 'OpenWidget'),
+                            'icon' => 'mce-ico mce-i-aligncenter',
+                        ],
+                        'flex-end' => [
+                            'title' => esc_html__('Right', 'OpenWidget'),
+                            'icon' => 'mce-ico mce-i-alignright',
+                        ],
+                    ],
+                    'default' => 'flex-start',
+                    'toggle' => true,
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-filter' => 'justify-content: {{VALUE}}; display: flex; flex-wrap: wrap;',
+                    ],
+                    'icon_colors' => [
+                        'flex-start' => 'white',
+                        'center' => 'white',
+                        'flex-end' => 'white',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'filter_border_radius',
+                [
+                    'label' => esc_html__('Button filter border Radius', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'size_units' => ['px', '%'],
+                    'range' => [
+                        'px' => [
+                            'min' => 0,
+                            'max' => 100,
+                            'step' => 1,
+                        ],
+                        '%' => [
+                            'min' => 0,
+                            'max' => 100,
+                        ],
+                    ],
+                    'default' => [
+                        'unit' => 'px',
+                        'size' => 60,
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-button' => 'border-radius: {{SIZE}}{{UNIT}} !important;',
+                    ],
+                ]
+            );
             $this->add_control(
                 'text_color_inactive',
                 [
@@ -866,7 +892,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => '  color: {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-button' => '  color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -877,7 +903,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .latest-posts-hover-button' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -888,7 +914,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => '  background-color: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-button' => '  background-color: {{VALUE}};',
                     ],
                 ]
             );
@@ -908,7 +934,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .latest-posts-hover-button' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -922,7 +948,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-button' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -933,7 +959,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => '  color: {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-button.active' => '  color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -944,7 +970,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .latest-posts-hover-button.active' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -955,7 +981,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'red',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => '  background-color: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-button.active' => '  background-color: {{VALUE}};',
                     ],
                 ]
             );
@@ -975,7 +1001,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .latest-posts-hover-button.active' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -989,7 +1015,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-button.active' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -1000,7 +1026,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => '  color: {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-button:hover' => '  color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -1011,7 +1037,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .latest-posts-hover-button:hover' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -1022,7 +1048,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'orange',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => '  background-color: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-button:hover' => '  background-color: {{VALUE}};',
                     ],
                 ]
             );
@@ -1043,7 +1069,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .latest-posts-hover-button:hover' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1057,7 +1083,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-button:hover' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -1110,10 +1136,98 @@
                     'return_value' => 'inline-block',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .container2' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-search' => 'display: {{VALUE}};',
                     ],
                 ]
             );
+            $this->add_control(
+                'cursor_color_',
+                [
+                    'label' => esc_html__('Cursor color', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => 'black',
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-input2 ' => ' caret-color: {{VALUE}}!important;',
+                    ],
+                ]
+            );
+            
+            // Aggiungi controllo per il colore del bordo
+            $this->add_control(
+                'search_border_color',
+                [
+                    'label' => esc_html__('Border Color', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => '#0e0e0e',
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-input2' => 'border: 2px solid {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'search_border_color_focus',
+                [
+                    'label' => esc_html__('Border Color on Focus', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => '#FF5500',
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-input2:focus' => 'border: 2px solid {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            
+            // Aggiungi controllo per lo spessore del bordo
+            $this->add_control(
+                'search_border_width',
+                [
+                    'label' => esc_html__('Border Width', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'size_units' => ['px'],
+                    'range' => [
+                        'px' => [
+                            'min' => 0,
+                            'max' => 10,
+                            'step' => 1,
+                        ],
+                    ],
+                    'default' => [
+                        'unit' => 'px',
+                        'size' => 2,
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-input2' => 'border-width: {{SIZE}}{{UNIT}} !important;',
+                    ],
+                ]
+            );
+            
+            // Aggiungi controllo per il raggio del bordo
+            $this->add_control(
+                'search_border_radius',
+                [
+                    'label' => esc_html__('Search bar border Radius', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'size_units' => ['px', '%'],
+                    'range' => [
+                        'px' => [
+                            'min' => 0,
+                            'max' => 100,
+                            'step' => 1,
+                        ],
+                        '%' => [
+                            'min' => 0,
+                            'max' => 100,
+                        ],
+                    ],
+                    'default' => [
+                        'unit' => 'px',
+                        'size' => 60,
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-input2' => 'border-radius: {{SIZE}}{{UNIT}} !important;',
+                    ],
+                ]
+            );
+            
             $this->add_control(
                 'background_color_input',
                 [
@@ -1121,10 +1235,9 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'orange',
                     'selectors' => [
-                        '{{WRAPPER}} 
-                                .input2' => '  background: {{VALUE}} !important;',
-                        '{{WRAPPER}} .input2:focus' => ' background: {{VALUE}}!important;',
-                        '{{WRAPPER}} .input2:hover' => ' background: {{VALUE}}!important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2' => 'background: {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2:focus' => 'background: {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2:hover' => 'background: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -1135,7 +1248,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .input2' => ' color: {{VALUE}}!important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2 ' => ' color: {{VALUE}}!important;',
 
                     ],
                 ]
@@ -1147,7 +1260,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .submit-button' => ' color: {{VALUE}}!important;',
+                        '{{WRAPPER}} .latest-posts-hover-submit-button' => ' color: {{VALUE}}!important;',
                     ],
                 ]
             );
@@ -1158,7 +1271,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .input2' => ' caret-color: {{VALUE}}!important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2 ' => ' caret-color: {{VALUE}}!important;',
                     ],
                 ]
             );
@@ -1178,7 +1291,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .input2' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .latest-posts-hover-input2 ' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1265,8 +1378,8 @@
             $selected_page_id = $settings['selected_page'];
             $args['category__not_in'] = $settings['exclude_categories'];
             $args['category__in'] = $settings['categories_in'];
-            if (isset($_GET['input2'])) {
-                $args['s'] = sanitize_text_field($_GET['input2']);
+            if (isset($_GET['latest-posts-hover-input2 '])) {
+                $args['s'] = sanitize_text_field($_GET['latest-posts-hover-input2 ']);
             }
             $posts = get_posts($args);
             $wordPc = $settings['content_word_pc'];
@@ -1281,7 +1394,10 @@
             }
             $width = $flex - 1;
             if ($posts) {
-                echo '<div class="category-filter">';
+                // Start output
+                echo '<div class=" latest-posts-hover-widget">';
+                
+                echo '<div class="latest-posts-hover-filter">';
                 if ($selected_page_id != 0) {
                     $page_link = get_permalink($selected_page_id);
 
@@ -1295,7 +1411,7 @@
                     $args_C['exclude'] = $settings['exclude_categories'];
                     $args_C['include'] = $settings['categories_in'];
                     if ($args_C['include'] == null && $args_C['exclude'] == null || $settings['include_all'] == 'on') {
-                        echo '<button type="submit" name="category" value="all" class="category-filter-button';
+                        echo '<button type="submit" name="category" value="all" class="latest-posts-hover-button';
                         if (isset($_GET['category']) && $_GET['category'] == 'all') {
                             echo ' active';
                         }
@@ -1303,7 +1419,7 @@
                     }
 
                     $categories = get_terms($args_C);
-                    foreach ($categories as $category) {
+                    foreach ($categories as $category)  {
                         if (is_array($settings['exclude_categories'])) {
                             if (in_array($category->term_id, $settings['exclude_categories'])) {
                                 continue; // Salta la categoria se è esclusa
@@ -1318,7 +1434,7 @@
                         if ($posts_in_category) {
                             $category_name = $category->name;
                             $category_slug = $category->slug;
-                            echo '<button type="submit" name="category" value="' . $category_slug . '" class="category-filter-button';
+                            echo '<button type="submit" name="category" value="' . $category_slug . '" class="latest-posts-hover-button';
                             if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
                                 echo ' active';
                             }
@@ -1326,57 +1442,74 @@
                         }
                     }
                 }
-                if ($settings['related_category'] == 'on' && $settings['categories_in'] != null) {
-                    if ($settings['include_all'] == 'on') {
-                        echo '<button type="submit" name="category" value="all" class="category-filter-button';
-                        if (isset($_GET['category']) && $_GET['category'] == 'all') {
-                            echo ' active';
-                        }
-                        echo '">' . $all . '</button>';
-                    }
-
-                    $other_category_id = $settings['categories_in'];
-                    $categories_with_posts = get_categories(array(
-                        'hide_empty' => 0,
-                        'child_of' => 0,
-                    ));
-
-                    foreach ($categories_with_posts as $category) {
-                        if (!in_array($category->term_id, $other_category_id)) {
-                            $posts_in_category = get_posts(array(
-                                'category' => $category->term_id,
-                                'category__in' => $other_category_id,
-                                'posts_per_page' => 1,
-                            ));
-
-                            if ($posts_in_category) {
-                                $category_name = $category->name;
-                                $category_slug = $category->slug;
-                                echo '<button type="submit" name="category" value="' . $category_slug . '" class="category-filter-button';
-                                if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
-                                    echo ' active';
+                              // Modifica i pulsanti delle categorie per il widget related_category
+                              if ($settings['related_category'] == 'on') {
+                                if ($settings['include_all'] == 'on') {
+                                    echo '<button type="submit" name="category" value="all" class="latest-posts-hover-button';
+                                    if (isset($_GET['category']) && $_GET['category'] == 'all') {
+                                        echo ' active';
+                                    }
+                                    echo '">' . $all . '</button>';
                                 }
-                                echo '">' . $category_name . '</button>';
+            
+                                // Mostra le categorie incluse
+                                if (!empty($settings['categories_in'])) {
+                                    foreach ($settings['categories_in'] as $cat_id) {
+                                        $category = get_category($cat_id);
+                                        if ($category) {
+                                            echo '<button type="submit" name="category" value="' . $category->slug . '" class="latest-posts-hover-button';
+                                            if (isset($_GET['category']) && $_GET['category'] == $category->slug) {
+                                                echo ' active';
+                                            }
+                                            echo '">' . $category->name . '</button>';
+                                        }
+                                    }
+                                }
+            
+                                // Mostra le categorie correlate
+                                $categories = get_categories(array(
+                                    'hide_empty' => true,
+                                    'exclude' => $settings['exclude_categories']
+                                ));
+            
+                                foreach ($categories as $category) {
+                                    // Salta se la categoria è già inclusa
+                                    if (!empty($settings['categories_in']) && in_array($category->term_id, $settings['categories_in'])) {
+                                        continue;
+                                    }
+            
+                                    // Verifica se ci sono post correlati
+                                    $related_posts = get_posts(array(
+                                        'category' => $category->term_id,
+                                        'category__in' => $settings['categories_in'],
+                                        'posts_per_page' => 1
+                                    ));
+            
+                                    if (!empty($related_posts)) {
+                                        echo '<button type="submit" name="category" value="' . $category->slug . '" class="latest-posts-hover-button';
+                                        if (isset($_GET['category']) && $_GET['category'] == $category->slug) {
+                                            echo ' active';
+                                        }
+                                        echo '">' . $category->name . '</button>';
+                                    }
+                                }
                             }
-                        }
-                    }
-                }
 
 
                 echo '</form>
                     
-            <div class="container2">';
-                if ($selected_page_id != 0) {
-                    $page_link = get_permalink($selected_page_id);
-
-                    echo '   <form id="form2" action="' . $page_link . '">';
-                } else {
-                    echo '   <form id="form2" action="">';
-                }
-                echo '
-                <input type="text" id="input2"name="input2"  class="input2"  placeholder="' . $place . '">
-                <div class="icon2">
-            <button type="submit"  class="submit-button" value="input2">
+                <div class="latest-posts-hover-widget-container2 latest-posts-hover-search">';
+                    if ($selected_page_id != 0) {
+                        $page_link = get_permalink($selected_page_id);
+    
+                        echo '   <form id="form2" action="' . $page_link . '">';
+                    } else {
+                        echo '   <form id="form2" action="">';
+                    }
+                    echo '
+                    <input type="text" id="latest-posts-hover-input2" name="latest-posts-hover-input2" class="latest-posts-hover-input2 latest-posts-hover-input" placeholder="' . $place . '">
+                    <div class="latest-posts-hover-icon2">
+                <button type="submit" class="latest-posts-hover-submit-button latest-posts-hover-submit" value="latest-posts-hover-input2">
         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
             <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
@@ -1386,7 +1519,7 @@
         </div>
                 </div>
             </div> ';
-                echo '<div class="card2-container">';
+                echo '<div class="latest-posts-hover-widget-card2-container">';
 
                 foreach ($posts as $post) {
                     $post_title = get_the_title($post->ID);
@@ -1429,13 +1562,13 @@
                     }
 
                     if (wp_is_mobile() || is_admin()) {
-                        echo '<div class="card2" style="background-image: url(' . $featured_image . ')" >';
+                        echo '<div class="latest-posts-hover-card2" style="background-image: url(' . $featured_image . ')" >';
                     } else {
-                        echo '<div class="card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
+                        echo '<div class="latest-posts-hover-card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
                     }
                     echo '
                             <div class="info">
-                            <a class="title" href="' . $post_link . '">' . $post_title . ' <a/>';
+                            <a class="latest-posts-hover-widget-title" href="' . $post_link . '">' . $post_title . ' <a/>';
                     if (!empty($tags)) {
                         if ($selected_page_id != 0) {
                             echo '<div class="tag-card2">';
@@ -1468,7 +1601,7 @@
                                 $date_array[1] = $date_array[1] . '/01 m';
                             }
                             $date_link = add_query_arg('date', $date_array[$i], $page_link);
-                            echo ' <a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
+                            echo ' <a href="' . $date_link . '" class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a>';
                             $i -= 1;
                         }
                         echo '</div>';
@@ -1477,7 +1610,7 @@
                         $i = 2;
                         foreach ($date_parts as $part) {
                             $date_link = home_url() . '/' . $date_array[$i];
-                            echo '<a href="' . $date_link . '" class="date">' . ucfirst($part) . '</a>';
+                            echo '<a href="' . $date_link . '" class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a>';
                             $i -= 1;
                         }
                         echo '</div>';
@@ -1487,7 +1620,7 @@
                         $page_link = get_permalink($selected_page_id);
                         $categories = get_the_category($post->ID);
                         if (!empty($categories)) {
-                            echo '<div class="category-card2">';
+                            echo '<div class="latest-posts-hover-widget-category-card2">';
                             foreach ($categories as $category) {
                                 $category_link = add_query_arg('category', $category->slug, $page_link);
                                 echo '<a href="' . $category_link . '" class="category"> ' . $category->name . ' </a>';
@@ -1497,9 +1630,9 @@
                     } else {
                         $categories = get_the_category($post->ID);
                         if (!empty($categories)) {
-                            echo '<div class="category-card2">';
+                            echo '<div class="latest-posts-hover-widget-category-card2">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="category"> '  . $category->name . ' </a> <br>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="latest-posts-hover-widget-category"> '  . $category->name . ' </a> <br>';
                             }
                         }
                         echo    '</div>';
@@ -1516,7 +1649,7 @@
                 echo '<a class="error-message">' . $settings['error_message'];
                 echo '</a>';
                 if ($args['s'] != null) {
-                    echo ' <div class="container2">';
+                    echo ' <div class="latest-posts-hover-widget-container2 latest-posts-hover-search">';
                     if ($selected_page_id != 0) {
                         $page_link = get_permalink($selected_page_id);
 
@@ -1525,9 +1658,9 @@
                         echo '   <form id="form2" action="">';
                     }
                     echo '
-                <input type="text" id="input2"name="input2"  class="input2"  placeholder="' . $place . '">
-                <div class="icon2">
-            <button type="submit"  class="submit-button" value="input2">
+                <input type="text" id="latest-posts-hover-input2" name="latest-posts-hover-input2" class="latest-posts-hover-input2 latest-posts-hover-input" placeholder="' . $place . '">
+                <div class="latest-posts-hover-icon2">
+            <button type="submit" class="latest-posts-hover-submit-button latest-posts-hover-submit" value="latest-posts-hover-input2">
         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
             <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
@@ -1540,89 +1673,103 @@
                 }
             }
             echo '<style>
-                .category-filter {
-                    display: flex;
-                    justify-content:right; 
-                    flex-wrap: wrap;
-                    }
-            .category-card2 {
-                    display:none;
-                    justify-content:right; 
-                    flex-wrap: wrap;
-                    }
-                    .date-card2 {
-                    display: flex;
-                    justify-content:right; 
-                    flex-wrap: wrap;
-                    }
-                    .tag-card2 {
-                    display: flex;
-                    justify-content:right; 
-                    flex-wrap: wrap;
-                    }
-            .category-filter-button {
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-weight: normal;
-            font-family:Work Sans;
-            font: size 15px;
-            display:none;
+            .latest-posts-hover-filter {
+                display: flex;
+                justify-content: flex-start; /* Valore predefinito, sarà sovrascritto dal controllo */
+                flex-wrap: wrap;
+                width: 100%;
+                 padding: 0;
+                margin: 0;
+                }
+            /* Resto dello stile... */
+            .latest-posts-hover-widget-category-card2 {
+                display:none;
+                justify-content:right; 
+                flex-wrap: wrap;
+                }
+                 .latest-posts-hover-filter form {
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: inherit;
+                 padding: 0;
+                margin: 0;
+            }
+            .latest-posts-hover-widget .date-card2 {
+                display: flex;
+                justify-content:right; 
+                flex-wrap: wrap;
+                }
+            .latest-posts-hover-widget .tag-card2 {
+                display: flex;
+                justify-content:right; 
+                flex-wrap: wrap;
+                }
+            .latest-posts-hover-button {
+                background-color: #007BFF;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 30px;
+                font-size: 18px;
+                font-weight: bold;
+                margin: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                font-weight: normal;
+                font-family:Work Sans;
+                font: size 15px;
+                display:none;
             }
 
-            .category-filter-button:hover {
-            background-color: black;
-            font-weight: normal;
-            font: size 15px;
-            font-family:Work Sans;
+            .latest-posts-hover-button:hover {
+                background-color: black;
+                font-weight: normal;
+                font: size 15px;
+                font-family:Work Sans;
             }
-            .category-filter-button.active {
+            .latest-posts-hover-button.active {
                 background-color: red;
                 font-weight: normal;
                 font: size 15px;
                 font-family:Work Sans;
             }
-                    .card2-link {
-                        
-                        text-decoration: none;
-                    }
-                    .card2 {
-                        border-radius: 16px;
-                                margin-left: 0.5%;
-                        margin-right: 0.5%;
-                        box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.5),
-                            1px 5px 8px 0px rgba(0, 0, 0, 0.14),
-                            1px 1px 14px 0px rgba(0, 0, 0, 0.12);
-                        overflow: hidden; 
-                        width: ' . $width . '%; 
-                        margin-bottom: 20px;
-                        background-position:  center;
-                        background-size: cover;
-                        cursor: pointer;
-                        height:450px;
-                    }
+            .latest-posts-hover-widget .latest-posts-hover-card2-link {
+                text-decoration: none;
+            }
+         .latest-posts-hover-widget .latest-posts-hover-card2 {
+                border-radius: 16px;
+                margin-left: 0.5%;
+                margin-right: 0.5%;
+                box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.5),
+                    1px 5px 8px 0px rgba(0, 0, 0, 0.14),
+                    1px 1px 14px 0px rgba(0, 0, 0, 0.12);
+                overflow: hidden; 
+                width: ' . $width . '%; 
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat; 
+                cursor: pointer;
+                height: 450px;
+                box-sizing: border-box;
+            }
+        
+            .latest-posts-hover-widget .info {
+                position: relative;
+                width: 100%;
+                height: 500px;
+                background-color: white;
+                filter:opacity(0.8); 
+                transform: translateY(100%)
+                    translateY(-170px)
+                    translateZ(0);
+                transition: transform 0.5s ease-out;
+                 display: flex;
+                        flex-direction: column;
+                        gap: 0; /* Rimuove lo spazio tra gli elementi flex */
+            }
                 
-                    .info {
-                        position: relative;
-                        width: 100%;
-                        height: 500px;
-                        background-color: white;
-                        filter:opacity(0.8); 
-                        transform: translateY(100%)
-                            translateY(-170px)
-                            translateZ(0); /* Regola la posizione verticale */
-                        transition: transform 0.5s ease-out;
-                        
-                    }
-                
-                    .info:before {
+                    .latest-posts-hover-widget .info:before {
                         z-index: -1;
                         display: block;
                         position: absolute;
@@ -1639,12 +1786,11 @@
                         transition: transform 0.5s ease-out;
                     }
                 
-                    .card2:hover .info,
-                    .card2:hover .info:before {
+                    .latest-posts-hover-widget .latest-posts-hover-card2:hover .info,
+                    .latest-posts-hover-widget .latest-posts-hover-card2:hover .info:before {
                         transform: translateY(0) translateZ(0);
                     }
-                
-                    .title {
+                    .latest-posts-hover-widget-title {
                         font-size: 32px;
                         padding: 0 5px;
                         margin-bottom: 0px;
@@ -1669,7 +1815,7 @@
                         display:none;
                         text-align: center;
                     }
-                    .date {
+                    .latest-posts-hover-widget-date {
                         margin-top: 0;
                         margin-bottom: 0px;
                         padding: 0 5px;
@@ -1678,7 +1824,7 @@
                         display:none;
                         text-align: left;
                     }
-                    .category {
+                    .latest-posts-hover-widget-category {
                         margin-top: 0px;
                         margin-bottom: 00px;
                         padding: 0 5px;
@@ -1698,9 +1844,7 @@
 
                     }
                     
-
-
-                    .card2-container {
+                    .latest-posts-hover-widget-card2-container {
                         display: flex;
                         flex-wrap: wrap;
                     }
@@ -1709,7 +1853,7 @@
             if ($flex != 100) {
                 echo '     
                         @media ( max-width:1200px) {
-                            .card2-container .card2 {
+                            .latest-posts-hover-widget-card2-container .latest-posts-hover-card2 {
                                 flex-basis: 49%;            
                                         }
                             }';
@@ -1717,11 +1861,11 @@
 
             echo '
                     @media (max-width: 900px) {
-                        .card2-container .card2 {
+                        ..latest-posts-hover-widget-card2-container .latest-posts-hover-card2 {
                         flex-basis: 100%;
                         }
                             }
-        .container2 {
+        .latest-posts-hover-widget-container2 {
             position: relative;
             --size-button: 40px;
             color: white;
@@ -1729,39 +1873,55 @@
             white-space: nowrap;
             display:none;          
             width:100%;
+            
         }
-
-            .input2 {
-            padding-left: var(--size-button)!important;
-            height: var(--size-button);
-            font-size: 15px;
-            border: none;
-            color: black;
-            outline: none;
-            width: var(--size-button);
-            transition: all ease 0.3s !important;
-            background: orange !important;
-            box-shadow: 1.5px 1.5px 3px #0e0e0e, -1.5px -1.5px 3px rgb(95 94 94 / 25%), inset 0px 0px 0px #0e0e0e, inset 0px -0px 0px #5f5e5e;
-            border-radius: 60px!important;
-            cursor: pointer;
-            caret-color: blue;
-            display:inline-block;
-
-        }
-
-            .input2:focus {
-                width: 100% !important;
-                white-space: nowrap;    cursor: text;
-            background: orange !important;
+                 .latest-posts-hover-icon2 {
+                position: absolute;
+                width: var(--size-button) !important;
+                height: var(--size-button) !important;
+                top: 10px;
+                left: 10px;
+                padding: 8px;
+                pointer-events: none;
+                z-index: 2;
+            }
+         .latest-posts-hover-input2 {
+                padding-left: var(--size-button)!important;
+                height: var(--size-button);
+                font-size: 15px;
+                border: 2px solid #0e0e0e;
+                color: black;
+                outline: none;
+                width: var(--size-button);
+                transition: all ease 0.3s !important;
+                background: orange !important;
+                border-radius: 60px!important;
+                cursor: pointer;
+                caret-color: blue;
+                display: inline-block;
+                box-sizing: border-box;
+                position: relative;
+                z-index: 1;
             }
 
-            .input2:focus + .icon2,
-            .input2:not(:invalid) + .icon {
+            .latest-posts-hover-input2:focus {
+                width: 100% !important;
+                white-space: nowrap;
+                cursor: text;
+                outline: none;
+                  box-shadow: none !important;
+                -webkit-box-shadow: none !important;
+                -moz-box-shadow: none !important;
+            }
+
+
+            .latest-posts-hover-input2:focus + .latest-posts-hover-icon2,
+            .latest-posts-hover-input2 :not(:invalid) + .icon {
             pointer-events: all;
             cursor: pointer;
             }
 
-            .container2 .icon2 {
+            .latest-posts-hover-widget-container2.icon2 {
             position: absolute;
             width: 60px !important;
             height:  60px !important;
@@ -1772,20 +1932,35 @@
             pointer-events: none;
 
             }
-            #input2.container2 .icon2:focus {
+            #latest-posts-hover-input2 .latest-posts-hover-widget-container2 .latest-posts-hover-icon2:focus {
                 pointer-events: auto;
             }
 
-            .container2 .icon2 svg {
+            .latest-posts-hover-widget-container2 .latest-posts-hover-icon2 svg {
             width: 100%;
             height: 100%;
             } 
-        .submit-button, submit-bottom:focus,submit-bottom:hover{
+        .latest-posts-hover-submit-button, latest-posts-hover-submit-button:focus,latest-posts-hover-submit-button:hover{
             background-color: transparent!important;
         border: none;
         padding: 0; /* Remove default padding */
         color: green !important;            
         } 
+        .latest-posts-hover-submit-button {
+                background-color: transparent !important;
+                border: none;
+                padding: 0;
+                color: inherit !important;
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+                pointer-events: auto;
+            }
+
+            .latest-posts-hover-submit-button svg {
+                width: 100%;
+                height: 100%;
+            }
         </style>';
         }
     }

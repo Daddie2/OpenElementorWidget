@@ -1465,16 +1465,24 @@
                         $image_url = $settings['default_image']['url'];
                     }
                     
-                    // Get post content
-                    $content = get_the_content();
-                    if ($settings['remove_title'] === 'on') {
-                        $content = preg_replace('/<h2[^>]*>(.*?)<\/h2>/i', '', $content, 1);
-                    }
-                    
-                    // Limit words for excerpt
-                    $word_limit = wp_is_mobile() ? $settings['content_word_mobile'] : $settings['content_word_pc'];
-                    $words = explode(' ', strip_tags($content));
-                    $excerpt = implode(' ', array_slice($words, 0, $word_limit));
+                                        // Get post content
+                                        $content = get_the_content();
+                                        if ($settings['remove_title'] === 'on') {
+                                            $content = preg_replace('/<h2[^>]*>(.*?)<\/h2>/i', '', $content, 1);
+                                        }
+                                        
+                                        // Clean content from Elementor code and other HTML
+                                        $clean_content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $content); // Remove style tags
+                                        $clean_content = preg_replace('/\*!.*?\*\//s', '', $clean_content); // Remove CSS comments
+                                        $clean_content = preg_replace('/\.elementor.*?\}/s', '', $clean_content); // Remove elementor CSS rules
+                                        $clean_content = wp_strip_all_tags($clean_content); // Better than strip_tags()
+                                        $clean_content = preg_replace('/\s+/', ' ', $clean_content); // Normalize whitespace
+                                        $clean_content = trim($clean_content); // Remove leading/trailing whitespace
+                                        
+                                        // Limit words for excerpt
+                                        $word_limit = wp_is_mobile() ? $settings['content_word_mobile'] : $settings['content_word_pc'];
+                                        $words = explode(' ', $clean_content);
+                                        $excerpt = implode(' ', array_slice($words, 0, $word_limit));
                     
                     // Article card HTML
                     echo '<div class="article-card' . esc_attr($category_classes) . '">';
@@ -1600,18 +1608,22 @@
                 box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             }
             
-            .article-image {
+                        .article-image {
                 position: relative;
-                height: 200px;
+                height: 0;
+                padding-bottom: 100%; /* Creates a perfect square */
                 overflow: hidden;
             }
             
             .article-image img {
+                position: absolute;
+                top: 0;
+                left: 0;
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+                object-position: center;
             }
-            
             .category-card2 {
                 position: absolute;
                 top: 10px;
@@ -1681,7 +1693,7 @@
             }
             </style>
             
-            <script>
+                      <script>
             jQuery(document).ready(function($) {
                 // Category filter functionality
                 $(".category-filter-button").click(function() {
@@ -1707,6 +1719,7 @@
                     $(".article-card").filter(function() {
                         var title = $(this).find(".article-title").text().toLowerCase();
                         var content = $(this).find(".description").text().toLowerCase();
+                        // Only search in actual content, not in any HTML/CSS that might be displayed
                         var matches = title.indexOf(value) > -1 || content.indexOf(value) > -1;
                         $(this).toggle(matches);
                     });
