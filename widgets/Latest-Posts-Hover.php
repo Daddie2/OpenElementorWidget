@@ -370,6 +370,17 @@
                 ]
             );
             $this->add_control(
+                'Hover_Date_color',
+                [
+                    'label' => esc_html__('Hover Color', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => 'black',
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-widget-date:hover' => 'color: {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            $this->add_control(
                 'date_font_size',
                 [
                     'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
@@ -386,6 +397,26 @@
                     ],
                     'selectors' => [
                         '{{WRAPPER}} .latest-posts-hover-widget-date' => 'font-size: {{SIZE}}{{UNIT}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_date_font_size',
+                [
+                    'label' => esc_html__('Hover Font Size', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'default' => [
+                        'size' => 18,
+                        'unit' => 'px',
+                    ],
+                    'range' => [
+                        'px' => [
+                            'min' => 1,
+                            'max' => 120,
+                        ],
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-widget-date:hover' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -411,6 +442,20 @@
                     'default' => 'normal',
                     'selectors' => [
                         '{{WRAPPER}} .latest-posts-hover-widget-date' => 'font-weight: {{VALUE}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_date_bold',
+                [
+                    'label' => esc_html__('Hover Date Normal', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                    'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                    'return_value' => 'normal',
+                    'default' => 'bold',
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-widget-date:hover' => 'font-weight: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -462,7 +507,7 @@
                     'return_value' => 'inline-block',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag' => 'display: {{VALUE}};',
                     ],
                 ]
             );
@@ -473,7 +518,19 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'color: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag' => 'color: {{VALUE}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'Hover_Tag_color',
+                [
+                    'label' => esc_html__('Hover Color Tag', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => 'black',
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag:hover' => 'color: {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag-card2 .latest-posts-hover-widget-tag:hover' => 'color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -493,7 +550,27 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag' => 'font-size: {{SIZE}}{{UNIT}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_tag_font_size',
+                [
+                    'label' => esc_html__('Hover Size Tag', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'default' => [
+                       'size' => 18,
+                        'unit' => 'px',
+                    ],
+                    'range' => [
+                        'px' => [
+                           'min' => 1,
+                           'max' => 120,
+                        ],
+                    ],
+                   'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag:hover' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -504,7 +581,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -518,7 +595,24 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag' => 'font-weight: {{VALUE}} !important;',
+                        'body {{WRAPPER}} .latest-posts-hover-widget-tag' => 'font-weight: {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_tag_bold',
+                [
+                    'label' => esc_html__('Hover Tag Normal', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                    'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                    'return_value' => 'normal',
+                    'default' => 'bold',
+                    'selectors' => [
+                        'body {{WRAPPER}} .latest-posts-hover-widget-tag:hover' => 'font-weight: {{VALUE}} !important;',
+                        'body {{WRAPPER}} .latest-posts-hover-widget-tag-card2 .latest-posts-hover-widget-tag:hover' => 'font-weight: {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag:hover' => 'font-weight: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -544,7 +638,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .tag-card2' => 'justify-content: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-tag-card2' => 'justify-content: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -587,6 +681,18 @@
                 ]
             );
             $this->add_control(
+                'hover_category_color',
+                [
+                    'label' => esc_html__('Hover color', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => 'black',
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-widget-category-card2 .latest-posts-hover-widget-category:hover' => 'color: {{VALUE}} !important;',
+                        '{{WRAPPER}}.elementor-element .latest-posts-hover-widget-category:hover' => 'color: {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            $this->add_control(
                 'category_font_size',
                 [
                     'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
@@ -603,6 +709,26 @@
                     ],
                     'selectors' => [
                         '{{WRAPPER}} .latest-posts-hover-widget-category' => 'font-size: {{SIZE}}{{UNIT}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_category_font_size',
+                [
+                    'label' => esc_html__('Hover Font Size', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'default' => [
+                        'size' => 18,
+                        'unit' => 'px',
+                    ],
+                    'range' => [
+                        'px' => [
+                            'min' => 1,
+                            'max' => 120,
+                        ],
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-widget-category:hover' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -628,6 +754,20 @@
                     'default' => 'normal',
                     'selectors' => [
                         '{{WRAPPER}} .latest-posts-hover-widget-category' => 'font-weight: {{VALUE}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_category_bold',
+                [
+                    'label' => esc_html__('Category hover Bold', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                    'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                    'return_value' => 'bold',
+                    'default' => 'normal',
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-widget-category:hover' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -1151,8 +1291,6 @@
                     ],
                 ]
             );
-            
-            // Aggiungi controllo per il colore del bordo
             $this->add_control(
                 'search_border_color',
                 [
@@ -1160,10 +1298,11 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => '#0e0e0e',
                     'selectors' => [
-                        '{{WRAPPER}} .latest-posts-hover-input2' => 'border: 2px solid {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2' => 'border-color: {{VALUE}} !important;',
                     ],
                 ]
             );
+            
             $this->add_control(
                 'search_border_color_focus',
                 [
@@ -1171,12 +1310,11 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => '#FF5500',
                     'selectors' => [
-                        '{{WRAPPER}} .latest-posts-hover-input2:focus' => 'border: 2px solid {{VALUE}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2:focus' => 'border-color: {{VALUE}} !important;',
                     ],
                 ]
             );
             
-            // Aggiungi controllo per lo spessore del bordo
             $this->add_control(
                 'search_border_width',
                 [
@@ -1195,11 +1333,12 @@
                         'size' => 2,
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .latest-posts-hover-input2' => 'border-width: {{SIZE}}{{UNIT}} !important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2' => 'border-width: {{SIZE}}{{UNIT}} !important; border-style: solid !important;',
+                        '{{WRAPPER}} .latest-posts-hover-input2:focus' => 'border-width: {{SIZE}}{{UNIT}} !important; border-style: solid !important;',
                     ],
                 ]
             );
-            
+            // Aggiungi controllo per lo spessore del bordo
             // Aggiungi controllo per il raggio del bordo
             $this->add_control(
                 'search_border_radius',
@@ -1571,19 +1710,19 @@
                             <a class="latest-posts-hover-widget-title" href="' . $post_link . '">' . $post_title . ' <a/>';
                     if (!empty($tags)) {
                         if ($selected_page_id != 0) {
-                            echo '<div class="tag-card2">';
+                            echo '<div class="latest-posts-hover-widget-tag-card2">';
                             $page_link = get_permalink($selected_page_id);
                             foreach ($tags as $tag) {
                                 $tag_link = add_query_arg('tags', $tag->slug, $page_link);
-                                echo '<a href="' . $tag_link . '" class="tag"> ' . $tag->name . '</a> ';
+                                echo '<a href="' . $tag_link . '" class="latest-posts-hover-widget-tag"> ' . $tag->name . '</a> ';
                             }
                             echo '</div>';
                         } else {
-                            echo '<div class="tag-card2">';
+                            echo '<div class="latest-posts-hover-widget-tag-card2">';
 
                             foreach ($tags as $tag) {
 
-                                echo '<a href="' . get_tag_link($tag->term_id) . '" class="tag">' . $tag->name . '</a> ';
+                                echo '<a href="' . get_tag_link($tag->term_id) . '" class="latest-posts-hover-widget-tag">' . $tag->name . '</a> ';
                             }
                             echo '</div>';
                         }
@@ -1632,7 +1771,7 @@
                         if (!empty($categories)) {
                             echo '<div class="latest-posts-hover-widget-category-card2">';
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="latest-posts-hover-widget-category"> '  . $category->name . ' </a> <br>';
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="latest-posts-hover-widget-category"> '  . $category->name . ' <br></a> ';
                             }
                         }
                         echo    '</div>';
@@ -1700,7 +1839,7 @@
                 justify-content:right; 
                 flex-wrap: wrap;
                 }
-            .latest-posts-hover-widget .tag-card2 {
+            .latest-posts-hover-widget .latest-posts-hover-widget-tag-card2 {
                 display: flex;
                 justify-content:right; 
                 flex-wrap: wrap;
@@ -1741,6 +1880,7 @@
                 border-radius: 16px;
                 margin-left: 0.5%;
                 margin-right: 0.5%;
+                 margin-top: 1.5%;
                 box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.5),
                     1px 5px 8px 0px rgba(0, 0, 0, 0.14),
                     1px 1px 14px 0px rgba(0, 0, 0, 0.12);
@@ -1806,7 +1946,7 @@
                         text-align: center;
 
                     }
-                    .tag {
+                    .latest-posts-hover-widget-tag {
                         margin-top: 0px;
                         margin-bottom: 0px;
                         padding: 0 5px;
@@ -1815,6 +1955,9 @@
                         display:none;
                         text-align: center;
                     }
+                        .latest-posts-hover-widget-tag:hover{
+                         font-weight: bold !important;
+                        }
                     .latest-posts-hover-widget-date {
                         margin-top: 0;
                         margin-bottom: 0px;
@@ -1832,6 +1975,9 @@
                         color:black;
                         display:none;
             }
+                        latest-posts-hover-widget-date:hover{
+                         font-weight: bold!important;
+                        }
                 
                     .description {
                         margin-top: 0px;
@@ -1889,7 +2035,6 @@
                 padding-left: var(--size-button)!important;
                 height: var(--size-button);
                 font-size: 15px;
-                border: 2px solid #0e0e0e;
                 color: black;
                 outline: none;
                 width: var(--size-button);
