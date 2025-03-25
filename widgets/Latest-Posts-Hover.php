@@ -2,11 +2,11 @@
         class Latest_Posts_Hover_Widget extends \Elementor\Widget_Base
     {
 
-        public function __construct($data = [], $args = null)
-        {
+        public function __construct($data = [], $args = null) {
             parent::__construct($data, $args);
+            
+            
         }
-
         public function get_name()
         {
             return 'latest-posts-hover';
@@ -89,7 +89,49 @@
                     ],
                 ]
             );
-
+            $this->add_control(
+                'card_border_radius',
+                [
+                    'label' => esc_html__('Card  border Radius', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'size_units' => ['px', '%'],
+                    'range' => [
+                        'px' => [
+                            'min' => 0,
+                            'max' => 100,
+                            'step' => 1,
+                        ],
+                        '%' => [
+                            'min' => 0,
+                            'max' => 100,
+                        ],
+                    ],
+                    'default' => [
+                        'unit' => 'px',
+                        'size' => 16,
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-card2' => 'border-radius: {{SIZE}}{{UNIT}} !important;',
+                    ],
+                ]
+            );
+         $this->add_control(
+                'card_shadow',
+                [
+                    'label' => esc_html__('Card Shadow', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::BOX_SHADOW,
+                    'default' => [
+                        'horizontal' => 1,
+                        'vertical' => 3,
+                        'blur' => 5,
+                        'spread' => -1,
+                        'color' => 'rgba(0, 0, 0, 0.5)',
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .latest-posts-hover-card2' => 'box-shadow: {{HORIZONTAL}}px {{VERTICAL}}px {{BLUR}}px {{SPREAD}}px {{COLOR}} !important;',
+                    ],
+                ]
+            );
             $this->add_control(
                 'selected_page',
                 [
@@ -355,6 +397,7 @@
                     'default' => 'none',
                     'selectors' => [
                         '{{WRAPPER}} .latest-posts-hover-widget-date' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-date-card2' => 'display: {{VALUE}};',  // Aggiungi questo selettore
                     ],
                 ]
             );
@@ -481,7 +524,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .date-card2' => 'justify-content: {{VALUE}};',
+                        '{{WRAPPER}} .latest-posts-hover-widget-date-card2' => 'justify-content: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -661,7 +704,7 @@
                     'type' => \Elementor\Controls_Manager::SWITCHER,
                     'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                     'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                    'return_value' => 'flex',
+                    'return_value' => 'inline-block',
                     'default' => 'none',
                     'selectors' => [
                         '{{WRAPPER}} .latest-posts-hover-widget-category' => 'display: {{VALUE}};',
@@ -964,7 +1007,7 @@
                     'default' => 'none',
                     'selectors' => [
                         '{{WRAPPER}} .latest-posts-hover-filter' => 'display: {{VALUE}};',
-                        '{{WRAPPER}} .latest-posts-hover-button' => 'display: inline-block;', // Mantiene i pulsanti come inline-block
+                        '{{WRAPPER}} .latest-posts-hover-button' => 'display: inline-block !important;', // Mantiene i pulsanti come inline-block
                     ],
                 ]
             );
@@ -1095,7 +1138,7 @@
             $this->add_control(
                 'text_color_active',
                 [
-                    'label' => esc_html__('Button filter Active  text clor', 'Latest-Posts-Hover'),
+                    'label' => esc_html__('Button filter Active  text color', 'Latest-Posts-Hover'),
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
@@ -1469,6 +1512,7 @@
         protected function render()
 
         {
+
             $settings = $this->get_settings_for_display();
             if ($settings['posts_per_page'] == null) {
                 $settings['posts_per_page'] = 4;
@@ -1482,8 +1526,8 @@
             if (isset($_GET['category']) && ($_GET['category']) == "all") {
                 unset($args['category_name']);
             }
-            if (isset($_GET['date'])) {
 
+            if (isset($_GET['date'])) {
                 // Check the format of the provided date
                 if (substr($_GET['date'], -1) == 'm') {
                     $date_query = [
@@ -1536,128 +1580,238 @@
                 // Start output
                 echo '<div class=" latest-posts-hover-widget">';
                 
-                echo '<div class="latest-posts-hover-filter">';
-                if ($selected_page_id != 0) {
-                    $page_link = get_permalink($selected_page_id);
+             // Modifica i pulsanti delle categorie per usare AJAX invece di form submit
+echo '<div class="latest-posts-hover-filter">';
+// Sostituisci i button con elementi che usano data attributes
+if ($settings['related_category'] != 'on' || $settings['related_category'] == 'on' && $settings['categories_in'] == null) {
+    $args_C['taxonomy'] = 'category';
+    $args_C['hide_empty'] = true;
+    $args_C['exclude'] = $settings['exclude_categories'];
+    $args_C['include'] = $settings['categories_in'];
+    
+    // Array per tenere traccia delle categorie già mostrate
+    $displayed_categories = [];
+    
+    // Mostra il pulsante "All" solo una volta
+    if (($args_C['include'] == null && $args_C['exclude'] == null) || $settings['include_all'] == 'on') {
+        if (!isset($all_button_displayed)) {
+            echo '<button type="button" data-category="all" class="latest-posts-hover-button';
+            if (isset($_GET['category']) && $_GET['category'] == 'all') {
+                echo ' active';
+            }
+            echo '">' . $all . '</button>';
+            $all_button_displayed = true;
+        }
+    }
 
-                    echo '   <form method="get" action="' . $page_link . '">';
-                } else {
-                    echo '   <form method="get" action="">';
-                }
-                if ($settings['related_category'] != 'on' || $settings['related_category'] == 'on' && $settings['categories_in'] == null) {
-                    $args_C['taxonomy'] = 'category';
-                    $args_C['hide_empty'] = true;
-                    $args_C['exclude'] = $settings['exclude_categories'];
-                    $args_C['include'] = $settings['categories_in'];
-                    if ($args_C['include'] == null && $args_C['exclude'] == null || $settings['include_all'] == 'on') {
-                        echo '<button type="submit" name="category" value="all" class="latest-posts-hover-button';
-                        if (isset($_GET['category']) && $_GET['category'] == 'all') {
-                            echo ' active';
-                        }
-                        echo '">' . $all . '</button>';
-                    }
-
-                    $categories = get_terms($args_C);
-                    foreach ($categories as $category)  {
-                        if (is_array($settings['exclude_categories'])) {
-                            if (in_array($category->term_id, $settings['exclude_categories'])) {
-                                continue; // Salta la categoria se è esclusa
-                            }
-                        }
-                        // Controlla se la categoria ha almeno un post che non è escluso
-                        $posts_in_category = get_posts(array(
-                            'category' => $category->term_id,
-                            'posts_per_page' => 1, // Controlla solo se ci sono post
-                            'category__not_in' =>  $settings['exclude_categories'],
-                        ));
-                        if ($posts_in_category) {
-                            $category_name = $category->name;
-                            $category_slug = $category->slug;
-                            echo '<button type="submit" name="category" value="' . $category_slug . '" class="latest-posts-hover-button';
-                            if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
-                                echo ' active';
-                            }
-                            echo '">' . $category_name . '</button>';
-                        }
-                    }
-                }
-                              // Modifica i pulsanti delle categorie per il widget related_category
-                              if ($settings['related_category'] == 'on') {
-                                if ($settings['include_all'] == 'on') {
-                                    echo '<button type="submit" name="category" value="all" class="latest-posts-hover-button';
-                                    if (isset($_GET['category']) && $_GET['category'] == 'all') {
-                                        echo ' active';
-                                    }
-                                    echo '">' . $all . '</button>';
-                                }
+    $categories = get_terms($args_C);
+    foreach ($categories as $category)  {
+        // Salta se la categoria è già stata mostrata
+        if (in_array($category->term_id, $displayed_categories)) {
+            continue;
+        }
+        
+        if (is_array($settings['exclude_categories'])) {
+            if (in_array($category->term_id, $settings['exclude_categories'])) {
+                continue; // Salta la categoria se è esclusa
+            }
+        }
+        // Controlla se la categoria ha almeno un post che non è escluso
+        $posts_in_category = get_posts(array(
+            'category' => $category->term_id,
+            'posts_per_page' => 1, // Controlla solo se ci sono post
+            'category__not_in' =>  $settings['exclude_categories'],
+        ));
+        if ($posts_in_category) {
+            $category_name = $category->name;
+            $category_slug = $category->slug;
+            echo '<button type="button" data-category="' . $category_slug . '" class="latest-posts-hover-button';
+            if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
+                echo ' active';
+            }
+            echo '">' . $category_name . '</button>';
             
-                                // Mostra le categorie incluse
-                                if (!empty($settings['categories_in'])) {
-                                    foreach ($settings['categories_in'] as $cat_id) {
-                                        $category = get_category($cat_id);
-                                        if ($category) {
+            // Aggiungi la categoria all'array delle categorie mostrate
+            $displayed_categories[] = $category->term_id;
+        }
+    }
+}
+                                
+                                // Modifica i pulsanti delle categorie per il widget related_category
+                                if ($settings['related_category'] == 'on') {
+                                    // Array per tenere traccia delle categorie già mostrate
+                                    if (!isset($displayed_categories)) {
+                                        $displayed_categories = [];
+                                    }
+                                    
+                                    // Mostra il pulsante "All" solo se non è già stato mostrato
+                                    if ($settings['include_all'] == 'on' && !isset($all_button_displayed)) {
+                                        echo '<button type="submit" name="category" value="all" class="latest-posts-hover-button';
+                                        if (isset($_GET['category']) && $_GET['category'] == 'all') {
+                                            echo ' active';
+                                        }
+                                        echo '">' . $all . '</button>';
+                                        $all_button_displayed = true;
+                                    }
+                                
+                                    // Mostra le categorie incluse
+                                    if (!empty($settings['categories_in'])) {
+                                        foreach ($settings['categories_in'] as $cat_id) {
+                                            $category = get_category($cat_id);
+                                            if ($category) {
+                                                // Salta se la categoria è già stata mostrata
+                                                if (in_array($category->term_id, $displayed_categories)) {
+                                                    continue;
+                                                }
+                                                
+                                                echo '<button type="submit" name="category" value="' . $category->slug . '" class="latest-posts-hover-button';
+                                                if (isset($_GET['category']) && $_GET['category'] == $category->slug) {
+                                                    echo ' active';
+                                                }
+                                                echo '">' . $category->name . '</button>';
+                                                
+                                                // Aggiungi la categoria all'array delle categorie mostrate
+                                                $displayed_categories[] = $category->term_id;
+                                            }
+                                        }
+                                    }
+                                
+                                    // Mostra le categorie correlate
+                                    $categories = get_categories(array(
+                                        'hide_empty' => true,
+                                        'exclude' => $settings['exclude_categories']
+                                    ));
+                                
+                                    foreach ($categories as $category) {
+                                        // Salta se la categoria è già stata mostrata
+                                        if (in_array($category->term_id, $displayed_categories)) {
+                                            continue;
+                                        }
+                                        
+                                        // Salta se la categoria è già inclusa
+                                        if (!empty($settings['categories_in']) && in_array($category->term_id, $settings['categories_in'])) {
+                                            continue;
+                                        }
+                                
+                                        // Verifica se ci sono post correlati
+                                        $related_posts = get_posts(array(
+                                            'category' => $category->term_id,
+                                            'category__in' => $settings['categories_in'],
+                                            'posts_per_page' => 1
+                                        ));
+                                
+                                        if (!empty($related_posts)) {
                                             echo '<button type="submit" name="category" value="' . $category->slug . '" class="latest-posts-hover-button';
                                             if (isset($_GET['category']) && $_GET['category'] == $category->slug) {
                                                 echo ' active';
                                             }
                                             echo '">' . $category->name . '</button>';
+                                            
+                                            // Aggiungi la categoria all'array delle categorie mostrate
+                                            $displayed_categories[] = $category->term_id;
                                         }
                                     }
                                 }
-            
-                                // Mostra le categorie correlate
-                                $categories = get_categories(array(
-                                    'hide_empty' => true,
-                                    'exclude' => $settings['exclude_categories']
-                                ));
-            
-                                foreach ($categories as $category) {
-                                    // Salta se la categoria è già inclusa
-                                    if (!empty($settings['categories_in']) && in_array($category->term_id, $settings['categories_in'])) {
-                                        continue;
-                                    }
-            
-                                    // Verifica se ci sono post correlati
-                                    $related_posts = get_posts(array(
-                                        'category' => $category->term_id,
-                                        'category__in' => $settings['categories_in'],
-                                        'posts_per_page' => 1
-                                    ));
-            
-                                    if (!empty($related_posts)) {
-                                        echo '<button type="submit" name="category" value="' . $category->slug . '" class="latest-posts-hover-button';
-                                        if (isset($_GET['category']) && $_GET['category'] == $category->slug) {
-                                            echo ' active';
-                                        }
-                                        echo '">' . $category->name . '</button>';
-                                    }
-                                }
-                            }
+                echo '</form>';
+                // Replace the search form section with this improved version
+echo '<div class="latest-posts-hover-widget-container2 latest-posts-hover-search">';
+echo '<div class="search-form-container">';
+echo '<input type="text" id="latest-posts-hover-input2" class="latest-posts-hover-input2 latest-posts-hover-input" placeholder="' . $place . '">';
+echo '<div class="latest-posts-hover-icon2">';
+echo '<button type="button" id="search-button" class="latest-posts-hover-submit-button latest-posts-hover-submit">';
+echo '<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+    <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
+</svg>';
+echo '</button>';
+echo '</div>';
+echo '</div>';
+echo '</div>';// Modifica lo script JavaScript per gestire correttamente la card singola
+// ... existing code ...
+echo '<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var categoryButtons = document.querySelectorAll(".latest-posts-hover-button");
+    var searchInput = document.getElementById("latest-posts-hover-input2");
+    var searchButton = document.getElementById("search-button");
+    var container = document.querySelector(".latest-posts-hover-widget");
 
+    // Handle category button clicks
+    categoryButtons.forEach(function(button) {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            var category = button.getAttribute("data-category") || "all";
+            
+            // Update active state
+            categoryButtons.forEach(function(btn) {
+                btn.classList.remove("active");
+            });
+            button.classList.add("active");
+            
+            // Show all cards initially
+            document.querySelectorAll(".latest-posts-hover-card2").forEach(function(card) {
+                card.style.display = "block";
+            });
+            
+            if(category !== "all") {
+                // Hide cards that don\'t match the category
+                document.querySelectorAll(".latest-posts-hover-card2:not(.category-" + category + ")").forEach(function(card) {
+                    card.style.display = "none";
+                });
+            }
+            
+            // Update card widths
+            updateCardWidths();
+        });
+    });
 
-                echo '</form>
-                    
-                <div class="latest-posts-hover-widget-container2 latest-posts-hover-search">';
-                    if ($selected_page_id != 0) {
-                        $page_link = get_permalink($selected_page_id);
-    
-                        echo '   <form id="form2" action="' . $page_link . '">';
-                    } else {
-                        echo '   <form id="form2" action="">';
-                    }
-                    echo '
-                    <input type="text" id="latest-posts-hover-input2" name="latest-posts-hover-input2" class="latest-posts-hover-input2 latest-posts-hover-input" placeholder="' . $place . '">
-                    <div class="latest-posts-hover-icon2">
-                <button type="submit" class="latest-posts-hover-submit-button latest-posts-hover-submit" value="latest-posts-hover-input2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-            <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
-        </svg>
-        </button>
-        </form>
-        </div>
-                </div>
-            </div> ';
+    // Handle search
+    function performSearch() {
+        var searchTerm = searchInput.value.toLowerCase();
+        var cards = document.querySelectorAll(".latest-posts-hover-card2");
+        var found = false;
+        
+        cards.forEach(function(card) {
+            var title = card.querySelector(".latest-posts-hover-widget-title").textContent.toLowerCase();
+            var content = card.querySelector(".description").textContent.toLowerCase();
+            
+            if(title.includes(searchTerm) || content.includes(searchTerm)) {
+                card.style.display = "block";
+                found = true;
+            } else {
+                card.style.display = "none";
+            }
+        });
+        
+        updateCardWidths();
+        document.querySelector(".error-message").style.display = found ? "none" : "block";
+    }
+
+    // Update card widths based on visible cards
+    function updateCardWidths() {
+        var visibleCards = document.querySelectorAll(".latest-posts-hover-card2").length;
+        var visibleCardCount = Array.from(document.querySelectorAll(".latest-posts-hover-card2")).filter(card => card.style.display !== "none").length;
+        
+        if(visibleCardCount > 0) {
+            var cardWidth = Math.min(visibleCardCount, 4);
+            cardWidth = (100 / cardWidth) - 1;
+            
+            Array.from(document.querySelectorAll(".latest-posts-hover-card2")).filter(card => card.style.display !== "none").forEach(function(card) {
+                card.style.width = cardWidth + "%";
+                card.style.marginLeft = "0.5%";
+                card.style.marginRight = "0.5%";
+            });
+        }
+    }
+
+    // Bind search events
+    searchInput.addEventListener("input", performSearch);
+    searchButton.addEventListener("click", function(e) {
+        e.preventDefault();
+        performSearch();
+    });
+});
+</script>';
+                
                 echo '<div class="latest-posts-hover-widget-card2-container">';
 
                 foreach ($posts as $post) {
@@ -1694,17 +1848,28 @@
                     $post_numb = get_the_date('Y-m-d', $post->ID);
                     $date_array = explode('-', $post_numb);
                     // Check if the post has a featured image
-                    $featured_image = get_the_post_thumbnail_url($post->ID);
-                    if (!$featured_image) {
-                        // If not, use the custom default image
-                        $featured_image = $settings['default_image']['url'];
-                    }
+                 // ... existing code ...
+                 $featured_image = get_the_post_thumbnail_url($post->ID);
+                 if (!$featured_image) {
+                     // If not, use the custom default image
+                     $featured_image = $settings['default_image']['url'];
+                 }
 
-                    if (wp_is_mobile() || is_admin()) {
-                        echo '<div class="latest-posts-hover-card2" style="background-image: url(' . $featured_image . ')" >';
-                    } else {
-                        echo '<div class="latest-posts-hover-card2" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
-                    }
+                 // Get categories and create class string
+                 $categories = get_the_category($post->ID);
+                 $category_classes = '';
+                 if (!empty($categories)) {
+                     foreach ($categories as $category) {
+                         $category_classes .= ' category-' . $category->slug;
+                     }
+                 }
+
+                 if (wp_is_mobile() || is_admin()) {
+                     echo '<div class="latest-posts-hover-card2' . esc_attr($category_classes) . '" style="background-image: url(' . $featured_image . ')" >';
+                 } else {
+                     echo '<div class="latest-posts-hover-card2' . esc_attr($category_classes) . '" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
+                 }
+// ... existing code ...
                     echo '
                             <div class="info">
                             <a class="latest-posts-hover-widget-title" href="' . $post_link . '">' . $post_title . ' <a/>';
@@ -1733,23 +1898,23 @@
                     $date_array[2] = $date_array[1] . '/' . $date_array[2];
                     if ($selected_page_id != 0) {
                         $page_link = get_permalink($selected_page_id);
-                        echo '<div class="date-card2">';
+                        echo '<div class="latest-posts-hover-widget-date-card2">';
 
                         foreach ($date_parts as $part) {
                             if ($i == 1) {
                                 $date_array[1] = $date_array[1] . '/01 m';
                             }
                             $date_link = add_query_arg('date', $date_array[$i], $page_link);
-                            echo ' <a href="' . $date_link . '" class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a>';
+                            echo ' <a href="' . $date_link .'<br> '. ' " class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a>';
                             $i -= 1;
                         }
                         echo '</div>';
                     } else {
-                        echo '<div class="date-card2">';
+                        echo '<div class="latest-posts-hover-widget-date-card2">';
                         $i = 2;
                         foreach ($date_parts as $part) {
                             $date_link = home_url() . '/' . $date_array[$i];
-                            echo '<a href="' . $date_link . '" class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a>';
+                            echo '<a href="' . $date_link . '" class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a> <br>';
                             $i -= 1;
                         }
                         echo '</div>';
@@ -1770,11 +1935,19 @@
                         $categories = get_the_category($post->ID);
                         if (!empty($categories)) {
                             echo '<div class="latest-posts-hover-widget-category-card2">';
+                            $category_count = count($categories);
+                            $i = 0;
                             foreach ($categories as $category) {
-                                echo '<a href="' . get_category_link($category->term_id) . '" class="latest-posts-hover-widget-category"> '  . $category->name . ' <br></a> ';
+                                $i++;
+                                // Assicurati che il nome della categoria sia pulito e coerente
+                                $category_name = trim($category->name);
+                                echo '<a href="' . get_category_link($category->term_id) . '" class="latest-posts-hover-widget-category">' . $category_name . '</a>';
+                                if ($i < $category_count) {
+                                    echo ' ';
+                                }
                             }
+                            echo '</div>';
                         }
-                        echo    '</div>';
                     }
                     echo '<p class="description"  onclick="window.location.href=\'' . $post_link . '\'">' . $post_content . ' </p> 
                             </div>
@@ -1784,7 +1957,6 @@
                 echo '</div>';
             }
             if (!$posts) {
-
                 echo '<a class="error-message">' . $settings['error_message'];
                 echo '</a>';
                 if ($args['s'] != null) {
@@ -1796,17 +1968,21 @@
                     } else {
                         echo '   <form id="form2" action="">';
                     }
-                    echo '
-                <input type="text" id="latest-posts-hover-input2" name="latest-posts-hover-input2" class="latest-posts-hover-input2 latest-posts-hover-input" placeholder="' . $place . '">
-                <div class="latest-posts-hover-icon2">
-            <button type="submit" class="latest-posts-hover-submit-button latest-posts-hover-submit" value="latest-posts-hover-input2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-            <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
-        </svg>
-        </button>
-        </form>
-        </div>
+                 // Modifica la parte del form di ricerca
+echo '<div class="latest-posts-hover-widget-container2 latest-posts-hover-search">';
+echo '<div class="search-form-container">';
+echo '<input type="text" id="latest-posts-hover-input2" class="latest-posts-hover-input2 latest-posts-hover-input" placeholder="' . $place . '">';
+echo '<button type="button" class="latest-posts-hover-submit-button latest-posts-hover-submit">';
+echo '<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+    <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
+</svg>';
+echo '</button>';
+echo '</div>';
+echo '</div>';
+echo'
+                </form>
+                </div>
                 </div>
             </div> ';
                 }
@@ -1834,8 +2010,8 @@
                  padding: 0;
                 margin: 0;
             }
-            .latest-posts-hover-widget .date-card2 {
-                display: flex;
+            .latest-posts-hover-widget .latest-posts-hover-widget-date-card2 {
+                display: none;
                 justify-content:right; 
                 flex-wrap: wrap;
                 }
@@ -1858,7 +2034,7 @@
                 font-weight: normal;
                 font-family:Work Sans;
                 font: size 15px;
-                display:none;
+                display: none !important;;
             }
 
             .latest-posts-hover-button:hover {
@@ -1876,23 +2052,23 @@
             .latest-posts-hover-widget .latest-posts-hover-card2-link {
                 text-decoration: none;
             }
-         .latest-posts-hover-widget .latest-posts-hover-card2 {
-                border-radius: 16px;
-                margin-left: 0.5%;
-                margin-right: 0.5%;
-                 margin-top: 1.5%;
-                box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.5),
-                    1px 5px 8px 0px rgba(0, 0, 0, 0.14),
-                    1px 1px 14px 0px rgba(0, 0, 0, 0.12);
-                overflow: hidden; 
-                width: ' . $width . '%; 
-                background-position: center;
-                background-size: cover;
-                background-repeat: no-repeat; 
-                cursor: pointer;
-                height: 450px;
-                box-sizing: border-box;
-            }
+        .latest-posts-hover-widget .latest-posts-hover-card2 {
+            border-radius: 16px;
+            margin-left: 0.5%;
+            margin-right: 0.5%;
+            margin-top:1.5%;
+            box-shadow: 1px 3px 5px -1px rgba(0, 0, 0, 0.5),
+                        1px 5px 8px 0px rgba(0, 0, 0, 0.14),
+                        1px 1px 14px 0px rgba(0, 0, 0, 0.12);
+                        overflow: hidden; 
+                        width: ' . $width . '%; 
+                        margin-bottom: 20px;
+                        background-position:  center;
+                        background-size: cover;
+                        cursor: pointer;
+                        height:450px;
+}
+
         
             .latest-posts-hover-widget .info {
                 position: relative;
@@ -1993,6 +2169,8 @@
                     .latest-posts-hover-widget-card2-container {
                         display: flex;
                         flex-wrap: wrap;
+                          width: 100%;
+    justify-content: flex-start;
                     }
                                         }
                             }';
@@ -2007,7 +2185,7 @@
 
             echo '
                     @media (max-width: 900px) {
-                        ..latest-posts-hover-widget-card2-container .latest-posts-hover-card2 {
+                        .latest-posts-hover-widget-card2-container .latest-posts-hover-card2 {
                         flex-basis: 100%;
                         }
                             }
@@ -2066,17 +2244,15 @@
             cursor: pointer;
             }
 
-            .latest-posts-hover-widget-container2.icon2 {
-            position: absolute;
-            width: 60px !important;
-            height:  60px !important;
-            top: 0;
-            left: 0;
-            padding: 15px 13px;
-            color:green !important;
-            pointer-events: none;
-
-            }
+           .latest-posts-hover-icon2 {
+    position: absolute;
+    width: var(--size-button) !important;
+    height: var(--size-button) !important;
+    top: 10px;
+    left: 10px;
+    padding: 8px;
+    z-index: 2;
+}
             #latest-posts-hover-input2 .latest-posts-hover-widget-container2 .latest-posts-hover-icon2:focus {
                 pointer-events: auto;
             }
@@ -2091,20 +2267,23 @@
         padding: 0; /* Remove default padding */
         color: green !important;            
         } 
-        .latest-posts-hover-submit-button {
-                background-color: transparent !important;
-                border: none;
-                padding: 0;
-                color: inherit !important;
-                cursor: pointer;
-                width: 100%;
-                height: 100%;
-                pointer-events: auto;
-            }
+      .latest-posts-hover-submit-button {
+    background-color: transparent !important;
+    border: none;
+    padding: 0;
+    color: inherit !important;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+    z-index: 3;
+}
 
             .latest-posts-hover-submit-button svg {
                 width: 100%;
                 height: 100%;
+                pointer-events: none;
             }
         </style>';
         }

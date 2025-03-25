@@ -4,29 +4,44 @@ Plugin Name: OpenWidgetElementor
 Description: Custom widget for elementor
 Version: 1.0
 Author: Davide 
-*/ function remove_text_before_last_post_title($excerpt)
+*/ 
+function remove_text_before_last_post_title($excerpt)
 {
-  // Ottieni l'ultimo post
-  $last_post = get_posts(array(
-    'numberposts' => 1,
-    'order' => 'DESC',
-  ))[0];
-
-  // Ottieni il titolo dell'ultimo post
-  $last_post_title = $last_post->post_title;
-
-  // Trova la posizione del titolo dell'ultimo post nell'excerpt
-  $position = strpos($excerpt, $last_post_title);
-
-  // Se il titolo è presente, restituisce solo il testo dopo di esso
-  if ($position !== false) {
-    $excerpt=preg_replace('#<a.*?>.*?</a>#i', '', $excerpt);
-    return substr($excerpt, $position);
+ 
+  // Recupera tutti i valori del campo "All_place" dalle opzioni di Elementor
+  global $wpdb;
+  $elementor_data = $wpdb->get_results(
+    "SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key = '_elementor_data'"
+  );
+  
+  $all_place_values = array();
+  
+  // Estrai i valori di All_place da tutti i dati di Elementor
+  foreach ($elementor_data as $data) {
+    if (!empty($data->meta_value)) {
+      // Cerca valori del campo All_place
+      if (preg_match_all('/"All_place":"([^"]+)"/', $data->meta_value, $matches)) {
+        foreach ($matches[1] as $match) {
+          $all_place_values[] = $match;
+        }
+      }
+    }
   }
+  
+  // Rimuovi tutti i valori di All_place dall'excerpt
+  foreach ($all_place_values as $value) {
+    $excerpt = str_replace($value, '', $excerpt);
+  }
+
+  
+  // Continua con la pulizia standard
+  $categories = get_categories();
+  foreach ($categories as $category) {
+    $excerpt = str_replace($category->name, '', $excerpt);
+  }
+  
   $excerpt = preg_replace('#<a.*?>.*?</a>#i', '', $excerpt);
-
-
-  // Se il titolo non è presente, restituisce l'excerpt originale
+  
   return $excerpt;
 }
 
