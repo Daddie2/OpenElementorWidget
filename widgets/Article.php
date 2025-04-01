@@ -65,39 +65,34 @@
                     ],
                 ]
             );
-            $this->add_control(
-                'card_color',
-                [
-                    'label' => esc_html__('Background color', 'Article'),
-                    'type' => \Elementor\Controls_Manager::COLOR,
-                    'default' => '#f8f8f8',
-                    'selectors' => [
-                        '{{WRAPPER}} .info' => 'background-color:{{VALUE}}!important;',
-                    ],
-                ]
-            );
-            $this->add_control(
-                'card_opacity',
-                [
-                    'label' => esc_html__('Card opacity', 'Article'),
-                    'type' => \Elementor\Controls_Manager::NUMBER,
-                    'min' => 0,
-                    'max' => 1,
-                    'step' => 0.1,
-                    'default' => 0.8,
-                    'selectors' => [
-                        '{{WRAPPER}} .info' => 'filter:opacity({{VALUE}})!important;',
-                    ],
-                ]
-            );
-
+  
             $this->add_control(
                 'selected_page',
                 [
-                    'label' => esc_html__(' Select Page if you have a page with all post, made with this widget for the links', 'OpenWidget'),
+                    'label' => esc_html__(' Select Page if you have a page with all post, made with this widget for the links', 'Article'),
                     'type' => \Elementor\Controls_Manager::SELECT,
                     'options' => $this->get_pages(),
                     'default' => 0,
+                ]
+            );
+            $this->add_control(
+                'column_width',
+                [
+                    'label' => esc_html__('Column Min Width', 'Article'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'default' => [
+                        'size' => 360,
+                        'unit' => 'px',
+                    ],
+                    'range' => [
+                        'px' => [
+                            'min' => 200,
+                            'max' => 600,
+                        ],
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .articles-grid' => 'grid-template-columns: repeat(auto-fill, minmax({{SIZE}}{{UNIT}}, 1fr));',
+                    ],
                 ]
             );
             $this->add_control(
@@ -122,7 +117,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter' => 'justify-content: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter' => 'justify-content: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -131,46 +126,8 @@
                     ],
                 ]
             );
-                $this->add_control(
-                'height_card',
-                [
-                    'label' => esc_html__('Height card', 'Article'),
-                    'type' => \Elementor\Controls_Manager::SLIDER,
-                    'default' => [
-                        'size' => 450,
-                        'unit' => 'px',
-                    ],
-                    'range' => [
-                        'px' => [
-                            'min' => 1,
-                            'max' => 1000,
-                        ],
-                    ],
-                    'selectors' => [
-                        '{{WRAPPER}} .card2' => 'height: {{SIZE}}{{UNIT}} !important;',
-                    ],
-                ]
-            );
-            $this->add_control(
-                'content_card',
-                [
-                    'label' => esc_html__('Height card content pre animation(smaller is higher)', 'Article'),
-                    'type' => \Elementor\Controls_Manager::SLIDER,
-                    'default' => [
-                        'size' => 500,
-                        'unit' => 'px',
-                    ],
-                    'range' => [
-                        'px' => [
-                            'min' => 1,
-                            'max' => 1000,
-                        ],
-                    ],
-                    'selectors' => [
-                        '{{WRAPPER}} .info' => 'height: {{SIZE}}{{UNIT}};',
-                    ],
-                ]
-            );
+            
+           
             $this->end_controls_section();
             $this->start_controls_section(
                 'section_error',
@@ -586,13 +543,13 @@
             );
             $this->end_controls_section();
             $this->start_controls_section(
-                'section_category',
+                'section_Article-category',
                 [
                     'label' => esc_html__('Category', 'Article'),
                 ]
             );
             $this->add_control(
-                'category_active',
+                'Article-category_active',
                 [
                     'label' => esc_html__('Category Active', 'Article'),
                     'type' => \Elementor\Controls_Manager::SWITCHER,
@@ -601,24 +558,84 @@
                     'return_value' => 'flex',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'display: {{VALUE}};',
-                        '{{WRAPPER}} .category-card2' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-card2' => 'display: {{VALUE}};',
                     ],
                 ]
             );
             $this->add_control(
-                'category_color',
+                'category_number',
+                [
+                    'label' => esc_html__('Number of visible categories', 'Article'),
+                    'type' => \Elementor\Controls_Manager::NUMBER,
+                    'default' => 1,
+                    'min' => 1,
+                    'max' => 3,
+                ]
+            );
+            $this->add_control(
+                'Article-category_color',
                 [
                     'label' => esc_html__('Color', 'Article'),
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category' => 'color: {{VALUE}};',
                     ],
                 ]
             );
             $this->add_control(
-                'category_font_size',
+                'Article-category_background',
+                [
+                    'label' => esc_html__('Color', 'Article'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => 'red',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-category' => 'background-color: {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'Article_category_border_radius',
+                [
+                    'label' => esc_html__('Border Radius', 'Article'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'default' => [
+                        'size' => 3,
+                        'unit' => 'px',
+                    ],
+                    'range' => [
+                        'px' => [
+                            'min' => 0,
+                            'max' => 50,
+                        ],
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-category' => 'border-radius: {{SIZE}}{{UNIT}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'Article-category_padding',
+                [
+                    'label' => esc_html__(' Category padding', 'Article'),
+                    'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                    'size_units' => ['px', 'em', '%'],
+                    'default' => [
+                        'top' => 5,
+                        'right' => 15,
+                        'bottom' => 5,
+                        'left' => 15,
+                        'unit' => 'px',
+                        'isLinked' => false,
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-category' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'Article-category_font_size',
                 [
                     'label' => esc_html__('Font Size', 'Article'),
                     'type' => \Elementor\Controls_Manager::SLIDER,
@@ -633,37 +650,37 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-category' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
             $this->add_control(
-                'category_font',
+                'Article-category_font',
                 [
                     'label' => esc_html__('Font Family', 'Article'),
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .Article-category' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
             $this->add_control(
-                'category_bold',
+                'Article-category_bold',
                 [
-                    'label' => esc_html__('category Bold', 'Article'),
+                    'label' => esc_html__('Category Bold', 'Article'),
                     'type' => \Elementor\Controls_Manager::SWITCHER,
                     'label_on' => esc_html__('On', 'Article'),
                     'label_off' => esc_html__('Off', 'Article'),
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .category' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
             $this->add_control(
-                'category_alignment',
+                'Article-category_alignment',
                 [
                     'label' => esc_html__('Category Alignment', 'OpenWidget'),
                     'type' => \Elementor\Controls_Manager::CHOOSE,
@@ -684,8 +701,8 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .category-card2' => 'justify-content: {{VALUE}};',
-
+                        '{{WRAPPER}} .Article-category-card2' => 'justify-content: {{VALUE}} !important;',
+                        '{{WRAPPER}} .Article-category' => 'justify-content: {{VALUE}} !important;',
 
                     ],
                     'icon_colors' => [
@@ -1017,7 +1034,7 @@
                     'return_value' => 'inline-block',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter-button' => 'display: {{VALUE}};',
                     ],
                 ]
             );
@@ -1029,7 +1046,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => '  color: {{VALUE}} !important;',
+                        '{{WRAPPER}} .Article-category-filter-button' => '  color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -1040,7 +1057,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .Article-category-filter-button' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -1051,7 +1068,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => '  background-color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter-button' => '  background-color: {{VALUE}};',
                     ],
                 ]
             );
@@ -1071,7 +1088,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-category-filter-button' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1085,7 +1102,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter-button' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -1096,7 +1113,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => '  color: {{VALUE}} !important;',
+                        '{{WRAPPER}} .Article-category-filter-button.active' => '  color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -1107,7 +1124,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .Article-category-filter-button.active' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -1118,7 +1135,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'red',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => '  background-color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter-button.active' => '  background-color: {{VALUE}};',
                     ],
                 ]
             );
@@ -1138,7 +1155,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-category-filter-button.active' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1152,7 +1169,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button.active' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter-button.active' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -1163,7 +1180,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => '  color: {{VALUE}} !important;',
+                        '{{WRAPPER}} .Article-category-filter-button:hover' => '  color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -1174,7 +1191,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .Article-category-filter-button:hover' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -1185,7 +1202,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'orange',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => '  background-color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter-button:hover' => '  background-color: {{VALUE}};',
                     ],
                 ]
             );
@@ -1206,7 +1223,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-category-filter-button:hover' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1220,7 +1237,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .category-filter-button:hover' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter-button:hover' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -1270,10 +1287,11 @@
                     'type' => \Elementor\Controls_Manager::SWITCHER,
                     'label_on' => esc_html__('On', 'Article'),
                     'label_off' => esc_html__('Off', 'Article'),
-                    'return_value' => 'inline-block',
+                    'return_value' => 'flex',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .container2' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .article-widget-container2' => 'display: {{VALUE}};',
+                        '.elementor-editor-active {{WRAPPER}} .article-widget-container2' => 'display: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -1285,9 +1303,9 @@
                     'default' => 'orange',
                     'selectors' => [
                         '{{WRAPPER}} 
-                                .input2' => '  background: {{VALUE}} !important;',
-                        '{{WRAPPER}} .input2:focus' => ' background: {{VALUE}}!important;',
-                        '{{WRAPPER}} .input2:hover' => ' background: {{VALUE}}!important;',
+                                .article-input2' => '  background: {{VALUE}} !important;',
+                        '{{WRAPPER}} .article-input2:focus' => ' background: {{VALUE}}!important;',
+                        '{{WRAPPER}} .article-input2:hover' => ' background: {{VALUE}}!important;',
                     ],
                 ]
             );
@@ -1298,7 +1316,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .input2' => ' color: {{VALUE}}!important;',
+                        '{{WRAPPER}} .article-input2' => ' color: {{VALUE}}!important;',
 
                     ],
                 ]
@@ -1310,7 +1328,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .submit-button' => ' color: {{VALUE}}!important;',
+                        '{{WRAPPER}} .article-icon2' => ' color: {{VALUE}}!important;',
                     ],
                 ]
             );
@@ -1321,7 +1339,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .input2' => ' caret-color: {{VALUE}}!important;',
+                        '{{WRAPPER}} .article-input2' => ' caret-color: {{VALUE}}!important;',
                     ],
                 ]
             );
@@ -1341,7 +1359,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .input2' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .article-input2' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1383,11 +1401,15 @@
             // Query arguments
             $args = array(
                 'post_type' => 'post',
-                'posts_per_page' => $settings['posts_per_page'] ?: 4,
+                'posts_per_page' => $settings['posts_per_page'],
                 'orderby' => 'date',
                 'order' => 'DESC'
             );
-            
+            if ($settings['all_post'] == 'all') {
+                $args['posts_per_page'] = -1;
+            }
+
+            // Search
             // Category filtering
             if (!empty($settings['categories_in'])) {
                 $args['category__in'] = $settings['categories_in'];
@@ -1424,24 +1446,29 @@
             
             // Category filter buttons
             if ($settings['filter_active'] === 'inline-block') {
-                echo '<div class="category-filter">';
-                echo '<button class="category-filter-button active" data-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
+                echo '<div class="Article-category-filter">';
+                echo '<button class="Article-category-filter-button active" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
                 
                 foreach ($all_categories as $cat_id => $cat_name) {
-                    echo '<button class="category-filter-button" data-category="' . esc_attr($cat_id) . '">' . esc_html($cat_name) . '</button>';
+                    echo '<button class="Article-category-filter-button" data-Article-category="' . esc_attr($cat_id) . '">' . esc_html($cat_name) . '</button>';
                 }
                 
                 echo '</div>';
             }
             
-            // Search box
-            if ($settings['search_active'] === 'inline-block') {
-                echo '<div class="container2">';
-                echo '<input type="text" class="input2" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '">';
-                echo '<button class="submit-button"><i class="fa fa-search"></i></button>';
+                echo '<div class="article-widget-container2">';
+                echo '<div class="search-form-container">';
+                echo '<input type="text" id="article-input2" class="article-input2 article-input" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off">';
+                echo '<div class="article-icon2">';
+                echo '<button type="button" id="search-button" class="article-submit-button article-submit">';
+                echo '<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
+                </svg>';
+                echo '</button>';
                 echo '</div>';
-            }
-            
+                echo '</div>';
+                echo '</div>';
             // Articles grid
             if ($query->have_posts()) {
                 echo '<div class="articles-grid">';
@@ -1455,7 +1482,7 @@
                     $category_names = [];
                     
                     foreach ($post_categories as $category) {
-                        $category_classes .= ' category-' . $category->term_id;
+                        $category_classes .= ' Article-category-' . $category->term_id;
                         $category_names[] = $category->name;
                     }
                     
@@ -1492,11 +1519,39 @@
                     echo '<img src="' . esc_url($image_url) . '" alt="' . esc_attr(get_the_title()) . '">';
                     
                     // Category tag
-                    if ($settings['category_active'] === 'flex' && !empty($category_names)) {
-                        echo '<div class="category-card2">';
-                        echo '<span class="category">' . esc_html(implode(', ', $category_names)) . '</span>';
-                        echo '</div>';
-                    }
+                              // Category tag
+            
+                              echo '<div class="Article-category-card2">';
+                
+                              // Mostra solo la prima categoria inizialmente
+                              if (count($category_names) > $settings['category_number']) {
+                                  // Ottieni l'URL della prima categoria
+                                  $first_cat_id = $post_categories[0]->term_id;
+                                  $first_cat_url = get_category_link($first_cat_id);
+                                  
+                                  echo '<span class="Article-category main-category">';
+                                  echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
+                                  echo ' <span class="category-toggle">+</span></span>';
+                                  
+                                  echo '<div class="hidden-categories">';
+                                  for ($i = 1; $i < count($category_names); $i++) {
+                                      $cat_id = $post_categories[$i]->term_id;
+                                      $cat_url = get_category_link($cat_id);
+                                      echo '<span class="Article-category hidden-category">';
+                                      echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category_names[$i]) . '</a>';
+                                      echo '</span>';
+                                  }
+                                  echo '</div>';
+                              } else {
+                                  foreach ($post_categories as $index => $category) {
+                                      $cat_url = get_category_link($category->term_id);
+                                      echo '<span class="Article-category">';
+                                      echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
+                                      echo '</span>';
+                                  }
+                              }
+                              
+                              echo '</div>';
                     echo '</div>';
                     
                     // Content section
@@ -1544,23 +1599,289 @@
             
             echo '</div>'; // End article-widget-container
             
+            // Add JavaScript for filtering and search functionality
+            echo '<script>
+            (function() {
+                // Wait for DOM to be fully loaded
+                document.addEventListener("DOMContentLoaded", function() {
+                    // Find the closest widget container
+                    var scriptTag = document.currentScript;
+                    var widgetContainer = scriptTag ? scriptTag.closest(".elementor-widget-container") : null;
+                    
+                    if (!widgetContainer) {
+                        // Fallback: find the widget by looking for the parent of our container
+                        var articleContainer = document.querySelector(".article-widget-container");
+                        if (articleContainer) {
+                            widgetContainer = articleContainer.closest(".elementor-widget-container");
+                        }
+                    }
+                    
+                    if (!widgetContainer) {
+                        console.error("Widget container not found");
+                        return;
+                    }
+                    
+                    // Set a unique ID for the widget container
+                    var widgetId = "article-widget-" + Math.random().toString(36).substr(2, 9);
+                    widgetContainer.id = widgetId;
+                    
+                    // Select elements within this specific widget
+                    var categoryButtons = widgetContainer.querySelectorAll(".Article-category-filter-button");
+                    var searchInput = widgetContainer.querySelector(".article-input2");
+                    var searchButton = widgetContainer.querySelector(".article-submit-button");
+                    var cards = widgetContainer.querySelectorAll(".article-card");
+                    
+                    // Gestione delle categorie espandibili
+                    var mainCategories = widgetContainer.querySelectorAll(".main-category");
+                    mainCategories.forEach(function(category) {
+                        category.addEventListener("click", function() {
+                            var parent = this.closest(".Article-category-card2");
+                            parent.classList.toggle("show-categories");
+                            // Cambia il simbolo da + a X quando è aperto
+                            var toggle = this.querySelector(".category-toggle");
+                            if (parent.classList.contains("show-categories")) {
+                                toggle.innerHTML = "×";
+                                toggle.textContent = "×";
+                            } else {
+                                toggle.innerHTML = "+";
+                                toggle.textContent = "+";
+                            }
+                        });
+                    });
+                    
+                    // Verifica se le categorie sono troppo lunghe e le posiziona correttamente
+                    function checkCategoryOverflow() {
+                        var categories = widgetContainer.querySelectorAll(".Article-category");
+                        var cardWidth = 0;
+                        
+                        categories.forEach(function(category) {
+                            var card = category.closest(".article-card");
+                            if (card && !cardWidth) {
+                                cardWidth = card.offsetWidth;
+                            }
+                            
+                            // Calcola la larghezza massima disponibile (80% della card)
+                            var maxWidth = cardWidth * 0.8;
+                            
+                            // Misura la larghezza effettiva del testo
+                            var tempSpan = document.createElement("span");
+                            tempSpan.style.visibility = "hidden";
+                            tempSpan.style.position = "absolute";
+                            tempSpan.style.whiteSpace = "nowrap";
+                            tempSpan.style.fontSize = window.getComputedStyle(category).fontSize;
+                            tempSpan.style.fontFamily = window.getComputedStyle(category).fontFamily;
+                            tempSpan.style.fontWeight = window.getComputedStyle(category).fontWeight;
+                            tempSpan.innerText = category.innerText;
+                            document.body.appendChild(tempSpan);
+                            
+                            var textWidth = tempSpan.offsetWidth;
+                            document.body.removeChild(tempSpan);
+                            
+                            // Se il testo è troppo lungo, imposta la categoria in modalità verticale
+                            if (textWidth > maxWidth) {
+                                category.classList.add("category-vertical");
+                            } else {
+                                category.classList.remove("category-vertical");
+                            }
+                        });
+                    }
+                    
+                    // Esegui il controllo iniziale
+                    setTimeout(checkCategoryOverflow, 100);
+                    
+                    // Riesegui il controllo quando la finestra viene ridimensionata
+                    window.addEventListener("resize", checkCategoryOverflow);
+                    
+                    // Fix for browser autocomplete styling
+                    if (searchInput) {
+                        // Store the computed styles
+                        var computedStyle = window.getComputedStyle(searchInput);
+                        var bgColor = computedStyle.backgroundColor;
+                        var textColor = computedStyle.color;
+                        
+                        // Apply these styles when autocomplete is active
+                        searchInput.addEventListener("animationstart", function(e) {
+                            if (e.animationName === "onAutoFillStart") {
+                                // Browser autocomplete is active
+                                this.style.backgroundColor = bgColor;
+                                this.style.color = textColor;
+                            }
+                        });
+                        
+                        // Also handle change events
+                        searchInput.addEventListener("change", function() {
+                            this.style.backgroundColor = bgColor;
+                            this.style.color = textColor;
+                        });
+                    }
+                });
+            })();
+            </script>';
+            
             // Add CSS
             echo '
             <style>
+            
+            .Article-category.main-category {
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: space-between;
+                width: auto;
+                max-width: fit-content;
+                height: auto;
+                min-height: auto;
+                user-select: none;
+                word-break: break-all;
+            }
+            
+             .category-toggle {
+                margin-left: 5px;
+                font-weight: bold;
+                transition: transform 0.3s ease;
+                 user-select: none;
+                word-break: break-all;
+            }
+            .hidden-categories {
+                display: none;
+                width: 100%;
+                clear: both;
+                position: absolute;
+                left: 0;
+                z-index: 10;
+                word-break: break-all;
+            }
+            
+             .category-toggle {
+                margin-left: 5px;
+                font-weight: bold;
+                transition: transform 0.3s ease;
+            }
+        
+            
+            .hidden-category {
+                display: inline-block;
+                cursor: pointer;
+                margin-bottom: 1%;                
+                margin-right: 10px;
+                background-color: red !important;
+                color: white;
+                font-size: 12px;
+                border-radius: 3px;
+                white-space: nowrap;
+                margin-bottom:40%;
+            }
+            
+            .show-categories .hidden-categories {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+            
+            .show-categories .category-toggle {
+                transform: rotate(89deg);
+                transition: transform 0.6s ease;           
+            }
+            
             .article-widget-container {
                 width: 100%;
                 max-width: 1200px;
                 margin: 0 auto;
             }
+            .article-widget-container2 {
+                position: relative;
+                --size-button: 40px;
+                color: white;
+                padding: 10px;
+                white-space: nowrap;
+                display: none;          
+                width: 100%;
+            }
             
-            .category-filter {
+            .article-icon2 {
+                position: absolute;
+                width: var(--size-button) !important;
+                height: var(--size-button) !important;
+                top: 1px;
+                left: 1px;
+                padding: 8px;
+                pointer-events: none;
+                z-index: 2;
+            }
+            
+            .article-input2 {
+                padding-left: var(--size-button) !important;
+                height: var(--size-button);
+                font-size: 15px;
+                color: black;
+                outline: none;
+                width: var(--size-button);
+                transition: all ease 0.3s !important;
+                background: orange !important;
+                border-radius: 60px !important;
+                cursor: pointer;
+                caret-color: blue;
+                display: inline-block;
+                box-sizing: border-box;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .article-input2:focus {
+                width: 100% !important;
+                white-space: nowrap;
+                cursor: text;
+                outline: none;
+                box-shadow: none !important;
+                -webkit-box-shadow: none !important;
+                -moz-box-shadow: none !important;
+            }
+            
+            
+            
+            
+            .article-submit-button, 
+            .article-submit-button:focus,
+            .article-submit-button:hover {
+                background-color: transparent !important;
+                border: none;
+                padding: 0;
+                color: green !important;            
+            } 
+            
+            .article-submit-button {
+                background-color: transparent !important;
+                border: none;
+                padding: 0;
+                color: inherit !important;
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+                display: block;
+                position: relative;
+                z-index: 3;
+            }
+            
+            .article-submit-button svg {
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+            
+            .search-form-container {
+                position: relative;
+                display: flex;
+                align-items: center;
+                width: 100%;
+            }
+            .Article-category-filter {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 10px;
                 margin-bottom: 20px;
             }
             
-            .category-filter-button {
+            .Article-category-filter-button {
                 padding: 8px 16px;
                 border: none;
                 border-radius: 4px;
@@ -1568,31 +1889,10 @@
                 transition: all 0.3s ease;
             }
             
-            .container2 {
-                position: relative;
-                margin-bottom: 20px;
-            }
-            
-            .input2 {
-                width: 100%;
-                padding: 10px 40px 10px 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-            }
-            
-            .submit-button {
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                background: none;
-                border: none;
-                cursor: pointer;
-            }
             
             .articles-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
                 gap: 20px;
             }
             
@@ -1608,7 +1908,7 @@
                 box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             }
             
-                        .article-image {
+             .article-image {
                 position: relative;
                 height: 0;
                 padding-bottom: 100%; /* Creates a perfect square */
@@ -1624,19 +1924,38 @@
                 object-fit: cover;
                 object-position: center;
             }
-            .category-card2 {
+          .Article-category-card2 {
                 position: absolute;
-                top: 10px;
+                top: 5px;
                 left: 10px;
-                display: flex;
+                display: none;
+                width: auto;
+                min-width: 100px;
+                max-width: 100%;
             }
-            
-            .category {
-                background-color: red;
+             .Article-category.category-vertical {
+                display: block;
+                margin-bottom: 5px;
+                white-space: normal;
+                max-width: 100%;
+            }
+          .Article-category {                
+                margin-right: 5px;
+                margin-top: 2px;
+                position: relative;
+                display: none;
+                background-color: red !important;
                 color: white;
-                padding: 5px 10px;
                 font-size: 12px;
                 border-radius: 3px;
+                width: auto;
+                max-width: fit-content;
+                display: inline-block;
+                padding: 3px 6px;
+                overflow: visible;
+                text-overflow: clip;
+                white-space: normal;
+                line-height: 1.2;
             }
             
             .article-content {
@@ -1688,43 +2007,11 @@
             
             @media (max-width: 768px) {
                 .articles-grid {
-                    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                    grid-template-columns: repeat(auto-fill, minmax(378px, 1fr));
                 }
             }
             </style>
             
-                      <script>
-            jQuery(document).ready(function($) {
-                // Category filter functionality
-                $(".category-filter-button").click(function() {
-                    var category = $(this).data("category");
-                    
-                    // Update active button
-                    $(".category-filter-button").removeClass("active");
-                    $(this).addClass("active");
-                    
-                    // Show/hide articles based on category
-                    if (category === "all") {
-                        $(".article-card").show();
-                    } else {
-                        $(".article-card").hide();
-                        $(".article-card.category-" + category).show();
-                    }
-                });
-                
-                // Search functionality
-                $(".input2").on("keyup", function() {
-                    var value = $(this).val().toLowerCase();
-                    
-                    $(".article-card").filter(function() {
-                        var title = $(this).find(".article-title").text().toLowerCase();
-                        var content = $(this).find(".description").text().toLowerCase();
-                        // Only search in actual content, not in any HTML/CSS that might be displayed
-                        var matches = title.indexOf(value) > -1 || content.indexOf(value) > -1;
-                        $(this).toggle(matches);
-                    });
-                });
-            });
-            </script>';
+                  ';
         }
     }
