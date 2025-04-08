@@ -78,7 +78,7 @@
             $this->add_control(
                 'column_width',
                 [
-                    'label' => esc_html__('Column Min Width', 'Article'),
+                    'label' => esc_html__('Columns Width', 'Article'),
                     'type' => \Elementor\Controls_Manager::SLIDER,
                     'default' => [
                         'size' => 360,
@@ -622,10 +622,10 @@
                     'type' => \Elementor\Controls_Manager::DIMENSIONS,
                     'size_units' => ['px', 'em', '%'],
                     'default' => [
-                        'top' => 5,
-                        'right' => 15,
-                        'bottom' => 5,
-                        'left' => 15,
+                        'top' => -1,
+                        'right' => -1,
+                        'bottom' => -1,
+                        'left' => -1,
                         'unit' => 'px',
                         'isLinked' => false,
                     ],
@@ -759,7 +759,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .description' => 'text-align: {{VALUE}};',
+                        '{{WRAPPER}} .Article-description' => 'text-align: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -795,7 +795,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .description' => 'color: {{VALUE}} !important;',
+                        '{{WRAPPER}} .Article-description' => 'color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -815,7 +815,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .description' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-description' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -826,7 +826,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .description' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .Article-description' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -840,7 +840,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .description' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-description' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -877,7 +877,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .description' => 'text-align: {{VALUE}};',
+                        '{{WRAPPER}} .Article-description' => 'text-align: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -1533,11 +1533,11 @@
                                   echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
                                   echo ' <span class="category-toggle">+</span></span>';
                                   
-                                  echo '<div class="hidden-categories">';
+                                  echo '<div class="Article-hidden-categories">';
                                   for ($i = 1; $i < count($category_names); $i++) {
                                       $cat_id = $post_categories[$i]->term_id;
                                       $cat_url = get_category_link($cat_id);
-                                      echo '<span class="Article-category hidden-category">';
+                                      echo '<span class="Article-category Article-hidden-category">';
                                       echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category_names[$i]) . '</a>';
                                       echo '</span>';
                                   }
@@ -1582,7 +1582,7 @@
                     echo '<h2 class="article-title title">' . get_the_title() . '</h2>';
                     
                     // Excerpt
-                    echo '<div class="description">' . $excerpt . '...</div>';
+                    echo '<div class="Article-description">' . $excerpt . '...</div>';
                     
                     // Read more link
                     echo '<a href="' . get_permalink() . '" class="read-more">' . esc_html($settings['read_more_text'] ?: 'Leggi di più') . '</a>';                    
@@ -1727,55 +1727,54 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: space-between;
-                width: auto;
-                max-width: fit-content;
-                height: auto;
-                min-height: auto;
+                width: fit-content;
+                height: fit-content;
+                min-height: fit-content;
                 user-select: none;
                 word-break: break-all;
+                position: relative; 
             }
             
              .category-toggle {
-                margin-left: 5px;
                 font-weight: bold;
                 transition: transform 0.3s ease;
-                 user-select: none;
+                user-select: none;
                 word-break: break-all;
-            }
-            .hidden-categories {
+                align-items: left;
+                justify-content: left;
+                margin-left: -5px;
+                margin-top: 5px;
+                }
+            .Article-hidden-categories {
                 display: none;
                 width: 100%;
                 clear: both;
                 position: absolute;
                 left: 0;
-                z-index: 10;
+                z-index: 100;
                 word-break: break-all;
+                top: 100%; /* Position it right below the main category */
+                margin-top: 5px; /* Add a small gap */
             }
             
-             .category-toggle {
-                margin-left: 5px;
-                font-weight: bold;
-                transition: transform 0.3s ease;
-            }
-        
             
-            .hidden-category {
+            .Article-hidden-category {
                 display: inline-block;
                 cursor: pointer;
-                margin-bottom: 1%;                
+                margin-bottom: 2%;                
                 margin-right: 10px;
                 background-color: red !important;
                 color: white;
                 font-size: 12px;
                 border-radius: 3px;
                 white-space: nowrap;
-                margin-bottom:40%;
             }
             
-            .show-categories .hidden-categories {
+            .show-categories .Article-hidden-categories {
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: flex-start;
+
             }
             
             .show-categories .category-toggle {
@@ -1785,7 +1784,6 @@
             
             .article-widget-container {
                 width: 100%;
-                max-width: 1200px;
                 margin: 0 auto;
             }
             .article-widget-container2 {
@@ -1929,9 +1927,7 @@
                 top: 5px;
                 left: 10px;
                 display: none;
-                width: auto;
-                min-width: 100px;
-                max-width: 100%;
+                width: 100%;
             }
              .Article-category.category-vertical {
                 display: block;
@@ -1955,7 +1951,7 @@
                 overflow: visible;
                 text-overflow: clip;
                 white-space: normal;
-                line-height: 1.2;
+                line-height: 1.5;
             }
             
             .article-content {
@@ -1981,7 +1977,7 @@
                 display: block;
             }
             
-            .description {
+            .Article-description {
                 margin-bottom: 15px;
                 line-height: 1.5;
             }

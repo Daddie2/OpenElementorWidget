@@ -309,7 +309,7 @@
                         'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
                         'type' => \Elementor\Controls_Manager::SLIDER,
                         'default' => [
-                            'size' => 30,
+                            'size' => 20,
                             'unit' => 'px',
                         ],
                         'range' => [
@@ -393,7 +393,7 @@
                         'type' => \Elementor\Controls_Manager::SWITCHER,
                         'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                         'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                        'return_value' => 'align-block',
+                        'return_value' => 'flex',
                         'default' => 'none',
                         'selectors' => [
                             '{{WRAPPER}} .latest-posts-hover-widget-date' => 'display: {{VALUE}} !important;',
@@ -704,7 +704,7 @@
                         'type' => \Elementor\Controls_Manager::SWITCHER,
                         'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                         'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
-                        'return_value' => 'inline-block',
+                        'return_value' => 'flex',
                         'default' => 'none',
                         'selectors' => [
                             '{{WRAPPER}} .latest-posts-hover-widget-category' => 'display: {{VALUE}};',
@@ -811,6 +811,7 @@
                         'default' => 'bold',
                         'selectors' => [
                             '{{WRAPPER}} .latest-posts-hover-widget-category:hover' => 'font-weight: {{VALUE}} !important;',
+                            '{{WRAPPER}} .latest-posts-hover-widget-category:focus' => 'font-weight: {{VALUE}} !important;',
                         ],
                     ]
                 );
@@ -1548,11 +1549,11 @@
                 }
                 $args = [
                     'posts_per_page' => $settings['posts_per_page'],
-                    'category_name' => isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '',
+                    'category_name' => isset($_GET['hover-category']) ? sanitize_text_field($_GET['hover-category']) : '',
                     'tag' => isset($_GET['tags']) ? sanitize_text_field($_GET['tags']) : '',
                 ];
                 $args['s']=null;
-                if (isset($_GET['category']) && ($_GET['category']) == "all") {
+                if (isset($_GET['hover-category']) && ($_GET['hover-category']) == "all") {
                     unset($args['category_name']);
                 }
 
@@ -1625,7 +1626,7 @@
         if (($args_C['include'] == null && $args_C['exclude'] == null) || $settings['include_all'] == 'on') {
             if (!isset($all_button_displayed)) {
                 echo '<button type="button" data-category="all" class="latest-posts-hover-button';
-                if (isset($_GET['category']) && $_GET['category'] == 'all') {
+                if (isset($_GET['hover-category']) && $_GET['hover-category'] == 'all') {
                     echo ' active';
                 }
                 echo '">' . $all . '</button>';
@@ -1655,7 +1656,7 @@
                 $category_name = $category->name;
                 $category_slug = $category->slug;
                 echo '<button type="button" data-category="' . $category_slug . '" class="latest-posts-hover-button';
-                if (isset($_GET['category']) && $_GET['category'] == $category_slug) {
+                if (isset($_GET['hover-category']) && $_GET['hover-category'] == $category_slug) {
                     echo ' active';
                 }
                 echo '">' . $category_name . '</button>';
@@ -1675,8 +1676,8 @@
                                         
                                         // Mostra il pulsante "All" solo se non è già stato mostrato
                                         if ($settings['include_all'] == 'on' && !isset($all_button_displayed)) {
-                                            echo '<button type="submit" name="category" value="all" class="latest-posts-hover-button';
-                                            if (isset($_GET['category']) && $_GET['category'] == 'all') {
+                                            echo '<button type="button" data-category="all" class="latest-posts-hover-button';
+                                            if (isset($_GET['hover-category']) && $_GET['hover-category'] == 'all') {
                                                 echo ' active';
                                             }
                                             echo '">' . $all . '</button>';
@@ -1694,7 +1695,7 @@
                                                     }
                                                     
                                                     echo '<button type="button" data-category="' . $category->slug . '" class="latest-posts-hover-button';
-                                                    if (isset($_GET['category']) && $_GET['category'] == $category->slug) {
+                                                    if (isset($_GET['hover-category']) && $_GET['hover-category'] == $category->slug) {
                                                         echo ' active';
                                                     }
                                                     echo '">' . $category->name . '</button>';
@@ -1731,7 +1732,7 @@
                                     
                                             if (!empty($related_posts)) {
                                                 echo '<button type="button" data-category="' . $category->slug . '" class="latest-posts-hover-button';
-                                                if (isset($_GET['category']) && $_GET['category'] == $category->slug) {
+                                                if (isset($_GET['hover-category']) && $_GET['hover-category'] == $category->slug) {
                                                     echo ' active';
                                                 }
                                                 echo '">' . $category->name . '</button>';
@@ -1757,101 +1758,145 @@
     echo '</div>';
     echo '</div>'; 
 
-    // Add a unique ID to the widget container
-    $widget_id = 'latest-posts-hover-' . uniqid();
-    echo '<script>
-    (function() {
-        // Wait for DOM to be fully loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            // Find the closest widget container
-            var scriptTag = document.currentScript;
-            var widgetContainer = scriptTag ? scriptTag.closest(".elementor-widget-container") : null;
-            
-            if (!widgetContainer) {
-                // Fallback: find the widget by looking for the parent of our search container
-                var searchContainer = document.querySelector(".latest-posts-hover-search");
-                if (searchContainer) {
-                    widgetContainer = searchContainer.closest(".elementor-widget-container");
-                }
-            }
-            
-            if (!widgetContainer) {
-                console.error("Widget container not found");
-                return;
-            }
-            
-            // Set a unique ID for the widget container
-            widgetContainer.id = "' . $widget_id . '";
-            
-            // Select elements within this specific widget
-            var categoryButtons = widgetContainer.querySelectorAll(".latest-posts-hover-button");
-            var searchInput = widgetContainer.querySelector(".latest-posts-hover-input2");
-            var searchButton = widgetContainer.querySelector(".latest-posts-hover-submit-button");
-            var cards = widgetContainer.querySelectorAll(".latest-posts-hover-card2");
-            var searchInOptions = ' . json_encode($settings["search_in"] ?: ["title"]) . ';
-            
-            // Fix for browser autocomplete styling
-            if (searchInput) {
-                // Store the computed styles
-                var computedStyle = window.getComputedStyle(searchInput);
-                var bgColor = computedStyle.backgroundColor;
-                var textColor = computedStyle.color;
+        // Add a unique ID to the widget container
+        $widget_id = 'latest-posts-hover-' . uniqid();
+        echo '<script>
+        (function() {
+            // Wait for DOM to be fully loaded
+            document.addEventListener("DOMContentLoaded", function() {
+                // Find the closest widget container
+                var scriptTag = document.currentScript;
+                var widgetContainer = scriptTag ? scriptTag.closest(".elementor-widget-container") : null;
                 
-                // Apply these styles when autocomplete is active
-                searchInput.addEventListener("animationstart", function(e) {
-                    if (e.animationName === "onAutoFillStart") {
-                        // Browser autocomplete is active
+                if (!widgetContainer) {
+                    // Fallback: find the widget by looking for the parent of our search container
+                    var searchContainer = document.querySelector(".latest-posts-hover-search");
+                    if (searchContainer) {
+                        widgetContainer = searchContainer.closest(".elementor-widget-container");
+                    }
+                }
+                
+                
+                // Set a unique ID for the widget container
+                widgetContainer.id = "' . $widget_id . '";
+                
+                // Select elements within this specific widget
+                var categoryButtons = widgetContainer.querySelectorAll(".latest-posts-hover-button");
+                var searchInput = widgetContainer.querySelector(".latest-posts-hover-input2");
+                var searchButton = widgetContainer.querySelector(".latest-posts-hover-submit-button");
+                if (localStorage.getItem("widgetId_2")) {
+                    var savedWidgetId = localStorage.getItem("widgetId_2");
+                    var savedCategory = localStorage.getItem("selectedCategory_" + savedWidgetId);
+                    
+                    // Loop through all category buttons to find the matching one
+                    categoryButtons.forEach(function(btn) {
+                        if (btn.getAttribute("data-category") === savedCategory) {
+                            // Instead of just btn.click(), manually trigger the same actions
+                            // that would happen in the click event handler
+                            var category = btn.getAttribute("data-category");
+                            
+                            // Update active state
+                            categoryButtons.forEach(function(b) {
+                                b.classList.remove("active");
+                            });
+                            btn.classList.add("active");
+                            
+                            // Show all cards initially
+                            widgetContainer.querySelectorAll(".latest-posts-hover-card2").forEach(function(card) {
+                                card.style.display = "block";
+                            });
+                            
+                            // Filter by category
+                            if(category && category !== "all") {
+                                widgetContainer.querySelectorAll(".latest-posts-hover-card2").forEach(function(card) {
+                                    if (!card.classList.contains("category-" + category)) {
+                                        card.style.display = "none";
+                                    }
+                                });
+                            }
+                            
+                            // Remove from localStorage after processing
+                            localStorage.clear();
+                        }
+                    });
+                }
+                
+                var cards = widgetContainer.querySelectorAll(".latest-posts-hover-card2");
+                var cards = widgetContainer.querySelectorAll(".latest-posts-hover-card2");
+                var searchInOptions = ' . json_encode($settings["search_in"] ?: ["title"]) . ';
+                var selectedPageId = ' . intval($selected_page_id) . ';
+                
+                // Fix for browser autocomplete styling
+                if (searchInput) {
+                    // Store the computed styles
+                    var computedStyle = window.getComputedStyle(searchInput);
+                    var bgColor = computedStyle.backgroundColor;
+                    var textColor = computedStyle.color;
+                    
+                    // Apply these styles when autocomplete is active
+                    searchInput.addEventListener("animationstart", function(e) {
+                        if (e.animationName === "onAutoFillStart") {
+                            // Browser autocomplete is active
+                            this.style.backgroundColor = bgColor;
+                            this.style.color = textColor;
+                        }
+                    });
+                    
+                    // Also handle change events
+                    searchInput.addEventListener("change", function() {
                         this.style.backgroundColor = bgColor;
                         this.style.color = textColor;
-                    }
-                });
-                
-                // Also handle change events
-                searchInput.addEventListener("change", function() {
-                    this.style.backgroundColor = bgColor;
-                    this.style.color = textColor;
-                });
-            }
-            // Handle category button clicks
-            categoryButtons.forEach(function(button) {
-                button.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    
-                    var category = button.getAttribute("data-category");
-                    
-                    // Update active state
-                    categoryButtons.forEach(function(btn) {
-                        btn.classList.remove("active");
                     });
-                    button.classList.add("active");
-                    
-                    // Show all cards initially
-                    widgetContainer.querySelectorAll(".latest-posts-hover-card2").forEach(function(card) {
-                        card.style.display = "block";
-                    });
-                    
-                    if(category && category !== "all") {
-                        // Hide cards that don\'t match the category
-                        widgetContainer.querySelectorAll(".latest-posts-hover-card2").forEach(function(card) {
-                            if (!card.classList.contains("category-" + category)) {
-                                card.style.display = "none";
-                            }
-                        });
-                    }
-                    
-                    // Riapplica la ricerca corrente dopo il cambio di categoria
-                    if (searchInput && searchInput.value.trim() !== "") {
-                        performSearch();
-                    }
-                    
-                    // Update card widths
-                    updateCardWidths();
-                });
-            });
+                }
+                               // Handle category button clicks
+                categoryButtons.forEach(function(button) {
+                    button.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        var category = button.getAttribute("data-category");
+                        localStorage.setItem("selectedCategory_" + widgetContainer.id, category);
 
-            // Search function
-                    // Search function
-                    // Search function
+                        // Update active state
+                        categoryButtons.forEach(function(btn) {
+                            btn.classList.remove("active");
+                        });
+                        button.classList.add("active");
+                        
+                        // Show all cards initially
+                        widgetContainer.querySelectorAll(".latest-posts-hover-card2").forEach(function(card) {
+                            card.style.display = "block";
+                        });
+                        
+                        if(category && category !== "all") {
+                            widgetContainer.querySelectorAll(".latest-posts-hover-card2").forEach(function(card) {
+                                if (!card.classList.contains("category-" + category)) {
+                                    card.style.display = "none";
+                                }
+                            });
+                        }
+
+                        
+                        // Riapplica la ricerca corrente dopo il cambio di categoria
+                        if (searchInput && searchInput.value.trim() !== "") {
+                            performSearch();
+                        }
+                        
+                        // Update card widths
+                        updateCardWidths();
+                        widget2=localStorage.getItem("widgetId_2");
+                      
+                        // Memorizza la categoria selezionata in sessionStorage
+       if (window.location.search.includes("hover-category=")) {
+                            var currentUrl = new URL(window.location.href);
+                         currentUrl.searchParams.delete("hover-category");
+                            window.history.pushState({}, "", currentUrl.toString());
+                                localStorage.setItem("widgetId_2",widgetContainer.id);
+                                        location.reload();
+                        }
+                    });
+                });
+                    
+    
+                // Search function
             function performSearch() {
                 if (!searchInput) return;
                 
@@ -1919,9 +1964,7 @@
                     card.style.display = matchFound ? "block" : "none";
                     if (matchFound) found = true;
                 });
-                
-                // Update card widths
-                updateCardWidths();
+                   updateCardWidths();
                 
                 // Handle error message if present
                 var errorMessage = widgetContainer.querySelector(".error-message");
@@ -1930,8 +1973,9 @@
                 }
             }
 
-            // Update card widths based on visible cards
-            function updateCardWidths() {
+    
+                // Update card widths based on visible cards
+              function updateCardWidths() {
                 var visibleCards = Array.from(widgetContainer.querySelectorAll(".latest-posts-hover-card2")).filter(function(card) {
                     return card.style.display !== "none";
                 });
@@ -1964,9 +2008,30 @@
             
             // Initialize card widths on load
             updateCardWidths();
-        });
-    })();
-    </script>';           
+                
+                // Controlla se c\'è una categoria selezionata in sessionStorage
+             
+                
+                // Gestisci i click sui link delle categorie
+                var categoryLinks = widgetContainer.querySelectorAll(".latest-posts-hover-widget-category");
+                categoryLinks.forEach(function(link) {
+                    link.addEventListener("click", function(e) {
+                        if (selectedPageId !=current_page_id) {
+                            // Cerca il pulsante di categoria corrispondente
+                            categoryButtons.forEach(function(button) {
+                                var buttonCategory = button.textContent.trim().toLowerCase();
+                                if (buttonCategory === categoryName) {
+                                localStorage.setItem("selectedCategory_" + widgetContainer.id, buttonCategory);
+                                localStorage.setItem("widgetId_", widgetContainer.id);
+                                button.click();
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        })();
+        </script>';
                     echo '<div class="latest-posts-hover-widget-card2-container">';
 
                     foreach ($posts as $post) {
@@ -2003,13 +2068,11 @@
                         $post_numb = get_the_date('Y-m-d', $post->ID);
                         $date_array = explode('-', $post_numb);
                         // Check if the post has a featured image
-                    // ... existing code ...
                     $featured_image = get_the_post_thumbnail_url($post->ID);
                     if (!$featured_image) {
                         // If not, use the custom default image
                         $featured_image = $settings['default_image']['url'];
                     }
-
                     // Get categories and create class string
                     $categories = get_the_category($post->ID);
                     $category_classes = '';
@@ -2081,8 +2144,8 @@
                             if (!empty($categories)) {
                                 echo '<div class="latest-posts-hover-widget-category-card2">';
                                 foreach ($categories as $category) {
-                                    $category_link = add_query_arg('category', $category->slug, $page_link);
-                                    echo '<a href="' . $category_link . '" class="latest-posts-hover-widget-category"> ' . ucfirst($category->name) . ' </a>';
+                                    // Modifica per reindirizzare alla pagina selezionata con parametro categoria
+                                    echo '<a href="' . esc_url(add_query_arg('hover-category', $category->slug, $page_link)) . '" class="latest-posts-hover-widget-category" data-text="' . ucfirst($category->name) . '" data-category="' . $category->slug . '"> ' . ucfirst($category->name) . ' </a>';
                                 }
                                 echo    '</div>';
                             }
@@ -2096,13 +2159,19 @@
                                     $i++;
                                     // Assicurati che il nome della categoria sia pulito e coerente
                                     $category_name = trim($category->name);
-                                    echo '<a href="' . get_category_link($category->term_id) . '" class="latest-posts-hover-widget-category">' . $category_name . '</a>';
-                                 
+                                    echo '<a href="' . get_category_link($category->term_id) . '" class="latest-posts-hover-widget-category" data-text="' . $category_name . '">' . $category_name . '</a>';
                                 }
                                 echo '</div>';
                             }
+                        } 
+                        if(is_admin()){
+                            echo '<p class="latest-posts-hover-widget-title">'. $post_title.'<p/>';
                         }
-                        echo '<p class="latest-posts-hover-widget-description"  onclick="window.location.href=\'' . $post_link . '\'">' . $post_content . ' </p> 
+                        else{
+                                                    echo '<p class="latest-posts-hover-widget-description"  onclick="window.location.href=\'' . $post_link . '\'">' . $post_content . ' </p>';
+
+                        }
+                        echo'
                                 </div>
                                 </div>';
                     }
@@ -2155,6 +2224,12 @@
                     flex-wrap: wrap;
                     word-break: break-all;
                     }
+                      .latest-posts-hover-widget .latest-posts-hover-widget-tag-card2 {
+                    display: flex;
+                    justify-content:right; 
+                    flex-wrap: wrap;
+                    word-break: break-all;
+                    }
                     .latest-posts-hover-filter form {
                     display: flex;
                     flex-wrap: wrap;
@@ -2168,12 +2243,7 @@
                     justify-content:right; 
                     flex-wrap: wrap;
                     }
-                .latest-posts-hover-widget .latest-posts-hover-widget-tag-card2 {
-                    display: flex;
-                    justify-content:right; 
-                    flex-wrap: wrap;
-                    word-break: break-all;
-                    }
+              
                 .latest-posts-hover-button {
                     background-color: #007BFF;
                     color: #fff;
@@ -2308,22 +2378,22 @@
                             text-align: center;
                             word-break: break-all;
                 }
-                            latest-posts-hover-widget-category:hover latest-posts-hover-widget-category:focus{
+                      .latest-posts-hover-widget-category:hover, 
+                        .latest-posts-hover-widget-category:focus {
                             font-weight: bold !important;
-                             position: relative;
-                            }
-     .latest-posts-hover-widget-category::after {
-                    content: attr(data-text);
-                    display: block;
-                    font-weight: bold;
-                    height: 0;
-                    overflow: hidden;
-                    visibility: hidden;
-                }
-                            latest-posts-hover-widget-date:hover  latest-posts-hover-widget-date:focus{
+                        }  
+                            latest-posts-hover-widget-category::after {
+                            content: attr(data-text);
+                            display: block;
+                            font-weight: bold;
+                            height: 0;
+                            overflow: hidden;
+                            visibility: hidden;
+                        }
+                            latest-posts-hover-widget-date:hover,  
+                        .latest-posts-hover-widget-date:focus {
                             font-weight: bold !important;
-                            }
-                    
+                        }
                         .latest-posts-hover-widget-description {
                             margin-top: 0px;
                             margin-bottom: 0;            
