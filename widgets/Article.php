@@ -1,5 +1,4 @@
-    
-    <?php
+        <?php
     class Article_Widget extends \Elementor\Widget_Base
     {
 
@@ -95,39 +94,6 @@
                     ],
                 ]
             );
-            $this->add_control(
-                'filter_alignment',
-                [
-                    'label' => esc_html__('Filter Alignment', 'OpenWidget'),
-                    'type' => \Elementor\Controls_Manager::CHOOSE,
-                    'options' => [
-                        'left' => [
-                            'title' => esc_html__('Left', 'OpenWidget'),
-                            'icon' => 'mce-ico mce-i-alignleft',
-                        ],
-                        'center' => [
-                            'title' => esc_html__('Center', 'OpenWidget'),
-                            'icon' => 'mce-ico mce-i-aligncenter',
-                        ],
-                        'right' => [
-                            'title' => esc_html__('Right', 'OpenWidget'),
-                            'icon' => 'mce-ico mce-i-alignright',
-                        ],
-                    ],
-                    'default' => 'left',
-                    'toggle' => true,
-                    'selectors' => [
-                        '{{WRAPPER}} .Article-category-filter' => 'justify-content: {{VALUE}};',
-                    ],
-                    'icon_colors' => [
-                        'left' => 'white',
-                        'center' => 'white',
-                        'right' => 'white',
-                    ],
-                ]
-            );
-            
-           
             $this->end_controls_section();
             $this->start_controls_section(
                 'section_error',
@@ -239,13 +205,49 @@
                 ]
             );
             $this->add_control(
+                'title_active',
+                [
+                    'label' => esc_html__('Title disable', 'Article'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Article'),
+                    'label_off' => esc_html__('Off', 'Article'),
+                    'return_value' => 'none',
+                    'default' => 'flex',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-title' => 'display: {{VALUE}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'title_link',
+                [
+                    'label' => esc_html__('Active Title Link', 'Article'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Article'),
+                    'label_off' => esc_html__('Off', 'Article'),
+                    'return_value' => 'allowed',
+                    'default' => 'not-allowed',
+                ]
+            );
+            $this->add_control(
                 'Title_color',
                 [
                     'label' => esc_html__('Color', 'Article'),
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'color: {{VALUE}}!important;',
+                        '{{WRAPPER}} .Article-title' => 'color: {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'Title color_hover',
+                [
+                    'label' => esc_html__('Color hover', 'Article'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => 'red',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-title:hover' => 'color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -265,7 +267,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-title' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -276,7 +278,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .Article-title' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -290,7 +292,21 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-title' => 'font-weight: {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_title_normal',
+                [
+                    'label' => esc_html__('Hover Title Normal', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                    'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                    'return_value' => 'normal',
+                    'default' => 'bold',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-title:hover' => 'font-weight: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -316,7 +332,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .title' => 'text-align: {{VALUE}};',
+                        '{{WRAPPER}} .Article-title' => 'text-align: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -342,7 +358,21 @@
                     'return_value' => 'inline-block',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .Article-date' => 'display: {{VALUE}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'date_link',
+                [
+                    'label' => esc_html__('Disable date Link', 'Article'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Article'),
+                    'label_off' => esc_html__('Off', 'Article'),
+                    'return_value' => 'none',
+                    'default' => 'all',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-date' => 'pointer-events: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -353,7 +383,52 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-date' => 'color: {{VALUE}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'Date_color_hover',
+                [
+                    'label' => esc_html__('Color hover', 'Article'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => 'red',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-date:hover' => 'color: {{VALUE}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_date_normal',
+                [
+                    'label' => esc_html__('Hover Date Normal', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
+                    'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
+                    'return_value' => 'normal',
+                    'default' => 'bold',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-date:hover' => 'font-weight: {{VALUE}} !important;',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'hover_date_font_size',
+                [
+                    'label' => esc_html__('Hover Font Size', 'Latest-Posts-Hover'),
+                    'type' => \Elementor\Controls_Manager::SLIDER,
+                    'default' => [
+                        'size' => 18,
+                        'unit' => 'px',
+                    ],
+                    'range' => [
+                        'px' => [
+                            'min' => 1,
+                            'max' => 120,
+                        ],
+                    ],
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-date:hover' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -373,7 +448,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-date' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -384,7 +459,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .Article-date' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -398,7 +473,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .date' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-date' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -424,7 +499,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .date-card2' => 'justify-content: {{VALUE}};',
+                        '{{WRAPPER}} .Article-date-card2' => 'justify-content: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -450,7 +525,21 @@
                     'return_value' => 'inline-block',
                     'default' => 'none',
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'display: {{VALUE}};',
+                        '{{WRAPPER}} .Article-tag' => 'display: {{VALUE}};',
+                    ],
+                ]
+            );
+            $this->add_control(
+                'tag_link',
+                [
+                    'label' => esc_html__('Disable tag Link', 'Article'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Article'),
+                    'label_off' => esc_html__('Off', 'Article'),
+                    'return_value' => 'none',
+                    'default' => 'all',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-tag' => 'pointer-events: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -461,7 +550,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'black',
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-tag' => 'color: {{VALUE}};',
                     ],
                 ]
             );
@@ -481,7 +570,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-tag' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -492,7 +581,7 @@
                     'type' => \Elementor\Controls_Manager::FONT,
                     'default' => "Work Sans",
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'font-family: {{VALUE}}',
+                        '{{WRAPPER}} .Article-tag' => 'font-family: {{VALUE}}',
                     ],
                 ]
             );
@@ -506,7 +595,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .tag' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-tag' => 'font-weight: {{VALUE}};',
                     ],
                 ]
             );
@@ -532,7 +621,7 @@
                     'default' => 'left',
                     'toggle' => true,
                     'selectors' => [
-                        '{{WRAPPER}} .tag-card2' => 'justify-content: {{VALUE}};',
+                        '{{WRAPPER}} .Article-tag' => 'text-align: {{VALUE}};',
                     ],
                     'icon_colors' => [
                         'left' => 'white',
@@ -576,9 +665,9 @@
             $this->add_control(
                 'Article-category_color',
                 [
-                    'label' => esc_html__('Color', 'Article'),
+                    'label' => esc_html__('Color Text', 'Article'),
                     'type' => \Elementor\Controls_Manager::COLOR,
-                    'default' => 'black',
+                    'default' => 'white',
                     'selectors' => [
                         '{{WRAPPER}} .Article-category' => 'color: {{VALUE}};',
                     ],
@@ -587,11 +676,23 @@
             $this->add_control(
                 'Article-category_background',
                 [
-                    'label' => esc_html__('Color', 'Article'),
+                    'label' => esc_html__('Color Background', 'Article'),
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'red',
                     'selectors' => [
                         '{{WRAPPER}} .Article-category' => 'background-color: {{VALUE}} !important;',
+                    ],
+                ]
+            );
+       
+            $this->add_control(
+                'Article-category_color_hover',
+                [
+                    'label' => esc_html__('Color Text Hover', 'Article'),
+                    'type' => \Elementor\Controls_Manager::COLOR,
+                    'default' => 'black',
+                    'selectors' => [
+                        '{{WRAPPER}} .Article-category:hover' => 'color: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -738,6 +839,17 @@
                 ]
             );
             $this->add_control(
+                'content_link',
+                [
+                    'label' => esc_html__('Active Content Link', 'Article'),
+                    'type' => \Elementor\Controls_Manager::SWITCHER,
+                    'label_on' => esc_html__('On', 'Article'),
+                    'label_off' => esc_html__('Off', 'Article'),
+                    'return_value' => 'allowed',
+                    'default' => 'not-allowed',
+                ]
+            );
+            $this->add_control(
                 'content_alignment',
                 [
                     'label' => esc_html__('Content Alignment', 'OpenWidget'),
@@ -833,7 +945,7 @@
             $this->add_control(
                 'content_bold',
                 [
-                    'label' => esc_html__('category Bold', 'Article'),
+                    'label' => esc_html__('Content Bold', 'Article'),
                     'type' => \Elementor\Controls_Manager::SWITCHER,
                     'label_on' => esc_html__('On', 'Article'),
                     'label_off' => esc_html__('Off', 'Article'),
@@ -902,7 +1014,7 @@
                 [
                     'label' => esc_html__('Read More Text', 'Article'),
                     'type' => \Elementor\Controls_Manager::TEXT,
-                    'default' => 'Leggi di più',
+                    'default' => 'Read more',
                     'placeholder' => esc_html__('Read More', 'Article'),
                 ]
             );
@@ -914,7 +1026,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'red',
                     'selectors' => [
-                        '{{WRAPPER}} .read-more' => 'background-color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-read-more' => 'background-color: {{VALUE}};',
                     ],
                 ]
             );
@@ -926,7 +1038,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
-                        '{{WRAPPER}} .read-more' => 'color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-read-more' => 'color: {{VALUE}};',
                     ],
                 ]
             );
@@ -938,7 +1050,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'darkred',
                     'selectors' => [
-                        '{{WRAPPER}} .read-more:hover' => 'background-color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-read-more:hover' => 'background-color: {{VALUE}};',
                     ],
                 ]
             );
@@ -950,7 +1062,7 @@
                     'type' => \Elementor\Controls_Manager::COLOR,
                     'default' => 'white',
                     'selectors' => [
-                        '{{WRAPPER}} .read-more:hover' => 'color: {{VALUE}};',
+                        '{{WRAPPER}} .Article-read-more:hover' => 'color: {{VALUE}};',
                     ],
                 ]
             );
@@ -971,7 +1083,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .read-more' => 'font-size: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-read-more' => 'font-size: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -991,7 +1103,7 @@
                         'isLinked' => false,
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .read-more' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-read-more' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1012,7 +1124,7 @@
                         ],
                     ],
                     'selectors' => [
-                        '{{WRAPPER}} .read-more' => 'border-radius: {{SIZE}}{{UNIT}};',
+                        '{{WRAPPER}} .Article-read-more' => 'border-radius: {{SIZE}}{{UNIT}};',
                     ],
                 ]
             );
@@ -1169,7 +1281,7 @@
                     'return_value' => 'bold',
                     'default' => 'normal',
                     'selectors' => [
-                        '{{WRAPPER}} .Article-category-filter-button.active' => 'font-weight: {{VALUE}};',
+                        '{{WRAPPER}} .Article-category-filter-button.active' => 'font-weight: {{VALUE}} !important;',
                     ],
                 ]
             );
@@ -1424,7 +1536,6 @@
             
             // Get all categories for filter buttons
             $all_categories = [];
-            if ($settings['filter_active'] === 'inline-block') {
                 $categories = get_categories();
                 foreach ($categories as $category) {
                     if (!empty($settings['categories_in'])) {
@@ -1439,13 +1550,7 @@
                         $all_categories[$category->term_id] = $category->name;
                     }
                 }
-            }
-            
-            // Start output
-            echo '<div class="article-widget-container">';
-            
-            // Category filter buttons
-            if ($settings['filter_active'] === 'inline-block') {
+                echo '<div class="article-widget-container">';
                 echo '<div class="Article-category-filter">';
                 echo '<button class="Article-category-filter-button active" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
                 
@@ -1454,7 +1559,7 @@
                 }
                 
                 echo '</div>';
-            }
+            
             
                 echo '<div class="article-widget-container2">';
                 echo '<div class="search-form-container">';
@@ -1472,10 +1577,10 @@
             // Articles grid
             if ($query->have_posts()) {
                 echo '<div class="articles-grid">';
-                
+                 $selected_page_id = $settings['selected_page'];
                 while ($query->have_posts()) {
                     $query->the_post();
-                    
+
                     // Get post categories
                     $post_categories = get_the_category();
                     $category_classes = '';
@@ -1491,7 +1596,6 @@
                     if (!$image_url && isset($settings['default_image']['url'])) {
                         $image_url = $settings['default_image']['url'];
                     }
-                    
                                         // Get post content
                                         $content = get_the_content();
                                         if ($settings['remove_title'] === 'on') {
@@ -1530,15 +1634,28 @@
                                   $first_cat_url = get_category_link($first_cat_id);
                                   
                                   echo '<span class="Article-category main-category">';
-                                  echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
+                                  if($selected_page_id!=0){
+                                    $cat_url = get_permalink($selected_page_id).'?Article-category='. $first_cat_id;
+                                    echo '<a href="' . $cat_url . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
+                                }
+                                else{
+                                     echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
+
+                                }
                                   echo ' <span class="category-toggle">+</span></span>';
                                   
                                   echo '<div class="Article-hidden-categories">';
                                   for ($i = 1; $i < count($category_names); $i++) {
                                       $cat_id = $post_categories[$i]->term_id;
-                                      $cat_url = get_category_link($cat_id);
+                                      $cat_url = get_category_link($cat_id); 
                                       echo '<span class="Article-category Article-hidden-category">';
-                                      echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category_names[$i]) . '</a>';
+                                      if($selected_page_id!=0){
+                                        $cat_url = get_permalink($selected_page_id).'?Article-category='.$cat_id;
+                                        echo '<a href="'.$cat_url. '" class="Article-category">'. esc_html($category_names[$i]). '</a>';  
+                                    }
+                                    else{
+                                        echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category_names[$i]) . '</a>';
+                                    }
                                       echo '</span>';
                                   }
                                   echo '</div>';
@@ -1546,7 +1663,13 @@
                                   foreach ($post_categories as $index => $category) {
                                       $cat_url = get_category_link($category->term_id);
                                       echo '<span class="Article-category">';
-                                      echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
+                                      if($selected_page_id!=0){
+                                        $cat_url = get_permalink($selected_page_id).'?Article-category='.$category->term_id;
+                                        echo '<a href="' .$cat_url. '" class="Article-category">' . esc_html($category->name) . '</a>';
+                                      }
+                                      else{
+                                        echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
+                                      }
                                       echo '</span>';
                                   }
                               }
@@ -1558,39 +1681,76 @@
                     echo '<div class="article-content">';
                     
                     // Date
-                    if ($settings['date_active'] === 'inline-block') {
-                        echo '<div class="date-card2">';
-                        echo '<span class="date">' . get_the_date() . '</span>';
+                    $post_numb = get_the_date('Y-m-d');
+                    $post_date = get_the_date('j F Y');
+                    $date_array = explode('-', $post_numb);
+                $date_parts = explode(' ', $post_date);
+                $i = 2;
+                $date_array[1] = $date_array[0] . '/' . $date_array[1];
+                $date_array[2] = $date_array[1] . '/' . $date_array[2];
+                        echo '<div class="Article-date-card2">';
+                        if ($selected_page_id != 0) {
+                            $page_link = get_permalink($selected_page_id);
+
+                            foreach ($date_parts as $part) {
+                                if ($i == 1) {
+                                    $date_array[1] = $date_array[1] . '/01 m';
+                                }
+                                $date_link = add_query_arg('date', $date_array[$i], $page_link);
+                                echo ' <a href="' . esc_url($date_link) . '" class="Article-date">' . ucfirst($part) . '&nbsp</a>';
+                                $i -= 1;
+                            }
+                        }
+                            else {
+                                $i = 2;
+                                foreach ($date_parts as $part) {
+                                    // Correggo la formattazione del link della data
+                                    $date_link = home_url() . '/' . $date_array[$i];
+                                    echo '<a href="' . esc_url($date_link) . '" class="Article-date">' . ucfirst($part) . '&nbsp</a> ';
+                                    $i -= 1;
+                                }
+                            }
                         echo '</div>';
-                    }
                     
                     // Tags
-                    if ($settings['tag_active'] === 'inline-block') {
                         $tags = get_the_tags();
                         if ($tags) {
                             echo '<div class="tag-card2">';
                             $tag_names = [];
                             foreach ($tags as $tag) {
                                 $tag_names[] = $tag->name;
-                            }
-                            echo '<span class="tag">' . esc_html(implode(', ', $tag_names)) . '</span>';
+                            
+                            if($selected_page_id!= 0){
+                                $tag_link = add_query_arg('tag', $tag->slug, $page_link);
+                            }  
+                            if($selected_page_id== 0){
+                                $tag_link=get_tag_link($tag->term_id);
+                             }
+                        echo '<a class="Article-tag" href="' . $tag_link . '">' . $tag->name . '&nbsp;</a>';
+
+                        }
+                      
                             echo '</div>';
                         }
-                    }
-                    
+
                     // Title
-                    echo '<h2 class="article-title title">' . get_the_title() . '</h2>';
-                    
-                    // Excerpt
-                    echo '<div class="Article-description">' . $excerpt . '...</div>';
-                    
-                    // Read more link
-                    echo '<a href="' . get_permalink() . '" class="read-more">' . esc_html($settings['read_more_text'] ?: 'Leggi di più') . '</a>';                    
-                    echo '</div>'; // End article-content
-                    echo '</div>'; // End article-card
+                    if($settings['title_link'] != 'allowed'){
+                        echo '<a class="Article-title" style="pointer-events: none;">' . get_the_title() . '</a>';
+                    }
+                    else{
+                     echo '<a href="' . get_permalink() . '" class="Article-title">' . get_the_title() . '</a>';
+                    }
+                    if($settings['content_link']!= 'allowed'){
+                        echo '<div class="Article-description" style="cursor: default;">'. $excerpt. '...</div>';
+                    }
+                    else{
+                        echo '<div class="Article-description"> <a href="' . get_permalink() . '" >'. $excerpt. '... <a></div>';
+                    }
+                    echo '<a href="' . get_permalink() . '" class="Article-read-more">' . esc_html($settings['read_more_text']) . '</a>';                    
+                    echo '</div>'; 
+                    echo '</div>'; 
                 }
-                
-                echo '</div>'; // End articles-grid
+                echo '</div>';
                 wp_reset_postdata();
             } else {
                 // No posts found
@@ -1627,6 +1787,84 @@
                     
                     // Select elements within this specific widget
                     var categoryButtons = widgetContainer.querySelectorAll(".Article-category-filter-button");
+                    var searchInput = widgetContainer.querySelector(".article-input2");
+                    var searchButton = widgetContainer.querySelector(".article-submit-button");
+                    var cards = widgetContainer.querySelectorAll(".article-card");
+                    if (window.location.search.includes("Article-category=")) {
+                        var currentUrl = new URL(window.location.href);
+                        var categoryId = currentUrl.searchParams.get("Article-category");
+                        
+                        // Find and activate the button that corresponds to this category
+                        categoryButtons.forEach(function(btn) {
+                            // First remove active class from all buttons
+                            btn.classList.remove("active");
+                            
+                            if (btn.getAttribute("data-Article-category") === categoryId) {
+                                btn.classList.add("active");
+                            }
+                        });
+                        
+                        // If no button was activated and we have an "all" button, activate it
+                        var activeButton = widgetContainer.querySelector(".Article-category-filter-button.active");
+                        if (!activeButton) {
+                            var allButton = widgetContainer.querySelector(\'.Article-category-filter-button[data-Article-category="all"]\');
+                            if (allButton) {
+                                allButton.classList.add("active");
+                            }
+                        }
+                        
+                        // Filter the cards based on the category
+                        
+                        cards.forEach(function(card) {
+                            if (categoryId === "all") {
+                                card.style.display = "block";
+                            } else if (card.classList.contains("Article-category-" + categoryId)) {
+                                card.style.display = "block";
+                            } else {
+                                card.style.display = "none";
+                            }
+                        }); 
+                    }
+                    // Handle category filter buttons
+                    categoryButtons.forEach(function(button) {
+                        button.addEventListener("click", function(e) {
+                            e.preventDefault(); // Prevent default button behavior
+                            
+                            // Remove active class from all buttons
+                            categoryButtons.forEach(function(btn) {
+                                btn.classList.remove("active");
+                            });
+                            
+                            // Add active class to clicked button
+                            this.classList.add("active");
+                            
+                            // Get category ID
+                            var categoryId = this.getAttribute("data-Article-category");
+                            
+                            // Store the selected category in localStorage
+           
+                            
+                            // Update URL by removing any existing category parameter and adding the new one
+                            var currentUrl = new URL(window.location.href);
+                            currentUrl.searchParams.delete("Article-category");
+                            
+                          
+                            
+                            // Update browser history without reloading
+                            window.history.pushState({}, "", currentUrl.toString());
+                            
+                    
+                            cards.forEach(function(card) {
+                                if (categoryId === "all") {
+                                    card.style.display = "block";
+                                } else if (card.classList.contains("Article-category-" + categoryId)) {
+                                    card.style.display = "block";
+                                } else {
+                                    card.style.display = "none";
+                                }
+                            });
+                        });
+                    });               
                     var searchInput = widgetContainer.querySelector(".article-input2");
                     var searchButton = widgetContainer.querySelector(".article-submit-button");
                     var cards = widgetContainer.querySelectorAll(".article-card");
@@ -1717,8 +1955,6 @@
                 });
             })();
             </script>';
-            
-            // Add CSS
             echo '
             <style>
             
@@ -1726,7 +1962,7 @@
                 cursor: pointer;
                 display: inline-flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: flex-start;
                 width: fit-content;
                 height: fit-content;
                 min-height: fit-content;
@@ -1742,8 +1978,8 @@
                 word-break: break-all;
                 align-items: left;
                 justify-content: left;
-                margin-left: -5px;
                 margin-top: 5px;
+                 z-index: 10;;
                 }
             .Article-hidden-categories {
                 display: none;
@@ -1844,7 +2080,8 @@
                 background-color: transparent !important;
                 border: none;
                 padding: 0;
-                color: green !important;            
+                color: green !important;
+            
             } 
             
             .article-submit-button {
@@ -1885,6 +2122,8 @@
                 border-radius: 4px;
                 cursor: pointer;
                 transition: all 0.3s ease;
+                display: none;
+                font-weight: normal;
             }
             
             
@@ -1936,8 +2175,9 @@
                 max-width: 100%;
             }
           .Article-category {                
-                margin-right: 5px;
                 margin-top: 2px;
+                margin-right: 10px;
+                margin-left:-3px;
                 position: relative;
                 display: none;
                 background-color: red !important;
@@ -1958,23 +2198,41 @@
                 padding: 15px;
             }
             
-            .date-card2, .tag-card2 {
+            .Article-date-card2, .Article-tag-card2 {
                 display: flex;
-                margin-bottom: 10px;
+                z-index: 100;
             }
+            .Article-tag {
+                margin-top: 0px;
+                margin-bottom: 0px;
+                font-size: 18px;
+                color:black;
+                display:none;
+                text-align: center;
+                word-break: break-all;
+                }
+                 .Article-date {
+                font-size: 18px;
+                color:black;
+                display:none;
+                text-align: center;
+                word-break: break-all;
+                z-index: 100;
+                font-weight: normal;
+                }
+                .Article-date:hover {
+            font-weight: bold !important;
+                }
+              .Article-title:hover {
+            font-weight: bold !important;
+                }
             
-            .date, .tag {
-                font-size: 14px;
-                color: #666;
-            }
-            
-          .article-title {
-                margin: 10px 0;
-                word-wrap: break-word;
+          .Article-title {
+                font-weight: normal;
                 overflow-wrap: break-word;
                 hyphens: auto;
                 width: 100%;
-                display: block;
+                display: flex;
             }
             
             .Article-description {
@@ -1982,7 +2240,7 @@
                 line-height: 1.5;
             }
             
-            .read-more {
+            .Article-read-more {
                 display: inline-block;
                 background-color: red;
                 color: white;
@@ -1992,7 +2250,7 @@
                 transition: background-color 0.3s ease;
             }
             
-            .read-more:hover {
+            .Article-read-more:hover {
                 background-color: darkred;
             }
             

@@ -304,6 +304,17 @@
                     ]
                 );
                 $this->add_control(
+                    'Title_color_hover',
+                    [
+                        'label' => esc_html__('Color hover', 'Latest-Posts-Hover'),
+                        'type' => \Elementor\Controls_Manager::COLOR,
+                        'default' => 'black',
+                        'selectors' => [
+                            '{{WRAPPER}} .latest-posts-hover-widget-title:hover' => 'color: {{VALUE}}!important;',
+                        ],
+                    ]
+                );
+                $this->add_control(
                     'title_font_size',
                     [
                         'label' => esc_html__('Font Size', 'Latest-Posts-Hover'),
@@ -2131,7 +2142,7 @@
                             $i = 2;
                             foreach ($date_parts as $part) {
                                 // Correggo la formattazione del link della data
-                                $date_link = home_url() . '/?date=' . $date_array[$i];
+                                $date_link = home_url() . '/' . $date_array[$i];
                                 echo '<a href="' . esc_url($date_link) . '" class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a> ';
                                 $i -= 1;
                             }
@@ -2165,7 +2176,7 @@
                             }
                         } 
                         if(is_admin()){
-                            echo '<p class="latest-posts-hover-widget-title">'. $post_title.'<p/>';
+                            echo '<p class="latest-posts-hover-widget-description">' . $post_content . ' </p>';
                         }
                         else{
                                                     echo '<p class="latest-posts-hover-widget-description"  onclick="window.location.href=\'' . $post_link . '\'">' . $post_content . ' </p>';
