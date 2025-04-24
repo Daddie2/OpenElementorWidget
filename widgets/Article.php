@@ -139,7 +139,7 @@
                 $this->add_control(
                     'Article_border',
                     [
-                        'label' => esc_html__('Card dorder width', 'Article'),
+                        'label' => esc_html__('Card border width', 'Article'),
                         'type' => \Elementor\Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 1,
