@@ -71,7 +71,7 @@
                         'type' => \Elementor\Controls_Manager::COLOR,
                         'default' => '#f8f8f8',
                         'selectors' => [
-                            '{{WRAPPER}} .info' => 'background-color:{{VALUE}}!important;',
+                            '{{WRAPPER}} .latest-posts-hover-widget-info' => 'background-color:{{VALUE}}!important;',
                         ],
                     ]
                 );
@@ -85,7 +85,7 @@
                         'step' => 0.1,
                         'default' => 0.8,
                         'selectors' => [
-                            '{{WRAPPER}} .info' => 'filter:opacity({{VALUE}})!important;',
+                            '{{WRAPPER}} .latest-posts-hover-widget-info' => 'filter:opacity({{VALUE}})!important;',
                         ],
                     ]
                 );
@@ -178,7 +178,7 @@
                             ],
                         ],
                         'selectors' => [
-                            '{{WRAPPER}} .info' => 'height: {{SIZE}}{{UNIT}};',
+                            '{{WRAPPER}} .latest-posts-hover-widget-info' => 'height: {{SIZE}}{{UNIT}};',
                         ],
                     ]
                 );
@@ -1009,9 +1009,18 @@
                     ]
                 );
                 $this->add_control(
+                    'reset_button',
+                    [
+                        'label' => esc_html__('Reset Filter Text', 'Latest-Posts-Hover'),
+                        'type' => \Elementor\Controls_Manager::TEXT,
+                        'default' => 'Reset Filter',
+                        'placeholder' => esc_html__('Reset Filter', 'Latest-Posts-Hover'),
+                    ]
+                );
+                $this->add_control(
                     'filter_active',
                     [
-                        'label' => esc_html__('Button filter Active', 'Latest-Posts-Hover'),
+                        'label' => esc_html__('Category button filter Active', 'Latest-Posts-Hover'),
                         'type' => \Elementor\Controls_Manager::SWITCHER,
                         'label_on' => esc_html__('On', 'Latest-Posts-Hover'),
                         'label_off' => esc_html__('Off', 'Latest-Posts-Hover'),
@@ -1026,7 +1035,7 @@
                 $this->add_control(
                     'filter_alignment',
                     [
-                        'label' => esc_html__(' Button filter Alignment', 'OpenWidget'),
+                        'label' => esc_html__('Button filter Alignment', 'OpenWidget'),
                         'type' => \Elementor\Controls_Manager::CHOOSE,
                         'options' => [
                             'flex-start' => [
@@ -1561,36 +1570,36 @@
                 $args = [
                     'posts_per_page' => $settings['posts_per_page'],
                     'category_name' => isset($_GET['hover-category']) ? sanitize_text_field($_GET['hover-category']) : '',
-                    'tag' => isset($_GET['tags']) ? sanitize_text_field($_GET['tags']) : '',
+                    'tag' => isset($_GET['hover-tag']) ? sanitize_text_field($_GET['hover-tag']) : '',
                 ];
                 $args['s']=null;
                 if (isset($_GET['hover-category']) && ($_GET['hover-category']) == "all") {
                     unset($args['category_name']);
                 }
 
-                if (isset($_GET['date'])) {
+                if (isset($_GET['hover-date'])) {
                     // Check the format of the provided date
-                    if (substr($_GET['date'], -1) == 'm') {
+                    if (substr($_GET['hover-date'], -1) == 'm') {
                         $date_query = [
-                            'year'  => intval(substr($_GET['date'], 0, 4)),
-                            'month' => intval(substr($_GET['date'], 5, 2)),
+                            'year'  => intval(substr($_GET['hover-date'], 0, 4)),
+                            'month' => intval(substr($_GET['hover-date'], 5, 2)),
                             'day'   => array(
                                 'start' => 1,
-                                'end'   => cal_days_in_month(CAL_GREGORIAN, intval(substr($_GET['date'], 5, 2)), intval(substr($_GET['date'], 0, 4))),
+                                'end'   => cal_days_in_month(CAL_GREGORIAN, intval(substr($_GET['hover-date'], 5, 2)), intval(substr($_GET['hover-date'], 0, 4))),
                             ),                    ];
                     }
-                    if (strlen($_GET['date']) === 4) {
+                    if (strlen($_GET['hover-date']) === 4) {
                         // Only year provided (YYYY)
                         $date_query = [
-                        'year' => intval($_GET['date']),
+                        'year' => intval($_GET['hover-date']),
                         ];
                     } 
-                    else if ( strlen($_GET['date']) === 10) {
+                    else if ( strlen($_GET['hover-date']) === 10) {
                         // Full date provided (YYYY-MM-DD) - reuse previous logic
                     $date_query = [
-                        'year' => intval(substr($_GET['date'], 0, 4)),
-                        'month' => intval(substr($_GET['date'], 5, 2)),
-                        'day' => intval(substr($_GET['date'], 8, 2)),
+                        'year' => intval(substr($_GET['hover-date'], 0, 4)),
+                        'month' => intval(substr($_GET['hover-date'], 5, 2)),
+                        'day' => intval(substr($_GET['hover-date'], 8, 2)),
                     ];
                     }
                     $args['date_query'] = $date_query;
@@ -1623,6 +1632,16 @@
                     
                 // Modifica i pulsanti delle categorie per usare AJAX invece di form submit
     echo '<div class="latest-posts-hover-filter">';
+    echo '<button type="button" id="reset-filters-button" class="latest-posts-hover-button reset-filters"';
+    // Se non ci sono filtri attivi, nascondi il pulsante con CSS ma mantieni lo spazio
+    if (!isset($_GET['hover-date']) && !isset($_GET['hover-tag']) && !isset($_GET['hover-category'])) {
+        echo ' style="display: none !important;"';
+    }
+    else{
+        echo ' style="display: flex !important;"';
+
+    }
+    echo '>'.$settings['reset_button'].'</button>';
     // Sostituisci i button con elementi che usano data attributes
     if ($settings['related_category'] != 'on' || $settings['related_category'] == 'on' && $settings['categories_in'] == null) {
         $args_C['taxonomy'] = 'category';
@@ -2019,6 +2038,19 @@
             
             // Initialize card widths on load
             updateCardWidths();
+                // Handle reset filters button
+                var resetFiltersButton = widgetContainer.querySelector("#reset-filters-button");
+                if (resetFiltersButton) {
+                    resetFiltersButton.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        // Create a new URL without date and tags parameters
+                        var currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.delete("hover-date");
+                        currentUrl.searchParams.delete("hover-tag");
+                        // Redirect to the cleaned URL
+                        window.location.href = currentUrl.toString();
+                    });
+                }
                 
                 // Controlla se c\'è una categoria selezionata in sessionStorage
              
@@ -2099,14 +2131,14 @@
                         echo '<div class="latest-posts-hover-card2' . esc_attr($category_classes) . '" style="background-image: url(' . $featured_image . ')" onclick="window.location.href=\'' . $post_link . '\'">';
                     }
                         echo '
-                                <div class="info">
+                                <div class="latest-posts-hover-widget-info">
                                 <a class="latest-posts-hover-widget-title" href="' . $post_link . '">' . $post_title . ' <a/>';
                         if (!empty($tags)) {
                             if ($selected_page_id != 0) {
                                 echo '<div class="latest-posts-hover-widget-tag-card2">';
                                 $page_link = get_permalink($selected_page_id);
                                 foreach ($tags as $tag) {
-                                    $tag_link = add_query_arg('tags', $tag->slug, $page_link);
+                                    $tag_link = add_query_arg('hover-tag', $tag->slug, $page_link);
                                     echo '<a href="' . $tag_link . '" class="latest-posts-hover-widget-tag"> ' . $tag->name . '</a> ';
                                 }
                                 echo '</div>';
@@ -2132,7 +2164,7 @@
                                 if ($i == 1) {
                                     $date_array[1] = $date_array[1] . '/01 m';
                                 }
-                                $date_link = add_query_arg('date', $date_array[$i], $page_link);
+                                $date_link = add_query_arg('hover-date', $date_array[$i], $page_link);
                                 echo ' <a href="' . esc_url($date_link) . '" class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a>';
                                 $i -= 1;
                             }
@@ -2305,7 +2337,7 @@
     }
 
             
-                .latest-posts-hover-widget .info {
+                .latest-posts-hover-widget .latest-posts-hover-widget-info {
                     position: relative;
                     width: 100%;
                     height: 500px;
@@ -2320,7 +2352,7 @@
                             gap: 0; /* Rimuove lo spazio tra gli elementi flex */
                 }
                     
-                        .latest-posts-hover-widget .info:before {
+                        .latest-posts-hover-widget .latest-posts-hover-widget-info:before {
                             z-index: -1;
                             display: block;
                             position: absolute;
@@ -2337,8 +2369,8 @@
                             transition: transform 0.5s ease-out;
                         }
                     
-                        .latest-posts-hover-widget .latest-posts-hover-card2:hover .info,
-                        .latest-posts-hover-widget .latest-posts-hover-card2:hover .info:before {
+                        .latest-posts-hover-widget .latest-posts-hover-card2:hover .latest-posts-hover-widget-info,
+                        .latest-posts-hover-widget .latest-posts-hover-card2:hover .latest-posts-hover-widget-info:before {
                             transform: translateY(0) translateZ(0);
                         }
                         .latest-posts-hover-widget-title {
