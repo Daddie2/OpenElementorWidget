@@ -2019,10 +2019,27 @@
                 // Run the query
                 $query = new \WP_Query($args);
                 
-                // Get all categories for filter buttons
+                // Trova le categorie effettivamente presenti nei risultati della query
+                $categories_in_query = [];
+                if ($query->have_posts()) {
+                    foreach ($query->posts as $post_obj) {
+                        $post_categories = get_the_category($post_obj->ID);
+                        if (!empty($post_categories) && !is_wp_error($post_categories)) {
+                            foreach ($post_categories as $post_category) {
+                                $categories_in_query[$post_category->term_id] = true;
+                            }
+                        }
+                    }
+                }
+                
+                // Get all categories for filter buttons, ma solo quelle con almeno un articolo nella query
                 $all_categories = [];
                     $categories = get_categories();
                     foreach ($categories as $category) {
+                        // Salta le categorie che non compaiono in nessun articolo della query
+                        if (empty($categories_in_query[$category->term_id])) {
+                            continue;
+                        }
                         if (!empty($settings['categories_in'])) {
                             if (in_array($category->term_id, $settings['categories_in'])) {
                                 $all_categories[$category->term_id] = $category->name;
@@ -2055,15 +2072,15 @@
                 }
                 
                 echo '<div class="Article-category-filter">';
-                echo '<button class="Article-category-filter-button active" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
+                if (!empty($settings['include_all']) && $settings['include_all'] === 'on') {
+                    echo '<button class="Article-category-filter-button active" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
+                }
                     
                     foreach ($all_categories as $cat_id => $cat_name) {
                         echo '<button class="Article-category-filter-button" data-Article-category="' . esc_attr($cat_id) . '">' . esc_html($cat_name) . '</button>';
                     }
                     
                     echo '</div>';
-                
-                
                     echo '<div class="article-widget-container2">';
                     echo '<div class="search-form-container">';
                     echo '<input type="text" id="article-input2" class="article-input2 article-input" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off">';
@@ -2132,7 +2149,7 @@
                                             $excerpt = implode(' ', array_slice($words, 0, $word_limit));
                         
                         // Article card HTML
-                        echo '<div class="article-card">';
+                            echo '<div class="article-card' . esc_attr($category_classes) . '">';
                         echo '<div class="article-image">';
                         echo '<div class="article-image-inner">'; // Nuovo contenitore per il bordo
                         if (has_post_thumbnail($post->ID)) {
@@ -2545,6 +2562,7 @@
                     align-items: left;
                     justify-content: left;
                     margin-top: 5px;
+                    margin-left 2px;
                     z-index: 10;;
                     }
                 .Article-hidden-categories {
