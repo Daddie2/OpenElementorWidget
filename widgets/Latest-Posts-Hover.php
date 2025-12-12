@@ -1774,6 +1774,7 @@
                                     }
                     // Replace the search form section with this improved version
     // Replace the existing script with this improved version
+    echo '</div>';
     echo '<div class="latest-posts-hover-widget-container2 latest-posts-hover-search">';
     echo '<div class="search-form-container">';
     echo '<input type="text" id="latest-posts-hover-input2" class="latest-posts-hover-input2 latest-posts-hover-input" placeholder="' . $place . '" autocomplete="off">';
