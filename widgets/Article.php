@@ -1555,18 +1555,6 @@
                         ],
                     ]
                 );
-
-                $this->add_control(
-                    'related_category',
-                    [
-                        'label' => esc_html__('Show categories related to the one one you selected', 'Article'),
-                        'type' => \Elementor\Controls_Manager::SWITCHER,
-                        'label_on' => esc_html__('On', 'Article'),
-                        'label_off' => esc_html__('Off', 'Article'),
-                        'return_value' => 'on',
-                        'default' => 'off',
-                    ]
-                );
                 $this->add_control(
                     'include_all',
                     [
@@ -2177,7 +2165,7 @@
                                         echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
 
                                     }
-                                    echo ' <span class="category-toggle">+</span></span>';
+                                    echo '<span class="category-toggle">+</span></span>';
                                     
                                     echo '<div class="Article-hidden-categories">';
                                     for ($i = 1; $i < count($category_names); $i++) {
@@ -2518,7 +2506,8 @@
                     height: fit-content;
                     min-height: fit-content;
                     user-select: none;
-                    word-break: break-all;
+                    white-space: nowrap;
+                    word-break: normal;
                     position: relative; 
                 }
                 .Article-active-filters {
@@ -2558,21 +2547,21 @@
                     font-weight: bold;
                     transition: transform 0.3s ease;
                     user-select: none;
-                    word-break: break-all;
-                    align-items: left;
-                    justify-content: left;
-                    margin-top: 5px;
-                    margin-left 2px;
-                    z-index: 10;;
+                    display: inline-block;
+                    white-space: nowrap;
+                    margin-top: 3px;
+                    margin-left: -08px;
+                    z-index: 10;
                     }
                 .Article-hidden-categories {
                     display: none;
-                    width: 100%;
+                    width: auto;
                     clear: both;
                     position: absolute;
                     left: 0;
                     z-index: 100;
-                    word-break: break-all;
+                    word-break: normal;
+                    white-space: nowrap;
                     top: 100%; /* Position it right below the main category */
                     margin-top: 5px; /* Add a small gap */
                 }
