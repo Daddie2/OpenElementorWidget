@@ -2131,9 +2131,19 @@
                                                                         $clean_content = preg_replace('/\s+/', ' ', $clean_content); // Normalize whitespace
                                                                         $clean_content = preg_replace('/[\r\n]+/', ' ', $clean_content); // Replace line breaks with spaces
                                                                         $clean_content = trim($clean_content); // Remove leading/trailing whitespace
-                                                                                // Limit words for excerpt
                                                                                 $word_limit = wp_is_mobile() ? $settings['content_word_mobile'] : $settings['content_word_pc'];
                                                                                 $words = explode(' ', $clean_content);
+                                                                                $title_for_length = get_the_title();
+                                                                                $title_for_length = preg_replace('/\s+/', ' ', $title_for_length);
+                                                                                $title_word_count = count(explode(' ', trim($title_for_length)));
+                                                                                if ($title_word_count < 4) {
+                                                                                    $word_limit += 12;
+                                                                                } elseif ($title_word_count < 7) {
+                                                                                    $word_limit += 6;
+                                                                                }
+                                                                                if ($word_limit > count($words)) {
+                                                                                    $word_limit = count($words);
+                                                                                }
                                             $excerpt = implode(' ', array_slice($words, 0, $word_limit));
                         
                         // Article card HTML
@@ -2276,16 +2286,17 @@
                         }
                         echo '<a href="' . get_permalink() . '" class="Article-read-more">' . esc_html($settings['read_more_text']) . '</a>';                    
                         echo '</div>'; 
-                        echo '</div>'; 
+                        echo '</div>';     
                     }
                     echo '</div>';
+                    echo '</div>'; 
                     wp_reset_postdata();
                 } else {
                     // No posts found
                     echo '<div class="error-message">' . esc_html($settings['error_message'] ?: 'No post found') . '</div>';
                 }
                 
-                echo '</div>'; // End article-widget-container
+            // End article-widget-container
                 
                 // Add JavaScript for filtering and search functionality
                 echo '<script>
@@ -2757,7 +2768,6 @@
                     max-width: 100%;
                 }
             .Article-category {                
-                    margin-top: 2px;
                     margin-right: 10px;
                     margin-left:-3px;
                     position: relative;
@@ -2822,7 +2832,7 @@
                     display:block;
                     text-align: center;
                     overflow-wrap: break-word;
-                                                flex-direction: column;
+                    flex-direction: column;
 
                 }
                 
