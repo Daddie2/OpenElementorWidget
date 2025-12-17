@@ -1046,6 +1046,17 @@
                     ]
                 );
                 $this->add_control(
+                    'text_color_hover',
+                    [
+                        'label' => esc_html__('Color Hover', 'Article'),
+                        'type' => \Elementor\Controls_Manager::COLOR,
+                        'default' => 'red',
+                        'selectors' => [
+                            '{{WRAPPER}} .Article-description:hover a' => 'color: {{VALUE}} !important;',
+                        ],
+                    ]
+                );
+                $this->add_control(
                     'content_font_size',
                     [
                         'label' => esc_html__('Content Font Size', 'Article'),
@@ -1087,6 +1098,20 @@
                         'default' => 'normal',
                         'selectors' => [
                             '{{WRAPPER}} .Article-description' => 'font-weight: {{VALUE}};',
+                        ],
+                    ]
+                );
+                 $this->add_control(
+                    'content_hover_bold',
+                    [
+                        'label' => esc_html__('Content Hover Bold', 'Article'),
+                        'type' => \Elementor\Controls_Manager::SWITCHER,
+                        'label_on' => esc_html__('On', 'Article'),
+                        'label_off' => esc_html__('Off', 'Article'),
+                        'return_value' => 'bold',
+                        'default' => 'normal',
+                        'selectors' => [
+                            '{{WRAPPER}} .Article-description:hover' => 'font-weight: {{VALUE}};',
                         ],
                     ]
                 );
@@ -2561,9 +2586,16 @@
                     display: inline-block;
                     white-space: nowrap;
                     margin-top: 3px;
-                    margin-left: -08px;
                     z-index: 10;
+                    font-size: 20px;
                     }
+                    @media (max-width: 767px) {
+                    .category-toggle{
+                    font-size: 27px;
+                    margin-left: 2px;
+                    }
+                    }
+
                 .Article-hidden-categories {
                     display: none;
                     width: auto;
@@ -2789,7 +2821,7 @@
                     font-weight: bold!important;
                 }
                 .article-content {
-                    padding: 15px;
+                  padding: 15px;
                 }
                 
                 .Article-date-card2, .Article-tag-card2 {
@@ -2840,7 +2872,9 @@
                     margin-bottom: 15px;
                     line-height: 1.5;
                 }
-                
+                .Article-description:hover{ 
+                    color: red !important;
+                }
                 .Article-read-more {
                     display: inline-block;
                     background-color: red;
