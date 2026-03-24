@@ -803,7 +803,7 @@
                         'type' => \Elementor\Controls_Manager::COLOR,
                         'default' => 'white',
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category' => 'color: {{VALUE}};',
+                            '{{WRAPPER}} .Article-category, {{WRAPPER}} .category-toggle' => 'color: {{VALUE}};',
                         ],
                     ]
                 );
@@ -814,11 +814,41 @@
                         'type' => \Elementor\Controls_Manager::COLOR,
                         'default' => 'red',
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category' => 'background-color: {{VALUE}} !important;',
+                            '{{WRAPPER}} .Article-category, {{WRAPPER}} .category-toggle' => 'background-color: {{VALUE}} !important;',
                         ],
                     ]
                 );
         
+                $this->add_responsive_control(
+                    'category_toggle_size',
+                    [
+                        'label' => esc_html__('Toggle (+) Size', 'Article'),
+                        'type' => \Elementor\Controls_Manager::SLIDER,
+                        'size_units' => ['px', 'em', 'rem'],
+                        'default' => [
+                            'size' => 20,
+                            'unit' => 'px',
+                        ],
+                        'tablet_default' => [
+                            'size' => 24,
+                            'unit' => 'px',
+                        ],
+                        'mobile_default' => [
+                            'size' => 27,
+                            'unit' => 'px',
+                        ],
+                        'range' => [
+                            'px' => [
+                                'min' => 10,
+                                'max' => 100,
+                            ],
+                        ],
+                        'selectors' => [
+                            '{{WRAPPER}} .category-toggle' => 'font-size: {{SIZE}}{{UNIT}} !important;',
+                        ],
+                    ]
+                );
+
                 $this->add_control(
                     'Article-category_color_hover',
                     [
@@ -826,7 +856,7 @@
                         'type' => \Elementor\Controls_Manager::COLOR,
                         'default' => 'black',
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category:hover' => 'color: {{VALUE}} !important;',
+                            '{{WRAPPER}} .Article-category:hover, {{WRAPPER}} .category-toggle:hover' => 'color: {{VALUE}} !important;',
                         ],
                     ]
                 );
@@ -846,7 +876,7 @@
                             ],
                         ],
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category' => 'border-radius: {{SIZE}}{{UNIT}};',
+                            '{{WRAPPER}} .Article-category, {{WRAPPER}} .category-toggle' => 'border-radius: {{SIZE}}{{UNIT}};',
                         ],
                     ]
                 );
@@ -865,17 +895,25 @@
                             'isLinked' => false,
                         ],
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                            '{{WRAPPER}} .Article-category, {{WRAPPER}} .category-toggle' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                         ],
                     ]
                 );
-                $this->add_control(
+                $this->add_responsive_control(
                     'Article-category_font_size',
                     [
                         'label' => esc_html__('Font Size', 'Article'),
                         'type' => \Elementor\Controls_Manager::SLIDER,
                         'default' => [
                             'size' => 18,
+                            'unit' => 'px',
+                        ],
+                        'tablet_default' => [
+                            'size' => 16,
+                            'unit' => 'px',
+                        ],
+                        'mobile_default' => [
+                            'size' => 14,
                             'unit' => 'px',
                         ],
                         'range' => [
@@ -885,7 +923,7 @@
                             ],
                         ],
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category' => 'font-size: {{SIZE}}{{UNIT}};',
+                            '{{WRAPPER}} .Article-category, {{WRAPPER}} .category-toggle' => 'font-size: {{SIZE}}{{UNIT}};',
                         ],
                     ]
                 );
@@ -896,7 +934,7 @@
                         'type' => \Elementor\Controls_Manager::FONT,
                         'default' => "Work Sans",
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category' => 'font-family: {{VALUE}}',
+                            '{{WRAPPER}} .Article-category, {{WRAPPER}} .category-toggle' => 'font-family: {{VALUE}}',
                         ],
                     ]
                 );
@@ -910,7 +948,7 @@
                         'return_value' => 'bold',
                         'default' => 'normal',
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category' => 'font-weight: {{VALUE}};',
+                            '{{WRAPPER}} .Article-category, {{WRAPPER}} .category-toggle' => 'font-weight: {{VALUE}};',
                         ],
                     ]
                 );
@@ -947,15 +985,7 @@
                         ],
                     ]
                 );
-                $this->add_control(
-                    'categories_in',
-                    [
-                        'label' => esc_html__('Select Categories to include', 'Article'),
-                        'type' => \Elementor\Controls_Manager::SELECT2,
-                        'multiple' => true,
-                        'options' => $this->get_category(),
-                    ]
-                );
+
                 $this->add_control(
                     'exclude_categories',
                     [
@@ -1592,6 +1622,18 @@
                     ]
                 );
                 $this->add_control(
+                    'show_all_button_forced',
+                    [
+                        'label' => esc_html__('Force show "All" button', 'Article'),
+                        'type' => \Elementor\Controls_Manager::SWITCHER,
+                        'label_on' => esc_html__('Yes', 'Article'),
+                        'label_off' => esc_html__('No', 'Article'),
+                        'return_value' => 'yes',
+                        'default' => 'no',
+                        'description' => esc_html__('Always show the "All" button regardless of exclusions', 'Article'),
+                    ]
+                );
+                $this->add_control(
                     'All_place',
                     [
                         'type' => \Elementor\Controls_Manager::TEXT,
@@ -1894,6 +1936,40 @@
                     ]
                 );
                 $this->add_control(
+                    'border_color_input',
+                    [
+                        'label' => esc_html__('Border color', 'Article'),
+                        'type' => \Elementor\Controls_Manager::COLOR,
+                        'default' => '#cccccc',
+                        'selectors' => [
+                            '{{WRAPPER}} .article-input2' => ' border-color: {{VALUE}}!important;',
+                        ],
+                    ]
+                );
+                $this->add_control(
+                    'border_width_input',
+                    [
+                        'label' => esc_html__('Border Width', 'Article'),
+                        'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                        'size_units' => ['px', 'em', '%'],
+                        'selectors' => [
+                            '{{WRAPPER}} .article-input2' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; border-style: solid;',
+                        ],
+                    ]
+                );
+                $this->add_control(
+                    'search_scope',
+                    [
+                        'label' => esc_html__('Search Scope', 'Article'),
+                        'type' => \Elementor\Controls_Manager::SELECT,
+                        'default' => 'title',
+                        'options' => [
+                            'title' => esc_html__('Title only', 'Article'),
+                            'both' => esc_html__('Title and Content', 'Article'),
+                        ],
+                    ]
+                );
+                $this->add_control(
                     'icon_color_',
                     [
                         'label' => esc_html__('Icon color', 'Article'),
@@ -2065,7 +2141,8 @@
                             $all_categories[$category->term_id] = $category->name;
                         }
                     }
-                    echo '<div class="article-widget-container">';
+                    $widget_id = 'article-widget-' . wp_generate_password(8, false);
+                    echo '<div id="' . esc_attr($widget_id) . '" class="article-widget-container">';
                 
                 // Aggiungi pulsante reset filtri se necessario
                 if (isset($_GET['Article-date']) || isset($_GET['Article-tag'])) {
@@ -2085,20 +2162,24 @@
                 }
                 
                 echo '<div class="Article-category-filter">';
-                if (!empty($settings['include_all']) && $settings['include_all'] === 'on') {
+                $all_shown = (!empty($settings['include_all']) && $settings['include_all'] === 'on') || (!empty($settings['show_all_button_forced']) && $settings['show_all_button_forced'] === 'yes');
+                if ($all_shown) {
                     echo '<button class="Article-category-filter-button active" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
                 }
                     
+                    $first_cat = true;
                     foreach ($all_categories as $cat_id => $cat_name) {
-                        echo '<button class="Article-category-filter-button" data-Article-category="' . esc_attr($cat_id) . '">' . esc_html($cat_name) . '</button>';
+                        $active_class = (!$all_shown && $first_cat) ? ' active' : '';
+                        echo '<button class="Article-category-filter-button' . $active_class . '" data-Article-category="' . esc_attr($cat_id) . '">' . esc_html($cat_name) . '</button>';
+                        $first_cat = false;
                     }
                     
                     echo '</div>';
                     echo '<div class="article-widget-container2">';
                     echo '<div class="search-form-container">';
-                    echo '<input type="text" id="article-input2" class="article-input2 article-input" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off">';
+                    echo '<input type="text" class="article-input2 article-input" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off" data-search-scope="' . esc_attr($settings['search_scope'] ?: 'title') . '">';
                     echo '<div class="article-icon2">';
-                    echo '<button type="button" id="search-button" class="article-submit-button article-submit">';
+                    echo '<button type="button" class="article-submit-button article-submit">';
                     echo '<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                     <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
@@ -2191,6 +2272,7 @@
                                     $first_cat_id = $post_categories[0]->term_id;
                                     $first_cat_url = get_category_link($first_cat_id);
                                     
+                                    echo '<div class="Article-category-wrapper">';
                                     echo '<span class="Article-category main-category">';
                                     if($selected_page_id!=0){
                                         $cat_url = get_permalink($selected_page_id).'?Article-category='. $first_cat_id;
@@ -2200,7 +2282,9 @@
                                         echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
 
                                     }
-                                    echo '<span class="category-toggle">+</span></span>';
+                                    echo '</span>';
+                                    echo '<span class="category-toggle">+</span>';
+                                    echo '</div>';
                                     
                                     echo '<div class="Article-hidden-categories">';
                                     for ($i = 1; $i < count($category_names); $i++) {
@@ -2328,125 +2412,69 @@
                 (function() {
                     // Wait for DOM to be fully loaded
                     document.addEventListener("DOMContentLoaded", function() {
-                        // Find the closest widget container
-                        var scriptTag = document.currentScript;
-                        var widgetContainer = scriptTag ? scriptTag.closest(".elementor-widget-container") : null;
-                        
+                        var widgetContainer = document.getElementById("' . esc_attr($widget_id) . '");
                         if (!widgetContainer) {
-                            // Fallback: find the widget by looking for the parent of our container
-                            var articleContainer = document.querySelector(".article-widget-container");
-                            if (articleContainer) {
-                                widgetContainer = articleContainer.closest(".elementor-widget-container");
-                            }
+                            var scriptTag = document.currentScript;
+                            widgetContainer = scriptTag ? scriptTag.closest(".article-widget-container") : null;
                         }
                         
-                        if (!widgetContainer) {
-                            console.error("Widget container not found");
-                            return;
-                        }
+                        if (!widgetContainer) return;
                         
-                        // Set a unique ID for the widget container
-                        var widgetId = "article-widget-" + Math.random().toString(36).substr(2, 9);
-                        widgetContainer.id = widgetId;
-                        
-                        // Select elements within this specific widget
                         var categoryButtons = widgetContainer.querySelectorAll(".Article-category-filter-button");
                         var searchInput = widgetContainer.querySelector(".article-input2");
                         var searchButton = widgetContainer.querySelector(".article-submit-button");
                         var cards = widgetContainer.querySelectorAll(".article-card");
-                        if (window.location.search.includes("Article-category=")) {
-                            var currentUrl = new URL(window.location.href);
-                            var categoryId = currentUrl.searchParams.get("Article-category");
-                            
-                            // Find and activate the button that corresponds to this category
-                            categoryButtons.forEach(function(btn) {
-                                // First remove active class from all buttons
-                                btn.classList.remove("active");
-                                
-                                if (btn.getAttribute("data-Article-category") === categoryId) {
-                                    btn.classList.add("active");
-                                }
-                            });
-                            
-                            // If no button was activated and we have an "all" button, activate it
-                            var activeButton = widgetContainer.querySelector(".Article-category-filter-button.active");
-                            if (!activeButton) {
-                                var allButton = widgetContainer.querySelector(\'.Article-category-filter-button[data-Article-category="all"]\');
-                                if (allButton) {
-                                    allButton.classList.add("active");
-                                }
-                            }
-                            
-                            // Filter the cards based on the category
+
+                        function updateFilters() {
+                            var searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : "";
+                            var searchScope = searchInput ? searchInput.getAttribute("data-search-scope") : "title";
+                            var activeCategoryBtn = widgetContainer.querySelector(".Article-category-filter-button.active");
+                            var categoryId = activeCategoryBtn ? activeCategoryBtn.getAttribute("data-Article-category") : "all";
                             
                             cards.forEach(function(card) {
-                                if (categoryId === "all") {
-                                    card.style.display = "block";
-                                } else if (card.classList.contains("Article-category-" + categoryId)) {
-                                    card.style.display = "block";
-                                } else {
-                                    card.style.display = "none";
-                                }
-                            }); 
-                        }
-                        // Handle category filter buttons
-                        categoryButtons.forEach(function(button) {
-                            button.addEventListener("click", function(e) {
-                                e.preventDefault(); // Prevent default button behavior
-                                
-                                // Remove active class from all buttons
-                                categoryButtons.forEach(function(btn) {
-                                    btn.classList.remove("active");
-                                });
-                                
-                                // Add active class to clicked button
-                                this.classList.add("active");
-                                
-                                // Get category ID
-                                var categoryId = this.getAttribute("data-Article-category");
-                                
-                                // Store the selected category in localStorage
-            
-                                
-                                // Update URL by removing any existing category parameter and adding the new one
-                                var currentUrl = new URL(window.location.href);
-                                currentUrl.searchParams.delete("Article-category");
-                                
-                            
-                                
-                                // Update browser history without reloading
-                                window.history.pushState({}, "", currentUrl.toString());
-                                
-                        
-                                cards.forEach(function(card) {
-                                    if (categoryId === "all") {
-                                        card.style.display = "block";
-                                    } else if (card.classList.contains("Article-category-" + categoryId)) {
-                                        card.style.display = "block";
-                                    } else {
-                                        card.style.display = "none";
+                                var matchesCategory = (categoryId === "all" || card.classList.contains("Article-category-" + categoryId));
+                                var matchesSearch = true;
+                                if (searchTerm) {
+                                    var titleElem = card.querySelector(".Article-title");
+                                    var title = titleElem ? titleElem.textContent.toLowerCase() : "";
+                                    var content = "";
+                                    if (searchScope === "both") {
+                                        var descElem = card.querySelector(".Article-description");
+                                        content = descElem ? descElem.textContent.toLowerCase() : "";
                                     }
-                                });
+                                    matchesSearch = title.includes(searchTerm) || content.includes(searchTerm);
+                                }
+                                card.style.display = (matchesCategory && matchesSearch) ? "block" : "none";
                             });
-                        });               
-                        var searchInput = widgetContainer.querySelector(".article-input2");
-                        var searchButton = widgetContainer.querySelector(".article-submit-button");
-                        var cards = widgetContainer.querySelectorAll(".article-card");
+                        }
+
+                        if (searchInput) {
+                            searchInput.addEventListener("input", updateFilters);
+                        }
+                        
+                        if (searchButton) {
+                            searchButton.addEventListener("click", function(e) {
+                                e.preventDefault();
+                                updateFilters();
+                            });
+                        }
+                        
+                        // Set initial state
+                        updateFilters();
                         
                         // Gestione delle categorie espandibili
-                        var mainCategories = widgetContainer.querySelectorAll(".main-category");
-                        mainCategories.forEach(function(category) {
-                            category.addEventListener("click", function() {
+                        var toggles = widgetContainer.querySelectorAll(".category-toggle");
+                        toggles.forEach(function(toggle) {
+                            toggle.addEventListener("click", function() {
                                 var parent = this.closest(".Article-category-card2");
                                 parent.classList.toggle("show-categories");
                                 // Cambia il simbolo da + a X quando è aperto
-                                var toggle = this.querySelector(".category-toggle");
                                 if (parent.classList.contains("show-categories")) {
-                                    toggle.innerHTML = "×";
-                                    toggle.textContent = "×";
+                                    this.innerHTML = "×";
+                                    this.textContent = "×";
                                 } else {
-                                    toggle.innerHTML = "+";
-                                    toggle.textContent = "+";
+                                    this.innerHTML = "+";
+                                    this.textContent = "+";
                                 }
                             });
                         });
@@ -2533,6 +2561,19 @@
                 echo '
                 <style>
                 
+                .Article-category-wrapper {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                    width: fit-content;
+                }
+                @media (max-width: 767px) {
+                    .Article-category-wrapper {
+                        display: flex;
+                        width: 100%;
+                        justify-content: space-between;
+                    }
+                }
                 .Article-category.main-category {
                     cursor: pointer;
                     display: inline-flex;
@@ -2545,6 +2586,12 @@
                     white-space: nowrap;
                     word-break: normal;
                     position: relative; 
+                }
+                @media (max-width: 767px) {
+                    .Article-category.main-category {
+                        display: flex;
+                        width: auto;
+                    }
                 }
                 .Article-active-filters {
                     display: flex;
@@ -2580,19 +2627,25 @@
                     font-weight: bold !important;
                 }
                 .category-toggle {
+                    cursor: pointer;
                     font-weight: bold;
                     transition: transform 0.3s ease;
                     user-select: none;
-                    display: inline-block;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
                     white-space: nowrap;
-                    margin-top: 3px;
                     z-index: 10;
-                    font-size: 20px;
+                    border: none;
+                    padding: 0 8px; /* Ridotto padding verticale */
+                    line-height: 1; /* Line height a 1 per centrare meglio il simbolo */
+                    min-width: 20px; /* Ridotta dimensione minima */
+                    min-height: 20px; /* Ridotta dimensione minima */
+                    box-sizing: border-box;
                     }
                     @media (max-width: 767px) {
                     .category-toggle{
-                    font-size: 27px;
-                    margin-left: 2px;
+                    margin-left: 0; 
                     }
                     }
 
@@ -2616,10 +2669,6 @@
                     margin-bottom: 2%;                
                     margin-right: 10px;
                     background-color: red !important;
-                    color: white;
-                    font-size: 12px;
-                    border-radius: 3px;
-                    white-space: nowrap;
                 }
                 
                 .show-categories .Article-hidden-categories {
@@ -2791,7 +2840,9 @@
                     top: 5px;
                     left: 10px;
                     display: none;
-                    width: 100%;
+                    width: calc(100% - 20px); /* Evita che finisca sotto il bordo a destra */
+                    box-sizing: border-box;
+                    z-index: 10;
                 }
                 .Article-category.category-vertical {
                     display: block;
@@ -2800,7 +2851,6 @@
                     max-width: 100%;
                 }
             .Article-category {                
-                    margin-right: 10px;
                     margin-left:-3px;
                     position: relative;
                     display: none;
