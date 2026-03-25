@@ -2401,6 +2401,17 @@
                         var grid = widgetContainer.querySelector(".articles-grid");
                         var noResultsMsg = widgetContainer.querySelector(".error-message");
 
+                        // Check if we have a pending category selection from a reload
+                        var pendingCategoryId = sessionStorage.getItem("Article-pending-category-" + widgetContainer.id);
+                        if (pendingCategoryId) {
+                            sessionStorage.removeItem("Article-pending-category-" + widgetContainer.id);
+                            var targetBtn = widgetContainer.querySelector(\'.Article-category-filter-button[data-Article-category="\' + pendingCategoryId + \'"]\');
+                            if (targetBtn) {
+                                categoryButtons.forEach(function(btn) { btn.classList.remove("active"); });
+                                targetBtn.classList.add("active");
+                            }
+                        }
+
                         function updateFilters() {
                             var searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : "";
                             var searchScope = searchInput ? searchInput.getAttribute("data-search-scope") : "title";
@@ -2467,12 +2478,30 @@
                         categoryButtons.forEach(function(button) {
                             button.addEventListener("click", function(e) {
                                 e.preventDefault();
-                                categoryButtons.forEach(function(btn) { btn.classList.remove("active"); });
-                                this.classList.add("active");
+                                var categoryId = this.getAttribute("data-Article-category");
                                 var currentUrl = new URL(window.location.href);
-                                currentUrl.searchParams.delete("Article-category");
-                                window.history.pushState({}, "", currentUrl.toString());
-                                updateFilters();
+                                
+                                // Se abbiamo parametri URL (Date, Tag, o Category), ricarichiamo la pagina per resettare tutto
+                                var hasUrlFilters = currentUrl.searchParams.has("Article-date") || 
+                                                   currentUrl.searchParams.has("Article-tag") || 
+                                                   currentUrl.searchParams.has("Article-category");
+
+                                if (hasUrlFilters) {
+                                    // Se clicchiamo su una categoria diversa da quella attuale (se presente in URL)
+                                    // o se ci sono altri filtri URL, forziamo il reload
+                                    sessionStorage.setItem("Article-pending-category-" + widgetContainer.id, categoryId);
+                                    
+                                    // Puliamo i parametri e ricarichiamo la pagina base
+                                    currentUrl.searchParams.delete("Article-date");
+                                    currentUrl.searchParams.delete("Article-tag");
+                                    currentUrl.searchParams.delete("Article-category");
+                                    window.location.href = currentUrl.toString();
+                                } else {
+                                    // Nessun parametro URL, continuiamo con il filtraggio live
+                                    categoryButtons.forEach(function(btn) { btn.classList.remove("active"); });
+                                    this.classList.add("active");
+                                    updateFilters();
+                                }
                             });
                         });               
 
@@ -2511,6 +2540,8 @@
                                 var currentUrl = new URL(window.location.href);
                                 currentUrl.searchParams.delete("Article-date");
                                 currentUrl.searchParams.delete("Article-tag");
+                                currentUrl.searchParams.delete("Article-category");
+                                sessionStorage.removeItem("Article-pending-category-" + widgetContainer.id);
                                 window.location.href = currentUrl.toString();
                             });
                         }
