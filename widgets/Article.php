@@ -1099,6 +1099,8 @@
                         'default' => 'black',
                         'selectors' => [
                             '{{WRAPPER}} .Article-description' => 'color: {{VALUE}} !important;',
+    			    '{{WRAPPER}} .Article-description a' => 'color: {{VALUE}} !important;',
+
                         ],
                     ]
                 );
