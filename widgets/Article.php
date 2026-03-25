@@ -1,4 +1,4 @@
-            <?php
+<?php
         class Article_Widget extends \Elementor\Widget_Base
         {
 
@@ -1007,6 +1007,16 @@
                     'exclude_categories',
                     [
                         'label' => esc_html__('Select Categories to exclude', 'Article'),
+                        'type' => \Elementor\Controls_Manager::SELECT2,
+                        'multiple' => true,
+                        'options' => $this->get_category(),
+                    ]
+                );
+                $this->add_control(
+                    'hide_categories_from_badge',
+                    [
+                        'label' => esc_html__('Hide Categories from card badge', 'Article'),
+                        'description' => esc_html__('These categories will NOT appear on the card label, but articles will still be shown.', 'Article'),
                         'type' => \Elementor\Controls_Manager::SELECT2,
                         'multiple' => true,
                         'options' => $this->get_category(),
@@ -2179,6 +2189,17 @@
                             $category_classes .= ' Article-category-' . $category->term_id;
                             $category_names[] = $category->name;
                         }
+
+                        // Filter categories for badge display only (articles remain visible)
+                        $hidden_badge_cats = !empty($settings['hide_categories_from_badge']) ? array_map('intval', (array) $settings['hide_categories_from_badge']) : [];
+                        $badge_categories = [];
+                        $badge_category_names = [];
+                        foreach ($post_categories as $category) {
+                            if (!in_array((int) $category->term_id, $hidden_badge_cats)) {
+                                $badge_categories[] = $category;
+                                $badge_category_names[] = $category->name;
+                            }
+                        }
                         
                         // Get featured image or default
                         $image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
@@ -2241,20 +2262,20 @@
                 
                                 echo '<div class="Article-category-card2">';
                     
-                                // Mostra solo la prima categoria inizialmente
-                                if (count($category_names) > $settings['category_number']) {
-                                    // Ottieni l'URL della prima categoria
-                                    $first_cat_id = $post_categories[0]->term_id;
+                                // Mostra solo la prima categoria inizialmente (usando le categorie filtrate per il badge)
+                                if (!empty($badge_categories) && count($badge_category_names) > $settings['category_number']) {
+                                    // Ottieni l'URL della prima categoria visibile nel badge
+                                    $first_cat_id = $badge_categories[0]->term_id;
                                     $first_cat_url = get_category_link($first_cat_id);
                                     
                                     echo '<div class="Article-category-wrapper">';
                                     echo '<span class="Article-category main-category">';
                                     if($selected_page_id!=0){
                                         $cat_url = get_permalink($selected_page_id).'?Article-category='. $first_cat_id;
-                                        echo '<a href="' . $cat_url . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
+                                        echo '<a href="' . $cat_url . '" class="Article-category">' . esc_html($badge_category_names[0]) . '</a>';
                                     }
                                     else{
-                                        echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($category_names[0]) . '</a>';
+                                        echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($badge_category_names[0]) . '</a>';
 
                                     }
                                     echo '</span>';
@@ -2262,22 +2283,22 @@
                                     echo '</div>';
                                     
                                     echo '<div class="Article-hidden-categories">';
-                                    for ($i = 1; $i < count($category_names); $i++) {
-                                        $cat_id = $post_categories[$i]->term_id;
+                                    for ($i = 1; $i < count($badge_category_names); $i++) {
+                                        $cat_id = $badge_categories[$i]->term_id;
                                         $cat_url = get_category_link($cat_id); 
                                         echo '<span class="Article-category Article-hidden-category">';
                                         if($selected_page_id!=0){
                                             $cat_url = get_permalink($selected_page_id).'?Article-category='.$cat_id;
-                                            echo '<a href="'.$cat_url. '" class="Article-category">'. esc_html($category_names[$i]). '</a>';  
+                                            echo '<a href="'.$cat_url. '" class="Article-category">'. esc_html($badge_category_names[$i]). '</a>';  
                                         }
                                         else{
-                                            echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category_names[$i]) . '</a>';
+                                            echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($badge_category_names[$i]) . '</a>';
                                         }
                                         echo '</span>';
                                     }
                                     echo '</div>';
-                                } else {
-                                    foreach ($post_categories as $index => $category) {
+                                } elseif (!empty($badge_categories)) {
+                                    foreach ($badge_categories as $index => $category) {
                                         $cat_url = get_category_link($category->term_id);
                                         echo '<span class="Article-category">';
                                         if($selected_page_id!=0){
