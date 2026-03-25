@@ -1402,6 +1402,32 @@
                         ],
                     ]
                 );
+                
+                $this->add_responsive_control(
+                    'filter_alignment',
+                    [
+                        'label' => esc_html__('Alignment', 'Article'),
+                        'type' => \Elementor\Controls_Manager::CHOOSE,
+                        'options' => [
+                            'flex-start' => [
+                                'title' => esc_html__('Left', 'Article'),
+                                'icon' => 'eicon-text-align-left',
+                            ],
+                            'center' => [
+                                'title' => esc_html__('Center', 'Article'),
+                                'icon' => 'eicon-text-align-center',
+                            ],
+                            'flex-end' => [
+                                'title' => esc_html__('Right', 'Article'),
+                                'icon' => 'eicon-text-align-right',
+                            ],
+                        ],
+                        'default' => 'flex-start',
+                        'selectors' => [
+                            '{{WRAPPER}} .Article-category-filter' => 'justify-content: {{VALUE}};',
+                        ],
+                    ]
+                );
             
                 $this->add_control(
                     'text_color_inactive',
