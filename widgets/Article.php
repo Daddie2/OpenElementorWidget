@@ -995,6 +995,15 @@
                 );
 
                 $this->add_control(
+                    'include_categories',
+                    [
+                        'label' => esc_html__('Select Categories to include', 'Article'),
+                        'type' => \Elementor\Controls_Manager::SELECT2,
+                        'multiple' => true,
+                        'options' => $this->get_category(),
+                    ]
+                );
+                $this->add_control(
                     'exclude_categories',
                     [
                         'label' => esc_html__('Select Categories to exclude', 'Article'),
@@ -2006,8 +2015,8 @@
                 );
 
                 // Category filtering (permanent widget settings)
-                if (!empty($settings['categories_in'])) {
-                    $base_args['category__in'] = $settings['categories_in'];
+                if (!empty($settings['include_categories'])) {
+                    $base_args['category__in'] = $settings['include_categories'];
                 }
                 
                 if (!empty($settings['exclude_categories']) && $settings['include_all'] !== 'on') {
