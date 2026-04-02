@@ -2016,7 +2016,7 @@
                 private function get_category()
             {
             
-                $categories = get_categories();
+                $categories = get_categories(['hide_empty' => false]);
                 $options = [];
                 foreach ($categories as $category) {
                     $options[$category->term_id] = $category->name;
