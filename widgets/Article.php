@@ -175,13 +175,13 @@
                         ],
                     ]
                 );
-                
                 $this->end_controls_section();
                 $this->start_controls_section(
                     'section_image',
                     [
                         'label' => esc_html__('Article image', 'Article'),
                     ]
+
                 );
                 $this->add_control(
                     'image_border_width',
@@ -1021,7 +1021,32 @@
                         'multiple' => true,
                         'options' => $this->get_category(),
                     ]
-                );
+                );$repeater = new \Elementor\Repeater();
+        $repeater->add_control(
+            'cat_id',
+            [
+                'label' => esc_html__('Select Category', 'Article'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => $this->get_category(),
+            ]
+        );
+        $repeater->add_control(
+            'page_id',
+            [
+                'label' => esc_html__('Custom Page Redirect', 'Article'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => $this->get_pages(),
+            ]
+        );
+                $this->add_control(
+            'category_custom_links',
+            [
+                'label' => esc_html__( 'Specific Category Redirects', 'Article' ),
+                'type' => \Elementor\Controls_Manager::REPEATER,
+                'fields' => $repeater->get_controls(),
+                'title_field' => 'Redirect for Category ID: {{{ cat_id }}}',
+            ]
+        );
                 $this->end_controls_section();
                 $this->start_controls_section(
                     'section_content',
@@ -2035,7 +2060,15 @@
             }
 
             protected function render() { 
-                $settings = $this->get_settings_for_display();
+               $settings = $this->get_settings_for_display();
+$custom_redirects = [];
+if ( ! empty( $settings['category_custom_links'] ) ) {
+    foreach ( $settings['category_custom_links'] as $item ) {
+        if ( ! empty( $item['cat_id'] ) && ! empty( $item['page_id'] ) ) {
+            $custom_redirects[ $item['cat_id'] ] = get_permalink( $item['page_id'] );
+        }
+    }
+}
                 
             $posts_per_page = !empty($settings['posts_per_page']) ? intval($settings['posts_per_page']) : 4;
                 if ($settings['all_post'] == 'all') {
@@ -2181,7 +2214,19 @@
                     $selected_page_id = $settings['selected_page'];
                     while ($query->have_posts()) {
                         $query->the_post();
+                            $categories = get_the_category();
+        $master_redirect_url = '';
 
+        if ( ! empty( $categories ) ) {
+            $primary_cat_id = $categories[0]->term_id;
+
+            if ( isset( $custom_redirects[$primary_cat_id] ) ) {
+                $master_redirect_url = $custom_redirects[$primary_cat_id];
+            } 
+            elseif ( $selected_page_id != 0 ) {
+                $master_redirect_url = get_permalink($selected_page_id) . '?Article-category=' . $primary_cat_id;
+            }
+        }
                         // Get post categories
                         $post_categories = get_the_category();
                         $category_classes = '';
@@ -2264,56 +2309,64 @@
                 
                                 echo '<div class="Article-category-card2">';
                     
-                                // Mostra solo la prima categoria inizialmente (usando le categorie filtrate per il badge)
-                                if (!empty($badge_categories) && count($badge_category_names) > $settings['category_number']) {
-                                    // Ottieni l'URL della prima categoria visibile nel badge
-                                    $first_cat_id = $badge_categories[0]->term_id;
-                                    $first_cat_url = get_category_link($first_cat_id);
-                                    
-                                    echo '<div class="Article-category-wrapper">';
-                                    echo '<span class="Article-category main-category">';
-                                    if($selected_page_id!=0){
-                                        $cat_url = get_permalink($selected_page_id).'?Article-category='. $first_cat_id;
-                                        echo '<a href="' . $cat_url . '" class="Article-category">' . esc_html($badge_category_names[0]) . '</a>';
-                                    }
-                                    else{
-                                        echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($badge_category_names[0]) . '</a>';
+                             if (!empty($badge_categories) && count($badge_category_names) > $settings['category_number']) {
+    // --- CASO 1: CI SONO TANTE CATEGORIE (MOSTRA IL "+" ) ---
+    $first_cat_id = $badge_categories[0]->term_id;
+    
+    // Determina l'URL della prima categoria
+    if (isset($custom_redirects[$first_cat_id])) {
+        $final_url = $custom_redirects[$first_cat_id];
+    } elseif ($selected_page_id != 0) {
+        $final_url = get_permalink($selected_page_id) . '?Article-category=' . $first_cat_id;
+    } else {
+        $final_url = get_category_link($first_cat_id);
+    }
 
-                                    }
-                                    echo '</span>';
-                                    echo '<span class="category-toggle">+</span>';
-                                    echo '</div>';
-                                    
-                                    echo '<div class="Article-hidden-categories">';
-                                    for ($i = 1; $i < count($badge_category_names); $i++) {
-                                        $cat_id = $badge_categories[$i]->term_id;
-                                        $cat_url = get_category_link($cat_id); 
-                                        echo '<span class="Article-category Article-hidden-category">';
-                                        if($selected_page_id!=0){
-                                            $cat_url = get_permalink($selected_page_id).'?Article-category='.$cat_id;
-                                            echo '<a href="'.$cat_url. '" class="Article-category">'. esc_html($badge_category_names[$i]). '</a>';  
-                                        }
-                                        else{
-                                            echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($badge_category_names[$i]) . '</a>';
-                                        }
-                                        echo '</span>';
-                                    }
-                                    echo '</div>';
-                                } elseif (!empty($badge_categories)) {
-                                    foreach ($badge_categories as $index => $category) {
-                                        $cat_url = get_category_link($category->term_id);
-                                        echo '<span class="Article-category">';
-                                        if($selected_page_id!=0){
-                                            $cat_url = get_permalink($selected_page_id).'?Article-category='.$category->term_id;
-                                            echo '<a href="' .$cat_url. '" class="Article-category">' . esc_html($category->name) . '</a>';
-                                        }
-                                        else{
-                                            echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
-                                        }
-                                        echo '</span>';
-                                    }
-                                }
-                                
+    echo '<div class="Article-category-wrapper">';
+    echo '<span class="Article-category main-category">';
+    echo '<a href="' . esc_url($final_url) . '" class="Article-category">' . esc_html($badge_category_names[0]) . '</a>';
+    echo '</span>';
+    echo '<span class="category-toggle">+</span>';
+    echo '</div>';
+    
+    echo '<div class="Article-hidden-categories">';
+    for ($i = 1; $i < count($badge_category_names); $i++) {
+        $cat_id = $badge_categories[$i]->term_id;
+        
+        // Determina l'URL per le categorie nascoste
+        if (isset($custom_redirects[$cat_id])) {
+            $hidden_url = $custom_redirects[$cat_id];
+        } elseif ($selected_page_id != 0) {
+            $hidden_url = get_permalink($selected_page_id) . '?Article-category=' . $cat_id;
+        } else {
+            $hidden_url = get_category_link($cat_id);
+        }
+
+        echo '<span class="Article-category Article-hidden-category">';
+        echo '<a href="' . esc_url($hidden_url) . '" class="Article-category">' . esc_html($badge_category_names[$i]) . '</a>';
+        echo '</span>';
+    }
+    echo '</div>';
+
+} elseif (!empty($badge_categories)) {
+    // --- CASO 2: POCHE CATEGORIE (MOSTRALE TUTTE) ---
+    foreach ($badge_categories as $index => $category) {
+        $cat_id = $category->term_id;
+
+        // Determina l'URL
+        if (isset($custom_redirects[$cat_id])) {
+            $final_url = $custom_redirects[$cat_id];
+        } elseif ($selected_page_id != 0) {
+            $final_url = get_permalink($selected_page_id) . '?Article-category=' . $cat_id;
+        } else {
+            $final_url = get_category_link($cat_id);
+        }
+
+        echo '<span class="Article-category">';
+        echo '<a href="' . esc_url($final_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
+        echo '</span>';
+    }
+}
                                 echo '</div>';
                         echo '</div>';
                         
@@ -2328,50 +2381,40 @@
                     $i = 2;
                     $date_array[1] = $date_array[0] . '/' . $date_array[1];
                     $date_array[2] = $date_array[1] . '/' . $date_array[2];
-                            echo '<div class="Article-date-card2">';
-                            if ($selected_page_id != 0) {
-                                $page_link = get_permalink($selected_page_id);
+                       echo '<div class="Article-date-card2">';
+                        $day = get_the_date('d');
+                        $month = get_the_date('m');
+                        $year = get_the_date('Y');
+                        $month_name = get_the_date('F');
 
-                                foreach ($date_parts as $part) {
-                                    if ($i == 1) {
-                                        $date_array[1] = $date_array[1] . '/01 m';
-                                    }
-                                    $date_link = add_query_arg('Article-date', $date_array[$i], $page_link);
-                                    echo ' <a href="' . esc_url($date_link) . '" class="Article-date">' . ucfirst($part) . '&nbsp</a>';
-                                    $i -= 1;
-                                }
-                            }
-                                else {
-                                    $i = 2;
-                                    foreach ($date_parts as $part) {
-                                        // Correggo la formattazione del link della data
-                                        $date_link = home_url() . '/' . $date_array[$i];
-                                        echo '<a href="' . esc_url($date_link) . '" class="Article-date">' . ucfirst($part) . '&nbsp</a> ';
-                                        $i -= 1;
-                                    }
-                                }
-                            echo '</div>';
+                        if ($master_redirect_url) {
+                            $link_day = add_query_arg('Article-date', "$year/$month/$day", $master_redirect_url);
+                            $link_month = add_query_arg('Article-date', "$year/$month" . "m", $master_redirect_url);
+                            $link_year = add_query_arg('Article-date', $year, $master_redirect_url);
+
+                            echo '<a href="'.esc_url($link_day).'" class="Article-date">'.$day.'</a>'.'&nbsp;';
+                            echo '<a href="'.esc_url($link_month).'" class="Article-date">'.ucfirst($month_name).'</a>  '.'&nbsp;'; 
+                            echo '<a href="'.esc_url($link_year).'" class="Article-date">'.$year.'</a>';
+                        } else {
+                            echo '<span class="Article-date">'.get_the_date('j F Y').'</span>';
+                        }
+                        echo '</div>';
                         
                         // Tags
-                            $tags = get_the_tags();
-                            if ($tags) {
-                                echo '<div class="tag-card2">';
-                                $tag_names = [];
-                                foreach ($tags as $tag) {
-                                    $tag_names[] = $tag->name;
-                                
-                                if($selected_page_id!= 0){
-                                    $tag_link = add_query_arg('Article-tag', $tag->slug, $page_link);
-                                }  
-                                if($selected_page_id== 0){
-                                    $tag_link=get_tag_link($tag->term_id);
+                    $tags = get_the_tags();
+                        if ($tags) {
+                            echo '<div class="tag-card2" style="margin-top:10px;">';
+                            foreach ($tags as $tag) {
+                                // Se c'è una pagina personalizzata, punta a quella con il parametro tag
+                                if ($master_redirect_url) {
+                                    $tag_url = add_query_arg('Article-tag', $tag->slug, $master_redirect_url);
+                                } else {
+                                    $tag_url = get_tag_link($tag->term_id);
                                 }
-                            echo '<a class="Article-tag" href="' . $tag_link . '">' . $tag->name . '&nbsp;</a>';
-
+                                echo '<a href="' . esc_url($tag_url) . '" class="Article-tag">' . esc_html($tag->name) . '</a> '; // Spazio aggiunto
                             }
-                        
-                                echo '</div>';
-                            }
+                            echo '</div>';
+                        }
 
                         // Title
                         if($settings['title_link'] != 'allowed'){

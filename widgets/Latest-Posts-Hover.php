@@ -115,11 +115,13 @@
                         ],
                     ]
                 );
+                
             $this->add_control(
                     'card_shadow',
                     [
                         'label' => esc_html__('Card Shadow', 'Latest-Posts-Hover'),
                         'type' => \Elementor\Controls_Manager::BOX_SHADOW,
+                        'description' => esc_html__('Shadow', 'Latest-Posts-Hover'),
                         'default' => [
                             'horizontal' => 1,
                             'vertical' => 3,
