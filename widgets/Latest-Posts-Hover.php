@@ -2162,7 +2162,7 @@
                         if ($selected_page_id != 0) {
                             $page_link = get_permalink($selected_page_id);
                             echo '<div class="latest-posts-hover-widget-date-card2">';
-
+                            $i = 2;
                             foreach ($date_parts as $part) {
                                 if ($i == 1) {
                                     $date_array[1] = $date_array[1] . '/01 m';
@@ -2173,14 +2173,14 @@
                             }
                             echo '</div>';
                         } else {
+                            $day = get_the_date('d', $post->ID);
+                            $month = get_the_date('m', $post->ID);
+                            $year = get_the_date('Y', $post->ID);
+                            $month_name = get_the_date('F', $post->ID);
                             echo '<div class="latest-posts-hover-widget-date-card2">';
-                            $i = 2;
-                            foreach ($date_parts as $part) {
-                                // Correggo la formattazione del link della data
-                                $date_link = home_url() . '/' . $date_array[$i];
-                                echo '<a href="' . esc_url($date_link) . '" class="latest-posts-hover-widget-date">' . ucfirst($part) . '</a> ';
-                                $i -= 1;
-                            }
+                            echo '<a href="'.esc_url(get_day_link($year, $month, $day)).'" class="latest-posts-hover-widget-date">'.$day.'</a>'.'&nbsp;';
+                            echo '<a href="'.esc_url(get_month_link($year, $month)).'" class="latest-posts-hover-widget-date">'.ucfirst($month_name).'</a>'.'&nbsp;'; 
+                            echo '<a href="'.esc_url(get_year_link($year)).'" class="latest-posts-hover-widget-date">'.$year.'</a>';
                             echo '</div>';
                         }
 
