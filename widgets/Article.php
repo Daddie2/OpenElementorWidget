@@ -1433,10 +1433,10 @@
                         'type' => \Elementor\Controls_Manager::SWITCHER,
                         'label_on' => esc_html__('On', 'Article'),
                         'label_off' => esc_html__('Off', 'Article'),
-                        'return_value' => 'inline-block',
+                        'return_value' => 'flex',
                         'default' => 'none',
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category-filter-button' => 'display: {{VALUE}};',
+                            '{{WRAPPER}} .Article-category-filter' => 'display: {{VALUE}};',
                         ],
                     ]
                 );
@@ -2134,7 +2134,6 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                 
                 // Get all categories for the filter buttons
                 $all_categories = [];
-                if ( 'inline-block' === $settings['filter_active'] ) {
                     // Ottieni tutti i post che corrispondono alle inclusioni/esclusioni del widget
                     $all_post_ids_args = [
                         'post_type' => 'post',
@@ -2160,7 +2159,7 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                             }
                         }
                     }
-                }
+
                 
                 // Sort categories by name
                 asort($all_categories);
@@ -2379,7 +2378,6 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                         echo '<div class="article-content">';
                         
                         // Date
-                        if ( 'inline-block' === $settings['date_active'] ) {
                             echo '<div class="Article-date-card2">';
                             $day = get_the_date('d');
                             $month = get_the_date('m');
@@ -2405,7 +2403,6 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                                 echo '<a href="'.esc_url(get_year_link($year)).'" class="Article-date">'.$year.'</a>';
                             }
                             echo '</div>';
-                        }
                         
                         // Tags
                     $tags = get_the_tags();
@@ -2905,7 +2902,7 @@ if (searchButton) {
                     width: 100%;
                 }
                 .Article-category-filter {
-                    display: flex;
+                    display: none;
                     flex-wrap: wrap;
                     align-items: center;
                     gap: 10px;
@@ -2920,7 +2917,6 @@ if (searchButton) {
                     display: inline-block !important;
                     transition: all 0.3s ease;
                     font-weight: normal;
-                    display: none;
                         transition: none !important;
 
                 }
