@@ -175,13 +175,13 @@
                         ],
                     ]
                 );
+                
                 $this->end_controls_section();
                 $this->start_controls_section(
                     'section_image',
                     [
                         'label' => esc_html__('Article image', 'Article'),
                     ]
-
                 );
                 $this->add_control(
                     'image_border_width',
@@ -485,7 +485,7 @@
                         'return_value' => 'inline-block',
                         'default' => 'none',
                         'selectors' => [
-                            '{{WRAPPER}} .Article-date-card2' => 'display: {{VALUE}} !important;',
+                            '{{WRAPPER}} .Article-date' => 'display: {{VALUE}};',
                         ],
                     ]
                 );
@@ -642,17 +642,17 @@
                         'label' => esc_html__('Tag', 'Article'),
                     ]
                 );
-                    $this->add_control(
+                $this->add_control(
                     'tag_active',
                     [
-                        'label' => esc_html__('Tag Active', 'Article'),
+                        'label' => esc_html__('Tag active', 'Article'),
                         'type' => \Elementor\Controls_Manager::SWITCHER,
                         'label_on' => esc_html__('On', 'Article'),
                         'label_off' => esc_html__('Off', 'Article'),
                         'return_value' => 'inline-block',
                         'default' => 'none',
                         'selectors' => [
-                            '{{WRAPPER}} .Article-tag-card2' => 'display: {{VALUE}} !important;',
+                            '{{WRAPPER}} .Article-tag' => 'display: {{VALUE}};',
                         ],
                     ]
                 );
@@ -763,7 +763,7 @@
                         'toggle' => true,
                         'selectors' => [
                             '{{WRAPPER}} .Article-tag' => 'text-align: {{VALUE}} ;',
-                            '{{WRAPPER}} .Article-tag-card2' => 'text-align: {{VALUE}} ;',
+                            '{{WRAPPER}} .tag-card2' => 'text-align: {{VALUE}} ;',
                         ],
                         'icon_colors' => [
                             'left' => 'white',
@@ -780,20 +780,30 @@
                     ]
                 );
                 $this->add_control(
-                    'category_active',
+                    'Article-category_active',
                     [
                         'label' => esc_html__('Category Active', 'Article'),
                         'type' => \Elementor\Controls_Manager::SWITCHER,
                         'label_on' => esc_html__('On', 'Article'),
                         'label_off' => esc_html__('Off', 'Article'),
-                        'return_value' => 'inline-block',
+                        'return_value' => 'flex',
                         'default' => 'none',
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category-card2' => 'display: {{VALUE}} !important;',
+                            '{{WRAPPER}} .Article-category' => 'display: {{VALUE}};',
+                            '{{WRAPPER}} .Article-category-card2' => 'display: {{VALUE}};',
                         ],
                     ]
                 );
-
+                $this->add_control(
+                    'category_number',
+                    [
+                        'label' => esc_html__('Number of visible categories', 'Article'),
+                        'type' => \Elementor\Controls_Manager::NUMBER,
+                        'default' => 1,
+                        'min' => 1,
+                        'max' => 3,
+                    ]
+                );
                 $this->add_control(
                     'Article-category_color',
                     [
@@ -994,17 +1004,6 @@
                     ]
                 );
                 $this->add_control(
-                    'related_category',
-                    [
-                        'label' => esc_html__('Show related categories', 'Article'),
-                        'type' => \Elementor\Controls_Manager::SWITCHER,
-                        'label_on' => esc_html__('On', 'Article'),
-                        'label_off' => esc_html__('Off', 'Article'),
-                        'return_value' => 'on',
-                        'default' => 'off',
-                    ]
-                );
-                $this->add_control(
                     'exclude_categories',
                     [
                         'label' => esc_html__('Select Categories to exclude', 'Article'),
@@ -1022,32 +1021,7 @@
                         'multiple' => true,
                         'options' => $this->get_category(),
                     ]
-                );$repeater = new \Elementor\Repeater();
-        $repeater->add_control(
-            'cat_id',
-            [
-                'label' => esc_html__('Select Category', 'Article'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'options' => $this->get_category(),
-            ]
-        );
-        $repeater->add_control(
-            'page_id',
-            [
-                'label' => esc_html__('Custom Page Redirect', 'Article'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'options' => $this->get_pages(),
-            ]
-        );
-                $this->add_control(
-            'category_custom_links',
-            [
-                'label' => esc_html__( 'Specific Category Redirects', 'Article' ),
-                'type' => \Elementor\Controls_Manager::REPEATER,
-                'fields' => $repeater->get_controls(),
-                'title_field' => 'Redirect for Category ID: {{{ cat_id }}}',
-            ]
-        );
+                );
                 $this->end_controls_section();
                 $this->start_controls_section(
                     'section_content',
@@ -1466,6 +1440,7 @@
                         ],
                     ]
                 );
+            
                 $this->add_control(
                     'text_color_inactive',
                     [
@@ -1624,6 +1599,17 @@
                             '{{WRAPPER}} .Article-category-filter-button.active' => 'font-weight: {{VALUE}} !important;',
                             '{{WRAPPER}} .Article-category-filter-button:hover' => 'font-weight: {{VALUE}} !important;',
                         ],
+                    ]
+                );
+                $this->add_control(
+                    'include_all',
+                    [
+                        'label' => esc_html__('Show all even if someone is excluded', 'Article'),
+                        'type' => \Elementor\Controls_Manager::SWITCHER,
+                        'label_on' => esc_html__('on', 'Article'),
+                        'label_off' => esc_html__('Off', 'Article'),
+                        'return_value' => 'on',
+                        'default' => 'off',
                     ]
                 );
                 $this->add_control(
@@ -2049,19 +2035,7 @@
             }
 
             protected function render() { 
-               $settings = $this->get_settings_for_display();
-               $settings['category_number']=1;
-$selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
-
-    // 1. Mappa dei redirect personalizzati dal Repeater
-    $custom_redirects = [];
-    if ( ! empty( $settings['category_custom_links'] ) ) {
-        foreach ( $settings['category_custom_links'] as $item ) {
-            if ( ! empty( $item['cat_id'] ) && ! empty( $item['page_id'] ) ) {
-                $custom_redirects[ $item['cat_id'] ] = get_permalink( $item['page_id'] );
-            }
-        }
-    }
+                $settings = $this->get_settings_for_display();
                 
             $posts_per_page = !empty($settings['posts_per_page']) ? intval($settings['posts_per_page']) : 4;
                 if ($settings['all_post'] == 'all') {
@@ -2132,32 +2106,24 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                 // Run the query for the articles to display
                 $query = new \WP_Query($args);
                 
-                // Get all categories for the filter buttons
+                // Get all categories that actually have visible posts (respecting permanent exclusions)
                 $all_categories = [];
-                if ( 'inline-block' === $settings['filter_active'] ) {
-                    // Ottieni tutti i post che corrispondono alle inclusioni/esclusioni del widget
-                    $all_post_ids_args = [
-                        'post_type' => 'post',
-                        'posts_per_page' => -1,
-                        'fields' => 'ids',
-                        'category__in' => !empty($settings['include_categories']) ? $settings['include_categories'] : [],
-                        'category__not_in' => !empty($settings['exclude_categories']) ? $settings['exclude_categories'] : [],
-                    ];
-                    $all_post_ids = get_posts($all_post_ids_args);
-
-                    if (!empty($all_post_ids)) {
-                        $terms = wp_get_object_terms($all_post_ids, 'category');
-                        if (!is_wp_error($terms)) {
-                            foreach ($terms as $term) {
-                                // Escludi le categorie base (include_categories) e quelle escluse manualmente
-                                if (!empty($settings['include_categories']) && in_array((int)$term->term_id, array_map('intval', $settings['include_categories']))) {
-                                    continue;
-                                }
-                                if (!empty($settings['exclude_categories']) && in_array((int)$term->term_id, array_map('intval', $settings['exclude_categories']))) {
-                                    continue;
-                                }
-                                $all_categories[$term->term_id] = $term->name;
-                            }
+                
+                // We run a secondary query without the posts_per_page limit and without URL filters 
+                // to find all possible categories available for this widget instance
+                $cat_args = $base_args;
+                $cat_args['posts_per_page'] = -1;
+                $cat_args['fields'] = 'ids';
+                $cat_args['nopaging'] = true;
+                
+                $all_visible_posts_query = new \WP_Query($cat_args);
+                $visible_post_ids = $all_visible_posts_query->posts;
+                
+                if (!empty($visible_post_ids)) {
+                    $terms = wp_get_object_terms($visible_post_ids, 'category');
+                    if (!is_wp_error($terms)) {
+                        foreach ($terms as $term) {
+                            $all_categories[$term->term_id] = $term->name;
                         }
                     }
                 }
@@ -2167,7 +2133,7 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                 
                 $widget_id = 'article-widget-' . wp_generate_password(8, false);
                 echo '<div id="' . esc_attr($widget_id) . '" class="article-widget-container">';
-                echo '<style data-widget="' . esc_attr($widget_id) . '">#' . esc_attr($widget_id) . ' .article-card { visibility: hidden; }</style>';
+                
                 // Aggiungi pulsante reset filtri se necessario
                 if (isset($_GET['Article-date']) || isset($_GET['Article-tag'])) {
                     echo '<div class="Article-active-filters">';
@@ -2185,17 +2151,17 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                     echo '</div>';
                 }
                 
-                // Only show filter if there are actually items to filter
                 echo '<div class="Article-category-filter">';
                 $all_shown = (!empty($settings['include_all']) && $settings['include_all'] === 'on') || (!empty($settings['show_all_button_forced']) && $settings['show_all_button_forced'] === 'yes');
                 if ($all_shown) {
-                    echo '<button class="Article-category-filter-button" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
+                    echo '<button class="Article-category-filter-button active" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
                 }
                     
                     foreach ($all_categories as $cat_id => $cat_name) {
                         echo '<button class="Article-category-filter-button" data-Article-category="' . esc_attr($cat_id) . '">' . esc_html($cat_name) . '</button>';
                     }
-                
+                    
+                    echo '</div>';
                     echo '<div class="article-widget-container2">';
                     echo '<div class="search-form-container">';
                     echo '<input type="text" class="article-input2 article-input" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off" data-search-scope="' . esc_attr($settings['search_scope'] ?: 'title') . '">';
@@ -2209,42 +2175,15 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
-                    echo '</div>';
                 // Articles grid
                 if ($query->have_posts()) {
                     echo '<div class="articles-grid">';
                     $selected_page_id = $settings['selected_page'];
                     while ($query->have_posts()) {
                         $query->the_post();
+
                         // Get post categories
                         $post_categories = get_the_category();
-                        
-                        // 1. Identifichiamo quali categorie del post hanno un redirect personalizzato
-                        $cats_with_custom_redirects = [];
-                        foreach ($post_categories as $cat) {
-                            if (isset($custom_redirects[$cat->term_id])) {
-                                $cats_with_custom_redirects[$cat->term_id] = $custom_redirects[$cat->term_id];
-                            }
-                        }
-
-                        $master_redirect_url = '';
-                        $special_cat_id = 0;
-                        $force_default_links = false;
-
-                        // 2. Determiniamo la logica di redirect
-                        if (count($cats_with_custom_redirects) === 1) {
-                            // Solo una categoria ha un redirect (es. Categoria B)
-                            reset($cats_with_custom_redirects);
-                            $special_cat_id = (int) key($cats_with_custom_redirects);
-                            $master_redirect_url = $cats_with_custom_redirects[$special_cat_id];
-                        } elseif (count($cats_with_custom_redirects) > 1) {
-                            // Più categorie hanno redirect -> link default WP
-                            $force_default_links = true;
-                        } elseif ($selected_page_id != 0) {
-                            // Nessuna categoria custom, ma pagina globale impostata
-                            $master_redirect_url = get_permalink($selected_page_id);
-                        }
-
                         $category_classes = '';
                         $category_names = [];
                         
@@ -2323,105 +2262,116 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                         echo '</div>'; // Chiusura del contenitore interno
                                 // Category tag
                 
-                        if ( 'inline-block' === $settings['category_active'] ) { // Corretto il nome della chiave
-                                echo '<div class="Article-category-card2">'; // Questo div verrà renderizzato solo se attivo
+                                echo '<div class="Article-category-card2">';
                     
-                             if (!empty($badge_categories) && count($badge_category_names) > $settings['category_number']) {
-    // --- CASO 1: CI SONO TANTE CATEGORIE (MOSTRA IL "+" ) ---
-    $first_cat_id = $badge_categories[0]->term_id;
-    $final_url = '';
-    
-    if ($force_default_links) {
-        $final_url = get_category_link($first_cat_id);
-    } elseif ($master_redirect_url) {
-        $final_url = ($first_cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $first_cat_id, $master_redirect_url);
-    } else {
-        $final_url = get_category_link($first_cat_id);
-    }
+                                // Mostra solo la prima categoria inizialmente (usando le categorie filtrate per il badge)
+                                if (!empty($badge_categories) && count($badge_category_names) > $settings['category_number']) {
+                                    // Ottieni l'URL della prima categoria visibile nel badge
+                                    $first_cat_id = $badge_categories[0]->term_id;
+                                    $first_cat_url = get_category_link($first_cat_id);
+                                    
+                                    echo '<div class="Article-category-wrapper">';
+                                    echo '<span class="Article-category main-category">';
+                                    if($selected_page_id!=0){
+                                        $cat_url = get_permalink($selected_page_id).'?Article-category='. $first_cat_id;
+                                        echo '<a href="' . $cat_url . '" class="Article-category">' . esc_html($badge_category_names[0]) . '</a>';
+                                    }
+                                    else{
+                                        echo '<a href="' . esc_url($first_cat_url) . '" class="Article-category">' . esc_html($badge_category_names[0]) . '</a>';
 
-    echo '<div class="Article-category-wrapper">';
-    echo '<a href="' . esc_url($final_url) . '" class="Article-category main-category">' . esc_html($badge_category_names[0]) . '</a>';
-    echo '<span class="category-toggle">+</span>';
-    echo '</div>';
-    
-    echo '<div class="Article-hidden-categories">';
-    for ($i = 1; $i < count($badge_category_names); $i++) {
-        $cat_id = $badge_categories[$i]->term_id;
-        $hidden_url = '';
-        
-        if ($force_default_links) {
-            $hidden_url = get_category_link($cat_id);
-        } elseif ($master_redirect_url) {
-            $hidden_url = ($cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $cat_id, $master_redirect_url);
-        } else {
-            $hidden_url = get_category_link($cat_id);
-        }
-        echo '<a href="' . esc_url($hidden_url) . '" class="Article-category Article-hidden-category">' . esc_html($badge_category_names[$i]) . '</a>';
-    }
-    echo '</div>';
-
-} elseif (!empty($badge_categories)) {
-    // --- CASO 2: POCHE CATEGORIE (MOSTRALE TUTTE) ---
-    foreach ($badge_categories as $index => $category) {
-        $cat_id = $category->term_id;
-        $final_url = ($force_default_links) ? get_category_link($cat_id) : (($master_redirect_url) ? (($cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $cat_id, $master_redirect_url)) : get_category_link($cat_id));
-
-        echo '<span class="Article-category">';
-        echo '<a href="' . esc_url($final_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
-        echo '</span>';
-    }
-}
+                                    }
+                                    echo '</span>';
+                                    echo '<span class="category-toggle">+</span>';
+                                    echo '</div>';
+                                    
+                                    echo '<div class="Article-hidden-categories">';
+                                    for ($i = 1; $i < count($badge_category_names); $i++) {
+                                        $cat_id = $badge_categories[$i]->term_id;
+                                        $cat_url = get_category_link($cat_id); 
+                                        echo '<span class="Article-category Article-hidden-category">';
+                                        if($selected_page_id!=0){
+                                            $cat_url = get_permalink($selected_page_id).'?Article-category='.$cat_id;
+                                            echo '<a href="'.$cat_url. '" class="Article-category">'. esc_html($badge_category_names[$i]). '</a>';  
+                                        }
+                                        else{
+                                            echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($badge_category_names[$i]) . '</a>';
+                                        }
+                                        echo '</span>';
+                                    }
+                                    echo '</div>';
+                                } elseif (!empty($badge_categories)) {
+                                    foreach ($badge_categories as $index => $category) {
+                                        $cat_url = get_category_link($category->term_id);
+                                        echo '<span class="Article-category">';
+                                        if($selected_page_id!=0){
+                                            $cat_url = get_permalink($selected_page_id).'?Article-category='.$category->term_id;
+                                            echo '<a href="' .$cat_url. '" class="Article-category">' . esc_html($category->name) . '</a>';
+                                        }
+                                        else{
+                                            echo '<a href="' . esc_url($cat_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
+                                        }
+                                        echo '</span>';
+                                    }
+                                }
+                                
                                 echo '</div>';
-                        } // Chiusura della condizione PHP per Article-category-card2
                         echo '</div>';
                         
                         // Content section
                         echo '<div class="article-content">';
                         
                         // Date
-                        if ( 'inline-block' === $settings['date_active'] ) {
+                        $post_numb = get_the_date('Y-m-d');
+                        $post_date = get_the_date('j F Y');
+                        $date_array = explode('-', $post_numb);
+                    $date_parts = explode(' ', $post_date);
+                    $i = 2;
+                    $date_array[1] = $date_array[0] . '/' . $date_array[1];
+                    $date_array[2] = $date_array[1] . '/' . $date_array[2];
                             echo '<div class="Article-date-card2">';
-                            $day = get_the_date('d');
-                            $month = get_the_date('m');
-                            $year = get_the_date('Y');
-                            $month_name = get_the_date('F');
+                            if ($selected_page_id != 0) {
+                                $page_link = get_permalink($selected_page_id);
 
-                            if (!$force_default_links && $master_redirect_url) {
-                                $link_day = add_query_arg('Article-date', "$year/$month/" . get_the_date('d'), $master_redirect_url);
-                                $link_month = add_query_arg('Article-date', "$year/$month" . "m", $master_redirect_url);
-                                $link_year = add_query_arg('Article-date', $year, $master_redirect_url);
-
-                                echo '<a href="'.esc_url($link_day).'" class="Article-date">'.$day.'</a>'.'&nbsp;';
-                                echo '<a href="'.esc_url($link_month).'" class="Article-date">'.ucfirst($month_name).'</a>'.'&nbsp;'; 
-                                echo '<a href="'.esc_url($link_year).'" class="Article-date">'.$year.'</a>';
-                            } elseif ($selected_page_id != 0 && !$force_default_links) {
-                                $base = get_permalink($selected_page_id);
-                                echo '<a href="'.esc_url(add_query_arg('Article-date', "$year/$month/".get_the_date('d'), $base)).'" class="Article-date">'.$day.'</a>'.'&nbsp;';
-                                echo '<a href="'.esc_url(add_query_arg('Article-date', "$year/$month"."m", $base)).'" class="Article-date">'.ucfirst($month_name).'</a>  '.'&nbsp;'; 
-                                echo '<a href="'.esc_url(add_query_arg('Article-date', $year, $base)).'" class="Article-date">'.$year.'</a>';
-                            } else {
-                                echo '<a href="'.esc_url(get_day_link($year, $month, $day)).'" class="Article-date">'.$day.'</a>'.'&nbsp;';
-                                echo '<a href="'.esc_url(get_month_link($year, $month)).'" class="Article-date">'.ucfirst($month_name).'</a>'.'&nbsp;'; 
-                                echo '<a href="'.esc_url(get_year_link($year)).'" class="Article-date">'.$year.'</a>';
+                                foreach ($date_parts as $part) {
+                                    if ($i == 1) {
+                                        $date_array[1] = $date_array[1] . '/01 m';
+                                    }
+                                    $date_link = add_query_arg('Article-date', $date_array[$i], $page_link);
+                                    echo ' <a href="' . esc_url($date_link) . '" class="Article-date">' . ucfirst($part) . '&nbsp</a>';
+                                    $i -= 1;
+                                }
                             }
+                                else {
+                                    $i = 2;
+                                    foreach ($date_parts as $part) {
+                                        // Correggo la formattazione del link della data
+                                        $date_link = home_url() . '/' . $date_array[$i];
+                                        echo '<a href="' . esc_url($date_link) . '" class="Article-date">' . ucfirst($part) . '&nbsp</a> ';
+                                        $i -= 1;
+                                    }
+                                }
                             echo '</div>';
-                        }
                         
                         // Tags
-                    $tags = get_the_tags();
-                        if ($tags) { 
-                            echo '<div class="Article-tag-card2">';
-                            foreach ($tags as $tag) {
-                                // Se c'è una pagina personalizzata, punta a quella con il parametro tag
-                                if (!$force_default_links && $master_redirect_url) {
-                                    $tag_url = add_query_arg('Article-tag', $tag->slug, $master_redirect_url);
-                                } else {
-                                    $tag_url = get_tag_link($tag->term_id);
+                            $tags = get_the_tags();
+                            if ($tags) {
+                                echo '<div class="tag-card2">';
+                                $tag_names = [];
+                                foreach ($tags as $tag) {
+                                    $tag_names[] = $tag->name;
+                                
+                                if($selected_page_id!= 0){
+                                    $tag_link = add_query_arg('Article-tag', $tag->slug, $page_link);
+                                }  
+                                if($selected_page_id== 0){
+                                    $tag_link=get_tag_link($tag->term_id);
                                 }
-                                echo '<a href="' . esc_url($tag_url) . '" class="Article-tag">' . esc_html($tag->name) . ' </a> ';
+                            echo '<a class="Article-tag" href="' . $tag_link . '">' . $tag->name . '&nbsp;</a>';
+
                             }
-                            echo '</div>';
-                        }
+                        
+                                echo '</div>';
+                            }
 
                         // Title
                         if($settings['title_link'] != 'allowed'){
@@ -2439,7 +2389,7 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
                             echo '<div class="Article-description" style="cursor: default;">'. $excerpt. '...</div>';
                         }
                         else{
-                            echo '<div class="Article-description"> <a href="' . get_permalink() . '" >'. $excerpt. '... </a></div>';
+                            echo '<div class="Article-description"> <a href="' . get_permalink() . '" >'. $excerpt. '... <a></div>';
                         }
                         echo '<a href="' . get_permalink() . '" class="Article-read-more">' . esc_html($settings['read_more_text']) . '</a>';                    
                         echo '</div>'; 
@@ -2476,28 +2426,15 @@ $selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
 
                         // Check if we have a pending category selection from a reload
                         var pendingCategoryId = sessionStorage.getItem("Article-pending-category-" + widgetContainer.id);
-if (pendingCategoryId) {
-    sessionStorage.removeItem("Article-pending-category-" + widgetContainer.id);
-    var targetBtn = widgetContainer.querySelector(\'.Article-category-filter-button[data-Article-category="\' + pendingCategoryId + \'"]\');
-    if (targetBtn) {
-        categoryButtons.forEach(function(btn) { btn.classList.remove("active"); });
-        targetBtn.classList.add("active");
-    }
-}
-    else {
-    var allBtn = widgetContainer.querySelector(\'.Article-category-filter-button[data-Article-category="all"]\');
-    if (allBtn) allBtn.classList.add("active");
-}
-    if (window.location.search.indexOf("Article-category=") !== -1) {
-    var currentUrl = new URL(window.location.href);
-    var urlCategoryId = currentUrl.searchParams.get("Article-category");
-    categoryButtons.forEach(function(btn) {
-        btn.classList.remove("active");
-        if (btn.getAttribute("data-Article-category") === urlCategoryId) {
-            btn.classList.add("active");
-        }
-    });
-}
+                        if (pendingCategoryId) {
+                            sessionStorage.removeItem("Article-pending-category-" + widgetContainer.id);
+                            var targetBtn = widgetContainer.querySelector(\'.Article-category-filter-button[data-Article-category="\' + pendingCategoryId + \'"]\');
+                            if (targetBtn) {
+                                categoryButtons.forEach(function(btn) { btn.classList.remove("active"); });
+                                targetBtn.classList.add("active");
+                            }
+                        }
+
                         function updateFilters() {
                             var searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : "";
                             var searchScope = searchInput ? searchInput.getAttribute("data-search-scope") : "title";
@@ -2545,10 +2482,6 @@ if (pendingCategoryId) {
                             }
                         }
 
-                       updateFilters();
-                        var styleBlockToRemove = document.querySelector("style[data-widget=\"" + widgetContainer.id + "\"]");
-                        if (styleBlockToRemove) styleBlockToRemove.remove();
-
                         if (window.location.search.indexOf("Article-category=") !== -1) {
                             var currentUrl = new URL(window.location.href);
                             var categoryId = currentUrl.searchParams.get("Article-category");
@@ -2595,18 +2528,19 @@ if (pendingCategoryId) {
                             });
                         });               
 
-                       if (searchInput) {
-    searchInput.addEventListener("input", updateFilters);
-}
-
-if (searchButton) {
-    searchButton.addEventListener("click", function(e) {
-        e.preventDefault();
-        updateFilters();
-    });
-}
-
-
+                        if (searchInput) {
+                            searchInput.addEventListener("input", updateFilters);
+                        }
+                        
+                        if (searchButton) {
+                            searchButton.addEventListener("click", function(e) {
+                                e.preventDefault();
+                                updateFilters();
+                            });
+                        }
+                        
+                        updateFilters();
+                        
                         var toggles = widgetContainer.querySelectorAll(".category-toggle");
                         toggles.forEach(function(toggle) {
                             toggle.addEventListener("click", function() {
@@ -2686,7 +2620,6 @@ if (searchButton) {
                         initWidget();
                     }
                 })();
-                
                 </script>';
                   echo '
                 <style>
@@ -2907,7 +2840,6 @@ if (searchButton) {
                 .Article-category-filter {
                     display: flex;
                     flex-wrap: wrap;
-                    align-items: center;
                     gap: 10px;
                     margin-bottom: 20px;
                 }
@@ -2917,12 +2849,9 @@ if (searchButton) {
                     border: none;
                     border-radius: 4px;
                     cursor: pointer;
-                    display: inline-block !important;
                     transition: all 0.3s ease;
-                    font-weight: normal;
                     display: none;
-                        transition: none !important;
-
+                    font-weight: normal;
                 }
                 
                 
@@ -2972,10 +2901,10 @@ if (searchButton) {
                     position: absolute;
                     top: 5px;
                     left: 10px;
+                    display: none;
                     width: calc(100% - 20px); /* Evita che finisca sotto il bordo a destra */
                     box-sizing: border-box;
                     z-index: 10;
-                    display:none;
                 }
                 .Article-category.category-vertical {
                     display: block;
@@ -2986,6 +2915,7 @@ if (searchButton) {
             .Article-category {                
                     margin-left:-3px;
                     position: relative;
+                    display: none;
                     background-color: red !important;
                     color: white;
                     font-size: 12px;
@@ -3007,27 +2937,28 @@ if (searchButton) {
                 }
                 
                 .Article-date-card2, .Article-tag-card2 {
-                    display: none;
+                    display: flex;
+                    z-index: 100;
                 }
                 .Article-tag {
                     margin-top: 0px;
                     margin-bottom: 0px;
                     font-size: 18px;
                     color:black;
+                    display:none;
                     text-align: center;
-                    word-break: keep-all;
+                    word-break: break-all;
                     }
                     .Article-tag:hover {
                     font-weight: bold!important;
                     }
 
                     .Article-date {
-                    margin-right: 5px;
-                    margin-bottom: 5px;
                     font-size: 18px;
                     color:black;
+                    display:none;
                     text-align: center;
-                    word-break: keep-all;
+                    word-break: break-all;
                     z-index: 100;
                     font-weight: normal;
                     }
