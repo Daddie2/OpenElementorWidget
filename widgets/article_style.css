@@ -382,3 +382,6 @@
                     padding: 20px;
                     text-align: center;
                 }
+                .article-widget-container.is-filtering .article-card {
+                    visibility: hidden;
+                }

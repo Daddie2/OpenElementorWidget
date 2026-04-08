@@ -2154,7 +2154,7 @@
     }
     asort($all_categories);
 
-    $widget_id = 'article-widget-' . wp_generate_password(8, false);
+    $widget_id = 'article-widget-' . $this->get_id();
     echo '<div id="' . esc_attr($widget_id) . '" class="article-widget-container" data-error-message="' . esc_attr($settings['error_message'] ?: 'No results found') . '">';
 
     // Reset filtri attivi

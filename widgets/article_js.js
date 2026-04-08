@@ -81,8 +81,9 @@
             }
         }
 
-        updateFilters();
-
+        widgetContainer.classList.add("is-filtering");
+            updateFilters();
+        widgetContainer.classList.remove("is-filtering");
         var styleBlockToRemove = document.querySelector('style[data-widget="' + widgetContainer.id + '"]');
         if (styleBlockToRemove) styleBlockToRemove.remove();
 
