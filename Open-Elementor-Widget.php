@@ -57,11 +57,9 @@ add_action('elementor/elements/categories_registered', 'add_elementor_widget_cat
 // ── Registrazione asset Article Widget ──────────────────────────────────────
 function register_article_widget_assets()
 {
-  $base_url = 'https://waveew.altervista.org/wp-content/plugins/OpenElementorWidget/';
-
   wp_register_script(
     'article-widget-js',
-    $base_url . 'widgets/article_js.js',
+    plugin_dir_url(__FILE__) . 'widgets/article_js.js',
     ['jquery'],
     '1.0.0',
     true
@@ -69,7 +67,7 @@ function register_article_widget_assets()
 
   wp_register_style(
     'article-widget-css',
-    $base_url . 'widgets/article_style.css',
+    plugin_dir_url(__FILE__) . 'widgets/article_style.css',
     [],
     '1.0.0'
   );
@@ -95,3 +93,11 @@ function register_OpenElementorWidget_widgets($widgets_manager)
   require_once(plugin_dir_path(__FILE__) . 'widgets/Article.php');
   $widgets_manager->register_widget_type(new \Article_Widget());
 }
+
+add_filter('password_protected_is_active', function($enabled) {
+    $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (strpos($request_uri, '/plugins/OpenElementorWidget/') !== false) {
+        return false;
+    }
+    return $enabled;
+});
