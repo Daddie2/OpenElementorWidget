@@ -35,6 +35,36 @@
             });
         }
 
+        function checkCategoryOverflow() {
+            var categories = widgetContainer.querySelectorAll(".Article-category");
+            var cardWidth = 0;
+            categories.forEach(function(category) {
+                var card = category.closest(".article-card");
+
+                // Salta le card nascoste
+                if (!card || card.style.display === "none") return;
+
+                if (card && !cardWidth) { cardWidth = card.offsetWidth; }
+                var maxWidth = cardWidth * 0.8;
+                var tempSpan = document.createElement("span");
+                tempSpan.style.visibility = "hidden";
+                tempSpan.style.position = "absolute";
+                tempSpan.style.whiteSpace = "nowrap";
+                tempSpan.style.fontSize = window.getComputedStyle(category).fontSize;
+                tempSpan.style.fontFamily = window.getComputedStyle(category).fontFamily;
+                tempSpan.style.fontWeight = window.getComputedStyle(category).fontWeight;
+                tempSpan.innerText = category.innerText;
+                document.body.appendChild(tempSpan);
+                var textWidth = tempSpan.offsetWidth;
+                document.body.removeChild(tempSpan);
+                if (textWidth > maxWidth) {
+                    category.classList.add("category-vertical");
+                } else {
+                    category.classList.remove("category-vertical");
+                }
+            });
+        }
+
         function updateFilters() {
             var searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : "";
             var searchScope = searchInput ? searchInput.getAttribute("data-search-scope") : "title";
@@ -79,11 +109,14 @@
                 }
                 if (grid) grid.style.display = "grid";
             }
+
+            checkCategoryOverflow();
         }
 
         widgetContainer.classList.add("is-filtering");
-            updateFilters();
+        updateFilters();
         widgetContainer.classList.remove("is-filtering");
+
         var styleBlockToRemove = document.querySelector('style[data-widget="' + widgetContainer.id + '"]');
         if (styleBlockToRemove) styleBlockToRemove.remove();
 
@@ -143,32 +176,7 @@
             });
         }
 
-        function checkCategoryOverflow() {
-            var categories = widgetContainer.querySelectorAll(".Article-category");
-            var cardWidth = 0;
-            categories.forEach(function(category) {
-                var card = category.closest(".article-card");
-                if (card && !cardWidth) { cardWidth = card.offsetWidth; }
-                var maxWidth = cardWidth * 0.8;
-                var tempSpan = document.createElement("span");
-                tempSpan.style.visibility = "hidden";
-                tempSpan.style.position = "absolute";
-                tempSpan.style.whiteSpace = "nowrap";
-                tempSpan.style.fontSize = window.getComputedStyle(category).fontSize;
-                tempSpan.style.fontFamily = window.getComputedStyle(category).fontFamily;
-                tempSpan.style.fontWeight = window.getComputedStyle(category).fontWeight;
-                tempSpan.innerText = category.innerText;
-                document.body.appendChild(tempSpan);
-                var textWidth = tempSpan.offsetWidth;
-                document.body.removeChild(tempSpan);
-                if (textWidth > maxWidth) {
-                    category.classList.add("category-vertical");
-                } else {
-                    category.classList.remove("category-vertical");
-                }
-            });
-        }
-        setTimeout(checkCategoryOverflow, 100);
+        setTimeout(checkCategoryOverflow, 300);
         window.addEventListener("resize", checkCategoryOverflow);
 
         if (searchInput) {
