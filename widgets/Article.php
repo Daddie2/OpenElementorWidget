@@ -2054,403 +2054,330 @@
                 return $options ?: [];
             }
 
-            protected function render() { 
-               $settings = $this->get_settings_for_display();
-$selected_page_id = $settings['selected_page']; // Pagina globale (se impostata)
+          protected function render() {
+    $settings = $this->get_settings_for_display();
 
-    // 1. Mappa dei redirect personalizzati dal Repeater
+    // ── Variabili calcolate UNA SOLA VOLTA fuori dal loop ──────────────
+    $selected_page_id  = $settings['selected_page'];
+    $selected_page_url = ($selected_page_id != 0) ? get_permalink($selected_page_id) : '';
+
     $custom_redirects = [];
-    if ( ! empty( $settings['category_custom_links'] ) ) {
-        foreach ( $settings['category_custom_links'] as $item ) {
-            if ( ! empty( $item['cat_id'] ) && ! empty( $item['page_id'] ) ) {
-                $custom_redirects[ $item['cat_id'] ] = get_permalink( $item['page_id'] );
+    if (!empty($settings['category_custom_links'])) {
+        foreach ($settings['category_custom_links'] as $item) {
+            if (!empty($item['cat_id']) && !empty($item['page_id'])) {
+                $custom_redirects[$item['cat_id']] = get_permalink($item['page_id']);
             }
         }
     }
-                
-            $posts_per_page = !empty($settings['posts_per_page']) ? intval($settings['posts_per_page']) : 4;
-                if ($settings['all_post'] == 'all') {
-                    $posts_per_page = -1;
-                }
 
-                // Base Query arguments (common for display and category discovery)
-                $base_args = array(
-                    'post_type' => 'post',
-                    'orderby' => 'date',
-                    'order' => 'DESC',
-                    'post_status' => 'publish',
-                    'ignore_sticky_posts' => true,
-                    'suppress_filters' => false // Assicura che i filtri di altri plugin (come WPML o Polylang) funzionino
-                );
+    $hidden_badge_cats = !empty($settings['hide_categories_from_badge'])
+        ? array_map('intval', (array) $settings['hide_categories_from_badge'])
+        : [];
 
-                // Category filtering (permanent widget settings)
-                if (!empty($settings['include_categories'])) {
-                    $base_args['category__in'] = $settings['include_categories'];
-                }
-                
-                if (!empty($settings['exclude_categories']) && $settings['include_all'] !== 'on') {
-                    $base_args['category__not_in'] = $settings['exclude_categories'];
-                }
+    $word_limit_base = wp_is_mobile() ? $settings['content_word_mobile'] : $settings['content_word_pc'];
+    $remove_title    = ($settings['remove_title'] === 'on');
+    $include_cats    = !empty($settings['include_categories']) ? array_map('intval', $settings['include_categories']) : [];
+    $exclude_cats    = !empty($settings['exclude_categories']) ? array_map('intval', $settings['exclude_categories']) : [];
+    // ───────────────────────────────────────────────────────────────────
 
-                // Main query arguments for display (includes limit and URL filters)
-                $args = $base_args;
-                $args['posts_per_page'] = $posts_per_page;
-                
-                // Filtro per data dall'URL
-                if (isset($_GET['Article-date'])) {
-                    $date_param = sanitize_text_field($_GET['Article-date']);
-                    
-                    // Controlla il formato della data
-                    if (substr($date_param, -1) == 'm') {
-                        // Formato mese (YYYY/MM m)
-                        $year = intval(substr($date_param, 0, 4));
-                        $month = intval(substr($date_param, 5, 2));
-                        
-                        $args['date_query'] = array(
-                            'year'  => $year,
-                            'month' => $month,
-                            'day'   => array(
-                                'start' => 1,
-                                'end'   => date('t', mktime(0, 0, 0, $month, 1, $year)),
-                            ),
-                        );
-                    } elseif (strlen($date_param) === 4) {
-                        // Solo anno (YYYY)
-                        $args['date_query'] = array(
-                            'year' => intval($date_param),
-                        );
-                    } elseif (strlen($date_param) === 10) {
-                        // Data completa (YYYY/MM/DD)
-                        $args['date_query'] = array(
-                            'year'  => intval(substr($date_param, 0, 4)),
-                            'month' => intval(substr($date_param, 5, 2)),
-                            'day'   => intval(substr($date_param, 8, 2)),
-                        );
-                    }
-                }
-                
-                // Filtro per tag dall'URL
-                if (isset($_GET['Article-tag'])) {
-                    $args['tag'] = sanitize_text_field($_GET['Article-tag']);
-                }
-                
-                // Run the query for the articles to display
-                $query = new \WP_Query($args);
-                
-                // Get all categories for the filter buttons
-                $all_categories = [];
-                    // Ottieni tutti i post che corrispondono alle inclusioni/esclusioni del widget
-                    $all_post_ids_args = [
-                        'post_type' => 'post',
-                        'posts_per_page' => -1,
-                        'fields' => 'ids',
-                        'category__in' => !empty($settings['include_categories']) ? $settings['include_categories'] : [],
-                        'category__not_in' => !empty($settings['exclude_categories']) ? $settings['exclude_categories'] : [],
-                    ];
-                    $all_post_ids = get_posts($all_post_ids_args);
-
-                    if (!empty($all_post_ids)) {
-                        $terms = wp_get_object_terms($all_post_ids, 'category');
-                        if (!is_wp_error($terms)) {
-                            foreach ($terms as $term) {
-                                // Escludi le categorie base (include_categories) e quelle escluse manualmente
-                                if (!empty($settings['include_categories']) && in_array((int)$term->term_id, array_map('intval', $settings['include_categories']))) {
-                                    continue;
-                                }
-                                if (!empty($settings['exclude_categories']) && in_array((int)$term->term_id, array_map('intval', $settings['exclude_categories']))) {
-                                    continue;
-                                }
-                                $all_categories[$term->term_id] = $term->name;
-                            }
-                        }
-                    }
-
-                
-                // Sort categories by name
-                asort($all_categories);
-                
-                $widget_id = 'article-widget-' . wp_generate_password(8, false);
-echo '<div id="' . esc_attr($widget_id) . '" class="article-widget-container" data-error-message="' . esc_attr($settings['error_message'] ?: 'No results found') . '">';      
-                // Aggiungi pulsante reset filtri se necessario
-                if (isset($_GET['Article-date']) || isset($_GET['Article-tag'])) {
-                    echo '<div class="Article-active-filters">';
-                    if (isset($_GET['Article-date'])) {
-                        $date_param = $_GET['Article-date'];
-                        if(substr($_GET['Article-date'], -1) =='m'){
-                            $date_param = substr($_GET['Article-date'], 0, 4).'/'.substr($_GET['Article-date'], 5, 2);
-                        }
-                        echo '<span class="Article-filter-badge">Data: ' . esc_html($date_param) . '</span>';
-                    }
-                    if (isset($_GET['Article-tag'])) {
-                        echo '<span class="Article-filter-badge">Tag: ' . esc_html($_GET['Article-tag']) . '</span>';
-                    }
-                    echo '<button class="Article-reset-filters">'.$settings['reset_button'].'</button>';
-                    echo '</div>';
-                }
-                
-                // Only show filter if there are actually items to filter
-                echo '<div class="Article-category-filter">';
-                $all_shown = (!empty($settings['include_all']) && $settings['include_all'] === 'on') || (!empty($settings['show_all_button_forced']) && $settings['show_all_button_forced'] === 'yes');
-                if ($all_shown) {
-                    echo '<button class="Article-category-filter-button" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
-                }
-                    
-                    foreach ($all_categories as $cat_id => $cat_name) {
-                        echo '<button class="Article-category-filter-button" data-Article-category="' . esc_attr($cat_id) . '">' . esc_html($cat_name) . '</button>';
-                    }
-                
-                    echo '<div class="article-widget-container2">';
-                    echo '<div class="search-form-container">';
-                    echo '<input type="text" class="article-input2 article-input" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off" data-search-scope="' . esc_attr($settings['search_scope'] ?: 'title') . '">';
-                    echo '<div class="article-icon2">';
-                    echo '<button type="button" class="article-submit-button article-submit">';
-                    echo '<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                    <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
-                    </svg>';
-                    echo '</button>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</div>';
-                // Articles grid
-                if ($query->have_posts()) {
-                    echo '<div class="articles-grid">';
-                    $selected_page_id = $settings['selected_page'];
-                    while ($query->have_posts()) {
-                        $query->the_post();
-                        // Get post categories
-                        $post_categories = get_the_category();
-                        
-                        // 1. Identifichiamo quali categorie del post hanno un redirect personalizzato
-                        $cats_with_custom_redirects = [];
-                        foreach ($post_categories as $cat) {
-                            if (isset($custom_redirects[$cat->term_id])) {
-                                $cats_with_custom_redirects[$cat->term_id] = $custom_redirects[$cat->term_id];
-                            }
-                        }
-
-                        $master_redirect_url = '';
-                        $special_cat_id = 0;
-                        $force_default_links = false;
-
-                        // 2. Determiniamo la logica di redirect
-                        if (count($cats_with_custom_redirects) === 1) {
-                            // Solo una categoria ha un redirect (es. Categoria B)
-                            reset($cats_with_custom_redirects);
-                            $special_cat_id = (int) key($cats_with_custom_redirects);
-                            $master_redirect_url = $cats_with_custom_redirects[$special_cat_id];
-                        } elseif (count($cats_with_custom_redirects) > 1) {
-                            // Più categorie hanno redirect -> link default WP
-                            $force_default_links = true;
-                        } elseif ($selected_page_id != 0) {
-                            // Nessuna categoria custom, ma pagina globale impostata
-                            $master_redirect_url = get_permalink($selected_page_id);
-                        }
-
-                        $category_classes = '';
-                        $category_names = [];
-                        
-                        foreach ($post_categories as $category) {
-                            $category_classes .= ' Article-category-' . $category->term_id;
-                            $category_names[] = $category->name;
-                        }
-
-                        // Filter categories for badge display only (articles remain visible)
-                        $hidden_badge_cats = !empty($settings['hide_categories_from_badge']) ? array_map('intval', (array) $settings['hide_categories_from_badge']) : [];
-                        $badge_categories = [];
-                        $badge_category_names = [];
-                        foreach ($post_categories as $category) {
-                            if (!in_array((int) $category->term_id, $hidden_badge_cats)) {
-                                $badge_categories[] = $category;
-                                $badge_category_names[] = $category->name;
-                            }
-                        }
-                        
-                        // Get featured image or default
-                        $image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
-                        if (!$image_url && isset($settings['default_image']['url'])) {
-                            $image_url = $settings['default_image']['url'];
-                        }
-                        // Get post content
-                        $content = get_the_content();
-                                if ($settings['remove_title'] === 'on') {
-                                $content = preg_replace('/<h2[^>]*>(.*?)<\/h2>/i', '', $content, 1);
-                                    }    
-                                                                        // Clean content from Elementor code and other HTML
-                                                                        $clean_content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $content); // Remove style tags
-                                                                        $clean_content = preg_replace('/\*!.*?\*\//s', '', $clean_content); // Remove CSS comments
-                                                                        $clean_content = preg_replace('/\.elementor.*?\}/s', '', $clean_content); // Remove elementor CSS rules
-                                                                        
-                                                                        // Replace heading tags with text + space before stripping tags
-                                                                        $clean_content = preg_replace('/<h1[^>]*>(.*?)<\/h1>/is', '$1 ', $clean_content);
-                                                                        $clean_content = preg_replace('/<h2[^>]*>(.*?)<\/h2>/is', '$1 ', $clean_content);
-                                                                        $clean_content = preg_replace('/<h3[^>]*>(.*?)<\/h3>/is', '$1 ', $clean_content);
-                                                                        $clean_content = preg_replace('/<h4[^>]*>(.*?)<\/h4>/is', '$1 ', $clean_content);
-                                                                        $clean_content = preg_replace('/<h5[^>]*>(.*?)<\/h5>/is', '$1 ', $clean_content);
-                                                                        $clean_content = preg_replace('/<h6[^>]*>(.*?)<\/h6>/is', '$1 ', $clean_content);
-                                                                        $clean_content = preg_replace('/<p[^>]*>(.*?)<\/p>/is', '$1 ', $clean_content);
-                                                                        $clean_content = preg_replace('/<li[^>]*>(.*?)<\/li>/is', '$1 ', $clean_content); // Handle list items
-                                                                        $clean_content = preg_replace('/<ol[^>]*>(.*?)<\/ol>/is', '$1 ', $clean_content); // Handle ordered lists
-                                                                        $clean_content = preg_replace('/<ul[^>]*>(.*?)<\/ul>/is', '$1 ', $clean_content); // Handle unordered lists
-                                                                        
-                                                                        // Remove numbered list formatting (like "1. ", "2. ", etc.)                                                                     
-                                                                        $clean_content = wp_strip_all_tags($clean_content); // Better than strip_tags()
-                                                                        $clean_content = preg_replace('/\s+/', ' ', $clean_content); // Normalize whitespace
-                                                                        $clean_content = preg_replace('/[\r\n]+/', ' ', $clean_content); // Replace line breaks with spaces
-                                                                        $clean_content = trim($clean_content); // Remove leading/trailing whitespace
-                                                                                $word_limit = wp_is_mobile() ? $settings['content_word_mobile'] : $settings['content_word_pc'];
-                                                                                $words = explode(' ', $clean_content);
-                                                                                $title_for_length = get_the_title();
-                                                                                $title_for_length = preg_replace('/\s+/', ' ', $title_for_length);
-                                                                                $title_word_count = count(explode(' ', trim($title_for_length)));
-                                                                                if ($title_word_count < 4) {
-                                                                                    $word_limit += 12;
-                                                                                } elseif ($title_word_count < 7) {
-                                                                                    $word_limit += 6;
-                                                                                }
-                                                                                if ($word_limit > count($words)) {
-                                                                                    $word_limit = count($words);
-                                                                                }
-                                            $excerpt = implode(' ', array_slice($words, 0, $word_limit));
-                        
-                        // Article card HTML
-                            echo '<div class="article-card' . esc_attr($category_classes) . '">';
-                        echo '<div class="article-image">';
-                        echo '<div class="article-image-inner">'; // Nuovo contenitore per il bordo
-                        if (has_post_thumbnail($post->ID)) {
-                            echo get_the_post_thumbnail($post->ID, 'medium_large', array('loading' => 'lazy'));
-                        } else {
-                            echo '<img src="' . $settings['default_image']['url'] . '" alt="Default Image" loading="lazy">';
-                        }
-                        echo '</div>'; 
-                                echo '<div class="Article-category-card2">';
-                    
-                             if (!empty($badge_categories) && count($badge_category_names) > 1) {
-    // --- CASO 1: CI SONO TANTE CATEGORIE (MOSTRA IL "+" ) ---
-    $first_cat_id = $badge_categories[0]->term_id;
-    $final_url = '';
-    
-    if ($force_default_links) {
-        $final_url = get_category_link($first_cat_id);
-    } elseif ($master_redirect_url) {
-        $final_url = ($first_cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $first_cat_id, $master_redirect_url);
-    } else {
-        $final_url = get_category_link($first_cat_id);
+    $posts_per_page = !empty($settings['posts_per_page']) ? intval($settings['posts_per_page']) : 4;
+    if ($settings['all_post'] == 'all') {
+        $posts_per_page = -1;
     }
 
-    echo '<div class="Article-category-wrapper">';
-    echo '<a href="' . esc_url($final_url) . '" class="Article-category main-category">' . esc_html($badge_category_names[0]) . '</a>';
-    echo '<span class="category-toggle">+</span>';
-    echo '</div>';
-    
-    echo '<div class="Article-hidden-categories">';
-    for ($i = 1; $i < count($badge_category_names); $i++) {
-        $cat_id = $badge_categories[$i]->term_id;
-        $hidden_url = '';
-        
-        if ($force_default_links) {
-            $hidden_url = get_category_link($cat_id);
-        } elseif ($master_redirect_url) {
-            $hidden_url = ($cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $cat_id, $master_redirect_url);
-        } else {
-            $hidden_url = get_category_link($cat_id);
+    $base_args = array(
+        'post_type'           => 'post',
+        'orderby'             => 'date',
+        'order'               => 'DESC',
+        'post_status'         => 'publish',
+        'ignore_sticky_posts' => true,
+        'suppress_filters'    => false,
+    );
+
+    if (!empty($settings['include_categories'])) {
+        $base_args['category__in'] = $settings['include_categories'];
+    }
+    if (!empty($settings['exclude_categories']) && $settings['include_all'] !== 'on') {
+        $base_args['category__not_in'] = $settings['exclude_categories'];
+    }
+
+    $args                 = $base_args;
+    $args['posts_per_page'] = $posts_per_page;
+
+    // Filtro per data dall'URL
+    if (isset($_GET['Article-date'])) {
+        $date_param = sanitize_text_field($_GET['Article-date']);
+        if (substr($date_param, -1) == 'm') {
+            $year  = intval(substr($date_param, 0, 4));
+            $month = intval(substr($date_param, 5, 2));
+            $args['date_query'] = array(
+                'year'  => $year,
+                'month' => $month,
+                'day'   => array(
+                    'start' => 1,
+                    'end'   => date('t', mktime(0, 0, 0, $month, 1, $year)),
+                ),
+            );
+        } elseif (strlen($date_param) === 4) {
+            $args['date_query'] = array('year' => intval($date_param));
+        } elseif (strlen($date_param) === 10) {
+            $args['date_query'] = array(
+                'year'  => intval(substr($date_param, 0, 4)),
+                'month' => intval(substr($date_param, 5, 2)),
+                'day'   => intval(substr($date_param, 8, 2)),
+            );
         }
-        echo '<a href="' . esc_url($hidden_url) . '" class="Article-category Article-hidden-category">' . esc_html($badge_category_names[$i]) . '</a>';
     }
+
+    // Filtro per tag dall'URL
+    if (isset($_GET['Article-tag'])) {
+        $args['tag'] = sanitize_text_field($_GET['Article-tag']);
+    }
+
+    $query = new \WP_Query($args);
+
+    // Categorie per i filter buttons — ricavate dai post già in memoria, zero query extra
+    $all_categories = [];
+    if ($query->have_posts()) {
+        foreach ($query->posts as $p) {
+            $post_terms = get_the_terms($p->ID, 'category');
+            if ($post_terms && !is_wp_error($post_terms)) {
+                foreach ($post_terms as $term) {
+                    $tid = (int) $term->term_id;
+                    if (isset($all_categories[$tid]))      continue;
+                    if (in_array($tid, $include_cats))     continue;
+                    if (in_array($tid, $exclude_cats))     continue;
+                    $all_categories[$tid] = $term->name;
+                }
+            }
+        }
+    }
+    asort($all_categories);
+
+    $widget_id = 'article-widget-' . wp_generate_password(8, false);
+    echo '<div id="' . esc_attr($widget_id) . '" class="article-widget-container" data-error-message="' . esc_attr($settings['error_message'] ?: 'No results found') . '">';
+
+    // Reset filtri attivi
+    if (isset($_GET['Article-date']) || isset($_GET['Article-tag'])) {
+        echo '<div class="Article-active-filters">';
+        if (isset($_GET['Article-date'])) {
+            $date_param = $_GET['Article-date'];
+            if (substr($date_param, -1) == 'm') {
+                $date_param = substr($date_param, 0, 4) . '/' . substr($date_param, 5, 2);
+            }
+            echo '<span class="Article-filter-badge">Data: ' . esc_html($date_param) . '</span>';
+        }
+        if (isset($_GET['Article-tag'])) {
+            echo '<span class="Article-filter-badge">Tag: ' . esc_html($_GET['Article-tag']) . '</span>';
+        }
+        echo '<button class="Article-reset-filters">' . $settings['reset_button'] . '</button>';
+        echo '</div>';
+    }
+
+    // Filter buttons
+    echo '<div class="Article-category-filter">';
+    $all_shown = (!empty($settings['include_all']) && $settings['include_all'] === 'on')
+              || (!empty($settings['show_all_button_forced']) && $settings['show_all_button_forced'] === 'yes');
+    if ($all_shown) {
+        echo '<button class="Article-category-filter-button" data-Article-category="all">' . esc_html($settings['All_place'] ?: 'All') . '</button>';
+    }
+    foreach ($all_categories as $cat_id => $cat_name) {
+        echo '<button class="Article-category-filter-button" data-Article-category="' . esc_attr($cat_id) . '">' . esc_html($cat_name) . '</button>';
+    }
+
+    echo '<div class="article-widget-container2">';
+    echo '<div class="search-form-container">';
+    echo '<input type="text" class="article-input2 article-input" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off" data-search-scope="' . esc_attr($settings['search_scope'] ?: 'title') . '">';
+    echo '<div class="article-icon2">';
+    echo '<button type="button" class="article-submit-button article-submit">';
+    echo '<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+        <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
+        </svg>';
+    echo '</button>';
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
     echo '</div>';
 
-} elseif (!empty($badge_categories)) {
-    // --- CASO 2: POCHE CATEGORIE (MOSTRALE TUTTE) ---
-    foreach ($badge_categories as $index => $category) {
-        $cat_id = $category->term_id;
-        $final_url = ($force_default_links) ? get_category_link($cat_id) : (($master_redirect_url) ? (($cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $cat_id, $master_redirect_url)) : get_category_link($cat_id));
+    // Articles grid
+    if ($query->have_posts()) {
+        echo '<div class="articles-grid">';
+        while ($query->have_posts()) {
+            $query->the_post();
 
-        echo '<span class="Article-category">';
-        echo '<a href="' . esc_url($final_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
-        echo '</span>';
+            $post_categories = get_the_category();
+
+            // Redirect logic
+            $cats_with_custom_redirects = [];
+            foreach ($post_categories as $cat) {
+                if (isset($custom_redirects[$cat->term_id])) {
+                    $cats_with_custom_redirects[$cat->term_id] = $custom_redirects[$cat->term_id];
+                }
+            }
+
+            $master_redirect_url = '';
+            $special_cat_id      = 0;
+            $force_default_links = false;
+
+            if (count($cats_with_custom_redirects) === 1) {
+                reset($cats_with_custom_redirects);
+                $special_cat_id      = (int) key($cats_with_custom_redirects);
+                $master_redirect_url = $cats_with_custom_redirects[$special_cat_id];
+            } elseif (count($cats_with_custom_redirects) > 1) {
+                $force_default_links = true;
+            } elseif ($selected_page_url) {
+                $master_redirect_url = $selected_page_url; // ← già calcolato fuori dal loop
+            }
+
+            // Category classes e badge
+            $category_classes    = '';
+            $badge_categories    = [];
+            $badge_category_names = [];
+            foreach ($post_categories as $category) {
+                $category_classes .= ' Article-category-' . $category->term_id;
+                if (!in_array((int) $category->term_id, $hidden_badge_cats)) { // ← già calcolato fuori dal loop
+                    $badge_categories[]    = $category;
+                    $badge_category_names[] = $category->name;
+                }
+            }
+
+            // Excerpt
+            $content = get_the_content();
+            if ($remove_title) { // ← già calcolato fuori dal loop
+                $content = preg_replace('/<h2[^>]*>(.*?)<\/h2>/i', '', $content, 1);
+            }
+            $clean_content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $content);
+            $clean_content = preg_replace('/\*!.*?\*\//s', '', $clean_content);
+            $clean_content = preg_replace('/\.elementor.*?\}/s', '', $clean_content);
+            $clean_content = preg_replace('/<h[1-6][^>]*>(.*?)<\/h[1-6]>/is', '$1 ', $clean_content);
+            $clean_content = preg_replace('/<(p|li|ol|ul)[^>]*>(.*?)<\/(p|li|ol|ul)>/is', '$2 ', $clean_content);
+            $clean_content = wp_strip_all_tags($clean_content);
+            $clean_content = trim(preg_replace('/[\s\r\n]+/', ' ', $clean_content));
+
+            $word_limit      = $word_limit_base; // ← già calcolato fuori dal loop
+            $words           = explode(' ', $clean_content);
+            $title_words     = count(explode(' ', trim(preg_replace('/\s+/', ' ', get_the_title()))));
+            if ($title_words < 4)      { $word_limit += 12; }
+            elseif ($title_words < 7)  { $word_limit += 6; }
+            if ($word_limit > count($words)) { $word_limit = count($words); }
+            $excerpt = implode(' ', array_slice($words, 0, $word_limit));
+
+            // Card HTML
+            echo '<div class="article-card' . esc_attr($category_classes) . '">';
+            echo '<div class="article-image">';
+            echo '<div class="article-image-inner">';
+            if (has_post_thumbnail()) {
+                echo get_the_post_thumbnail(null, 'medium_large', array('loading' => 'lazy'));
+            } else {
+                echo '<img src="' . esc_url($settings['default_image']['url']) . '" alt="Default Image" loading="lazy">';
+            }
+            echo '</div>';
+
+            echo '<div class="Article-category-card2">';
+            if (!empty($badge_categories) && count($badge_category_names) > 1) {
+                $first_cat_id = $badge_categories[0]->term_id;
+                if ($force_default_links) {
+                    $final_url = get_category_link($first_cat_id);
+                } elseif ($master_redirect_url) {
+                    $final_url = ($first_cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $first_cat_id, $master_redirect_url);
+                } else {
+                    $final_url = get_category_link($first_cat_id);
+                }
+                echo '<div class="Article-category-wrapper">';
+                echo '<a href="' . esc_url($final_url) . '" class="Article-category main-category">' . esc_html($badge_category_names[0]) . '</a>';
+                echo '<span class="category-toggle">+</span>';
+                echo '</div>';
+                echo '<div class="Article-hidden-categories">';
+                for ($i = 1; $i < count($badge_category_names); $i++) {
+                    $cat_id = $badge_categories[$i]->term_id;
+                    if ($force_default_links) {
+                        $hidden_url = get_category_link($cat_id);
+                    } elseif ($master_redirect_url) {
+                        $hidden_url = ($cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $cat_id, $master_redirect_url);
+                    } else {
+                        $hidden_url = get_category_link($cat_id);
+                    }
+                    echo '<a href="' . esc_url($hidden_url) . '" class="Article-category Article-hidden-category">' . esc_html($badge_category_names[$i]) . '</a>';
+                }
+                echo '</div>';
+            } elseif (!empty($badge_categories)) {
+                foreach ($badge_categories as $category) {
+                    $cat_id    = $category->term_id;
+                    $final_url = $force_default_links
+                        ? get_category_link($cat_id)
+                        : ($master_redirect_url
+                            ? (($cat_id === $special_cat_id) ? $master_redirect_url : add_query_arg('Article-category', $cat_id, $master_redirect_url))
+                            : get_category_link($cat_id));
+                    echo '<span class="Article-category">';
+                    echo '<a href="' . esc_url($final_url) . '" class="Article-category">' . esc_html($category->name) . '</a>';
+                    echo '</span>';
+                }
+            }
+            echo '</div>';
+            echo '</div>';
+
+            // Content
+            echo '<div class="article-content">';
+
+            // Date
+            echo '<div class="Article-date-card2">';
+            $day        = get_the_date('d');
+            $month      = get_the_date('m');
+            $year       = get_the_date('Y');
+            $month_name = get_the_date('F');
+            if (!$force_default_links && $master_redirect_url) {
+                echo '<a href="' . esc_url(add_query_arg('Article-date', "$year/$month/$day", $master_redirect_url)) . '" class="Article-date">' . $day . '</a>&nbsp;';
+                echo '<a href="' . esc_url(add_query_arg('Article-date', "{$year}/{$month}m", $master_redirect_url)) . '" class="Article-date">' . ucfirst($month_name) . '</a>&nbsp;';
+                echo '<a href="' . esc_url(add_query_arg('Article-date', $year, $master_redirect_url)) . '" class="Article-date">' . $year . '</a>';
+            } elseif ($selected_page_url && !$force_default_links) {
+                echo '<a href="' . esc_url(add_query_arg('Article-date', "$year/$month/$day", $selected_page_url)) . '" class="Article-date">' . $day . '</a>&nbsp;';
+                echo '<a href="' . esc_url(add_query_arg('Article-date', "{$year}/{$month}m", $selected_page_url)) . '" class="Article-date">' . ucfirst($month_name) . '</a>&nbsp;';
+                echo '<a href="' . esc_url(add_query_arg('Article-date', $year, $selected_page_url)) . '" class="Article-date">' . $year . '</a>';
+            } else {
+                echo '<a href="' . esc_url(get_day_link($year, $month, $day)) . '" class="Article-date">' . $day . '</a>&nbsp;';
+                echo '<a href="' . esc_url(get_month_link($year, $month)) . '" class="Article-date">' . ucfirst($month_name) . '</a>&nbsp;';
+                echo '<a href="' . esc_url(get_year_link($year)) . '" class="Article-date">' . $year . '</a>';
+            }
+            echo '</div>';
+
+            // Tags
+            $tags = get_the_tags();
+            if ($tags) {
+                echo '<div class="Article-tag-card2">';
+                foreach ($tags as $tag) {
+                    $tag_url = (!$force_default_links && $master_redirect_url)
+                        ? add_query_arg('Article-tag', $tag->slug, $master_redirect_url)
+                        : get_tag_link($tag->term_id);
+                    echo '<a href="' . esc_url($tag_url) . '" class="Article-tag">' . esc_html($tag->name) . ' </a> ';
+                }
+                echo '</div>';
+            }
+
+            // Title
+            $title = preg_replace('/\s+/', ' ', get_the_title());
+            if ($settings['title_link'] != 'allowed') {
+                echo '<a class="Article-title" style="pointer-events: none;">' . $title . '</a>';
+            } else {
+                echo '<a href="' . get_permalink() . '" class="Article-title">' . $title . '</a>';
+            }
+
+            // Description
+            if ($settings['content_link'] != 'allowed') {
+                echo '<div class="Article-description" style="cursor: default;">' . $excerpt . '...</div>';
+            } else {
+                echo '<div class="Article-description"><a href="' . get_permalink() . '">' . $excerpt . '...</a></div>';
+            }
+
+            echo '<a href="' . get_permalink() . '" class="Article-read-more">' . esc_html($settings['read_more_text']) . '</a>';
+            echo '</div>';
+            echo '</div>';
+        }
+        echo '</div>';
+        echo '</div>';
+        wp_reset_postdata();
+    } else {
+        echo '<div class="error-message">' . esc_html($settings['error_message'] ?: 'No post found') . '</div>';
     }
 }
-                                echo '</div>';
-                         // Chiusura della condizione PHP per Article-category-card2
-                        echo '</div>';
-                        
-                        // Content section
-                        echo '<div class="article-content">';
-                        
-                        // Date
-                            echo '<div class="Article-date-card2">';
-                            $day = get_the_date('d');
-                            $month = get_the_date('m');
-                            $year = get_the_date('Y');
-                            $month_name = get_the_date('F');
-
-                            if (!$force_default_links && $master_redirect_url) {
-                                $link_day = add_query_arg('Article-date', "$year/$month/" . get_the_date('d'), $master_redirect_url);
-                                $link_month = add_query_arg('Article-date', "$year/$month" . "m", $master_redirect_url);
-                                $link_year = add_query_arg('Article-date', $year, $master_redirect_url);
-
-                                echo '<a href="'.esc_url($link_day).'" class="Article-date">'.$day.'</a>'.'&nbsp;';
-                                echo '<a href="'.esc_url($link_month).'" class="Article-date">'.ucfirst($month_name).'</a>'.'&nbsp;'; 
-                                echo '<a href="'.esc_url($link_year).'" class="Article-date">'.$year.'</a>';
-                            } elseif ($selected_page_id != 0 && !$force_default_links) {
-                                $base = get_permalink($selected_page_id);
-                                echo '<a href="'.esc_url(add_query_arg('Article-date', "$year/$month/".get_the_date('d'), $base)).'" class="Article-date">'.$day.'</a>'.'&nbsp;';
-                                echo '<a href="'.esc_url(add_query_arg('Article-date', "$year/$month"."m", $base)).'" class="Article-date">'.ucfirst($month_name).'</a>  '.'&nbsp;'; 
-                                echo '<a href="'.esc_url(add_query_arg('Article-date', $year, $base)).'" class="Article-date">'.$year.'</a>';
-                            } else {
-                                echo '<a href="'.esc_url(get_day_link($year, $month, $day)).'" class="Article-date">'.$day.'</a>'.'&nbsp;';
-                                echo '<a href="'.esc_url(get_month_link($year, $month)).'" class="Article-date">'.ucfirst($month_name).'</a>'.'&nbsp;'; 
-                                echo '<a href="'.esc_url(get_year_link($year)).'" class="Article-date">'.$year.'</a>';
-                            }
-                            echo '</div>';
-                        
-                        // Tags
-                    $tags = get_the_tags();
-                        if ($tags) { 
-                            echo '<div class="Article-tag-card2">';
-                            foreach ($tags as $tag) {
-                                // Se c'è una pagina personalizzata, punta a quella con il parametro tag
-                                if (!$force_default_links && $master_redirect_url) {
-                                    $tag_url = add_query_arg('Article-tag', $tag->slug, $master_redirect_url);
-                                } else {
-                                    $tag_url = get_tag_link($tag->term_id);
-                                }
-                                echo '<a href="' . esc_url($tag_url) . '" class="Article-tag">' . esc_html($tag->name) . ' </a> ';
-                            }
-                            echo '</div>';
-                        }
-
-                        // Title
-                        if($settings['title_link'] != 'allowed'){
-                            // Process the title to ensure proper spacing between heading parts
-                            $title = get_the_title();
-                            $title = preg_replace('/\s+/', ' ', $title); // Normalize whitespace
-                            echo '<a class="Article-title" style="pointer-events: none;">' . $title . '</a>';
-                        }
-                        else{
-                            $title = get_the_title();
-                            $title = preg_replace('/\s+/', ' ', $title); // Normalize whitespace
-                            echo '<a href="' . get_permalink() . '" class="Article-title">' . $title . '</a>';
-                        }
-                        if($settings['content_link']!= 'allowed'){
-                            echo '<div class="Article-description" style="cursor: default;">'. $excerpt. '...</div>';
-                        }
-                        else{
-                            echo '<div class="Article-description"> <a href="' . get_permalink() . '" >'. $excerpt. '... </a></div>';
-                        }
-                        echo '<a href="' . get_permalink() . '" class="Article-read-more">' . esc_html($settings['read_more_text']) . '</a>';                    
-                        echo '</div>'; 
-                        echo '</div>';     
-                    }
-                    echo '</div>';
-                    echo '</div>'; 
-                    wp_reset_postdata();
-                } else {
-                    // No posts found
-                    echo '<div class="error-message">' . esc_html($settings['error_message'] ?: 'No post found') . '</div>';
-                }
-                
-
-        }
     }
