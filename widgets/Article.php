@@ -2378,6 +2378,7 @@
         wp_reset_postdata();
     } else {
         echo '<div class="error-message">' . esc_html($settings['error_message'] ?: 'No post found') . '</div>';
+         wp_reset_postdata();
     }
 }
     }
