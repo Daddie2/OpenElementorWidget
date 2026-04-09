@@ -112,10 +112,11 @@
 
             checkCategoryOverflow();
         }
-
-        widgetContainer.classList.add("is-filtering");
-        updateFilters();
-        widgetContainer.classList.remove("is-filtering");
+        requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+                updateFilters();
+            });
+        });
 
         var styleBlockToRemove = document.querySelector('style[data-widget="' + widgetContainer.id + '"]');
         if (styleBlockToRemove) styleBlockToRemove.remove();
