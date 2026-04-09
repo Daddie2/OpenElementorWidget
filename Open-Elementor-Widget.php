@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: OpenWidgetElementor
+Plugin Name: OpenElementorWidget
 Description: Custom widget for elementor
-Version: 1.0
-Author: Davide 
+Version: 2.0
+Author: Davide Antonica
 */ 
 
 
