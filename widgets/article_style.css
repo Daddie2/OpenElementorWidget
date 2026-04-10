@@ -385,3 +385,18 @@
                 .article-widget-container.is-filtering .article-card {
                     visibility: hidden;
                 }
+                .Article-category-card2 {
+                    isolation: isolate;
+                }
+                
+                .Article-hidden-categories {
+                    background-color: transparent;
+                }
+                
+                .Article-category,
+                .Article-hidden-category,
+                .category-toggle {
+                    opacity: 1 !important;
+                    -webkit-backdrop-filter: none !important;
+                    backdrop-filter: none !important;
+                }
