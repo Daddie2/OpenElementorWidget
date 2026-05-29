@@ -2243,10 +2243,10 @@
             }
 
             // Excerpt
-            $content = get_the_content();
-            if ($remove_title) { // ← già calcolato fuori dal loop
-                $content = preg_replace('/<h2[^>]*>(.*?)<\/h2>/i', '', $content, 1);
-            }
+          $content = apply_filters('the_content', get_the_content());
+if ($remove_title) {
+    $content = preg_replace('/<h2[^>]*>.*?<\/h2>/is', '', $content, 1);
+}
             $clean_content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $content);
             $clean_content = preg_replace('/\*!.*?\*\//s', '', $clean_content);
             $clean_content = preg_replace('/\.elementor.*?\}/s', '', $clean_content);
