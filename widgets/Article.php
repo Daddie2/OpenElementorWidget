@@ -1209,7 +1209,7 @@
                 $this->add_control(
                     'remove_title',
                     [
-                        'label' => esc_html__('Remove title(the first h2)', 'Article'),
+                        'label' => esc_html__('Remove title (the first heading)', 'Article'),
                         'type' => \Elementor\Controls_Manager::SWITCHER,
                         'label_on' => esc_html__('On', 'Article'),
                         'label_off' => esc_html__('Off', 'Article'),
@@ -2245,7 +2245,7 @@
             // Excerpt
           $content = apply_filters('the_content', get_the_content());
 if ($remove_title) {
-    $content = preg_replace('/<h2[^>]*>.*?<\/h2>/is', '', $content, 1);
+    $content = preg_replace('/<h[1-6][^>]*>.*?<\/h[1-6]>/is', '', $content, 1);
 }
             $clean_content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $content);
             $clean_content = preg_replace('/\*!.*?\*\//s', '', $clean_content);
