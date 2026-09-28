@@ -87,7 +87,7 @@
                 }
 
                 if (matchesCategory && matchesSearch) {
-                    card.style.display = "block";
+                    card.style.display = "";
                     visibleCount++;
                 } else {
                     card.style.display = "none";

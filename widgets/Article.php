@@ -978,8 +978,8 @@
                         'default' => 'left',
                         'toggle' => true,
                         'selectors' => [
-                            '{{WRAPPER}} .Article-category-card2' => 'justify-content: {{VALUE}} !important;',
-                            '{{WRAPPER}} .Article-category' => 'justify-content: {{VALUE}} !important;',
+                            '{{WRAPPER}} .Article-category-card2' => 'text-align: {{VALUE}} !important;',
+                            '{{WRAPPER}} .Article-hidden-categories' => 'justify-content: {{VALUE}} !important;',
 
                         ],
                         'icon_colors' => [
@@ -1209,7 +1209,7 @@
                 $this->add_control(
                     'remove_title',
                     [
-                        'label' => esc_html__('Remove title (the first heading)', 'Article'),
+                        'label' => esc_html__('Remove title(the first h2)', 'Article'),
                         'type' => \Elementor\Controls_Manager::SWITCHER,
                         'label_on' => esc_html__('On', 'Article'),
                         'label_off' => esc_html__('Off', 'Article'),
@@ -1266,6 +1266,37 @@
                         'type' => \Elementor\Controls_Manager::TEXT,
                         'default' => 'Read more',
                         'placeholder' => esc_html__('Read More', 'Article'),
+                    ]
+                );
+                
+                $this->add_responsive_control(
+                    'read_more_alignment',
+                    [
+                        'label' => esc_html__('Button Alignment', 'Article'),
+                        'type' => \Elementor\Controls_Manager::CHOOSE,
+                        'options' => [
+                            'left' => [
+                                'title' => esc_html__('Left', 'Article'),
+                                'icon' => 'eicon-text-align-left',
+                            ],
+                            'center' => [
+                                'title' => esc_html__('Center', 'Article'),
+                                'icon' => 'eicon-text-align-center',
+                            ],
+                            'right' => [
+                                'title' => esc_html__('Right', 'Article'),
+                                'icon' => 'eicon-text-align-right',
+                            ],
+                        ],
+                        'default' => 'left',
+                        'selectors_dictionary' => [
+                            'left' => 'flex-start',
+                            'center' => 'center',
+                            'right' => 'flex-end',
+                        ],
+                        'selectors' => [
+                            '{{WRAPPER}} .Article-read-more' => 'align-self: {{VALUE}};',
+                        ],
                     ]
                 );
                 
