@@ -1269,7 +1269,7 @@
                     ]
                 );
                 
-                $this->add_responsive_control(
+                $this->add_control(
                     'read_more_alignment',
                     [
                         'label' => esc_html__('Button Alignment', 'Article'),
