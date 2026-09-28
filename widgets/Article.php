@@ -632,7 +632,7 @@
                         'default' => 'left',
                         'toggle' => true,
                         'selectors' => [
-                            '{{WRAPPER}} .Article-date-card2' => 'justify-content: {{VALUE}};',
+                            '{{WRAPPER}} .Article-date-card2' => 'text-align: {{VALUE}};',
                         ],
                         'icon_colors' => [
                             'left' => 'white',
