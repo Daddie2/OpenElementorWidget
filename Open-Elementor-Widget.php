@@ -28,7 +28,7 @@ function register_article_widget_assets()
     'article-widget-js',
     plugin_dir_url(__FILE__) . 'widgets/article_js.js',
     ['jquery'],
-    '1.0.0',
+    filemtime(plugin_dir_path(__FILE__) . 'widgets/article_js.js'),
     true
   );
 
@@ -36,7 +36,7 @@ function register_article_widget_assets()
     'article-widget-css',
     plugin_dir_url(__FILE__) . 'widgets/article_style.css',
     [],
-    '1.0.0'
+    filemtime(plugin_dir_path(__FILE__) . 'widgets/article_style.css')
   );
 }
 add_action('wp_enqueue_scripts', 'register_article_widget_assets');
