@@ -1,12 +1,11 @@
 name: Release automatica
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
-    # Non creare una release se cambiano solo file di documentazione
     paths-ignore:
       - '**.md'
-      - '.github/**'
 
 permissions:
   contents: write
