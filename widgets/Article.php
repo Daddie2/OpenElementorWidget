@@ -2203,8 +2203,22 @@ class Article_Widget extends \Elementor\Widget_Base
         // Articles grid
         if ($query->have_posts()) {
             echo '<div class="articles-grid">';
+
+            // Immagine di default: versione ridimensionata se è un file della libreria media
+            $default_img_url = $settings['default_image']['url'];
+            if (!empty($settings['default_image']['id'])) {
+                $resized = wp_get_attachment_image_url((int) $settings['default_image']['id'], 'medium_large');
+                if ($resized) {
+                    $default_img_url = $resized;
+                }
+            }
+            // Le prime card sono quelle visibili subito: niente lazy load e priorità alta (migliora l'LCP)
+            $eager_cards = 2;
+            $card_index  = 0;
+
             while ($query->have_posts()) {
                 $query->the_post();
+                $is_eager = ($card_index++ < $eager_cards);
 
                 $post_categories = get_the_category();
 
@@ -2273,9 +2287,14 @@ class Article_Widget extends \Elementor\Widget_Base
                 echo '<div class="article-image">';
                 echo '<div class="article-image-inner">';
                 if (has_post_thumbnail()) {
-                    echo get_the_post_thumbnail(null, 'medium_large', array('loading' => 'lazy'));
+                    $thumb_attrs = $is_eager
+                        ? array('loading' => 'eager', 'fetchpriority' => 'high')
+                        : array('loading' => 'lazy');
+                    echo get_the_post_thumbnail(null, 'medium_large', $thumb_attrs);
                 } else {
-                    echo '<img src="' . esc_url($settings['default_image']['url']) . '" alt="Default Image" loading="lazy">';
+                    // Immagine decorativa: alt vuoto
+                    echo '<img src="' . esc_url($default_img_url) . '" alt="" decoding="async" '
+                        . ($is_eager ? 'fetchpriority="high"' : 'loading="lazy"') . '>';
                 }
                 echo '</div>';
 
