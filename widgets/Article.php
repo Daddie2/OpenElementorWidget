@@ -2020,6 +2020,14 @@ class Article_Widget extends \Elementor\Widget_Base
                 'default' => 'search',
             ]
         );
+        $this->add_control(
+            'Search_button_label',
+            [
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label' => esc_html__('Search button accessible name', 'Article'),
+                'default' => 'Search',
+            ]
+        );
         $this->end_controls_section();
     }
 
@@ -2179,10 +2187,10 @@ class Article_Widget extends \Elementor\Widget_Base
 
         echo '<div class="article-widget-container2">';
         echo '<div class="search-form-container">';
-        echo '<input type="text" class="article-input2 article-input" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off" data-search-scope="' . esc_attr($settings['search_scope'] ?: 'title') . '">';
+        echo '<input type="text" class="article-input2 article-input" aria-label="' . esc_attr($settings['Search_place'] ?: 'Search') . '" placeholder="' . esc_attr($settings['Search_place'] ?: 'Search') . '" autocomplete="off" data-search-scope="' . esc_attr($settings['search_scope'] ?: 'title') . '">';
         echo '<div class="article-icon2">';
-        echo '<button type="button" class="article-submit-button article-submit">';
-        echo '<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+        echo '<button type="button" class="article-submit-button article-submit" aria-label="' . esc_attr($settings['Search_button_label'] ?: 'Search') . '">';
+        echo '<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
             <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="70"></path>
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
             </svg>';
