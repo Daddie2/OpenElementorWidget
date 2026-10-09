@@ -1,0 +1,46 @@
+name: Release automatica
+
+on:
+  push:
+    branches: [main]
+    # Non creare una release se cambiano solo file di documentazione
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scarica il codice
+        uses: actions/checkout@v4
+
+      - name: Crea lo zip
+        run: |
+          # Nome della cartella dentro lo zip (serve a WordPress per installare il plugin)
+          PLUGIN_DIR="OpenElementorWidget"
+          mkdir -p "build/$PLUGIN_DIR"
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='build' \
+            --exclude='.gitignore' \
+            ./ "build/$PLUGIN_DIR/"
+          cd build
+          zip -r "../$PLUGIN_DIR.zip" "$PLUGIN_DIR"
+
+      - name: Calcola la versione
+        id: version
+        run: echo "tag=v$(date -u +%Y.%m.%d)-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+      - name: Pubblica la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" \
+            OpenElementorWidget.zip \
+            --title "${{ steps.version.outputs.tag }}" \
+            --generate-notes
