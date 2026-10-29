@@ -79,10 +79,10 @@
     white-space: nowrap;
     z-index: 10;
     border: none;
-    padding: 0 8px; /* Ridotto padding verticale */
-    line-height: 1; /* Line height a 1 per centrare meglio il simbolo */
-    min-width: 20px; /* Ridotta dimensione minima */
-    min-height: 20px; /* Ridotta dimensione minima */
+    padding: 0 8px;
+    line-height: 1;
+    min-width: 20px;
+    min-height: 20px;
     box-sizing: border-box;
 }
 
@@ -103,8 +103,8 @@
     z-index: 100;
     word-break: normal;
     white-space: nowrap;
-    top: 100%; /* Position it right below the main category */
-    margin-top: 5px; /* Add a small gap */
+    top: 100%;
+    margin-top: 5px;
 }
 
 .Article-hidden-category {
@@ -239,6 +239,7 @@
     gap: 20px;
 }
 
+/* FIX: Aggiunto height: 100% per far allineare tutte le card */
 .article-card {
     display: flex;
     flex-direction: column;
@@ -247,6 +248,8 @@
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; 
+    background-color: white; /* Assicura che lo sfondo sia bianco di default */
 }
 
 .article-card:hover {
@@ -268,8 +271,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    box-sizing: border-box; /* Assicura che il bordo sia incluso nelle dimensioni */
-    /* Il bordo può essere aggiunto qui */
+    box-sizing: border-box;
 }
 
 .article-image img {
@@ -286,7 +288,7 @@
     position: absolute;
     top: 5px;
     left: 10px;
-    width: calc(100% - 20px); /* Evita che finisca sotto il bordo a destra */
+    width: calc(100% - 20px);
     box-sizing: border-box;
     z-index: 10;
     display: none;
@@ -316,9 +318,6 @@
     line-height: 1.5;
 }
 
-/* FIX: i figli (es. il link <a>) ereditano il colore del contenitore,
-   così colore e grassetto in hover valgono su tutto il pallino
-   e non solo sopra al testo. */
 .Article-category a,
 .Article-category a:hover,
 .Article-category a:focus {
@@ -385,9 +384,18 @@
     flex-direction: column;
 }
 
+/* FIX: Troncamento a 3 righe e altezza minima per allineare i pulsanti */
 .Article-description {
     margin-bottom: 15px;
     line-height: 1.5;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    
+    /* 1.5 (line-height) * 3 (righe) = 4.5em di altezza minima */
+    min-height: 4.5em; 
 }
 
 .Article-description:hover {
