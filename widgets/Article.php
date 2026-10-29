@@ -810,7 +810,6 @@ class Article_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'white',
                 'selectors' => [
-                    // FIX: ".Article-category *" -> colore applicato anche agli elementi figli (es. il link <a>)
                     '{{WRAPPER}} .Article-category, {{WRAPPER}} .Article-category *, {{WRAPPER}} .category-toggle' => 'color: {{VALUE}};',
                 ],
             ]
@@ -862,7 +861,6 @@ class Article_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => 'black',
                 'selectors' => [
-                    // FIX: ":hover *" -> il colore hover vale anche sui figli quando si passa sullo sfondo/padding
                     '{{WRAPPER}} .Article-category:hover, {{WRAPPER}} .Article-category:hover *, {{WRAPPER}} .category-toggle:hover' => 'color: {{VALUE}} !important;',
                 ],
             ]
@@ -894,7 +892,6 @@ class Article_Widget extends \Elementor\Widget_Base
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'default' => [
-                    // FIX: il padding negativo non è valido in CSS, default portato a 0
                     'top' => 0,
                     'right' => 0,
                     'bottom' => 0,
@@ -1112,7 +1109,7 @@ class Article_Widget extends \Elementor\Widget_Base
             [
                 'label' => esc_html__('Number of Word on pc', 'Article'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => 15,
+                'default' => 20, // Aumentato leggermente per riempire meglio le card
                 'min' => 1,
             ]
         );
@@ -2096,7 +2093,7 @@ class Article_Widget extends \Elementor\Widget_Base
         if (!empty($settings['include_categories'])) {
             $base_args['category__in'] = $settings['include_categories'];
         }
-        // FIX: "include_all" non è un controllo registrato -> evita il warning "Undefined array key"
+        
         if (!empty($settings['exclude_categories']) && ($settings['include_all'] ?? '') !== 'on') {
             $base_args['category__not_in'] = $settings['exclude_categories'];
         }
@@ -2241,7 +2238,7 @@ class Article_Widget extends \Elementor\Widget_Base
                 } elseif (count($cats_with_custom_redirects) > 1) {
                     $force_default_links = true;
                 } elseif ($selected_page_url) {
-                    $master_redirect_url = $selected_page_url; // ← già calcolato fuori dal loop
+                    $master_redirect_url = $selected_page_url;
                 }
 
                 // Category classes e badge
@@ -2250,7 +2247,7 @@ class Article_Widget extends \Elementor\Widget_Base
                 $badge_category_names = [];
                 foreach ($post_categories as $category) {
                     $category_classes .= ' Article-category-' . $category->term_id;
-                    if (!in_array((int) $category->term_id, $hidden_badge_cats)) { // ← già calcolato fuori dal loop
+                    if (!in_array((int) $category->term_id, $hidden_badge_cats)) {
                         $badge_categories[]     = $category;
                         $badge_category_names[] = $category->name;
                     }
@@ -2269,18 +2266,19 @@ class Article_Widget extends \Elementor\Widget_Base
                 $clean_content = wp_strip_all_tags($clean_content);
                 $clean_content = trim(preg_replace('/[\s\r\n]+/', ' ', $clean_content));
 
-                $word_limit  = $word_limit_base; // ← già calcolato fuori dal loop
-                $words       = explode(' ', $clean_content);
-                $title_words = count(explode(' ', trim(preg_replace('/\s+/', ' ', get_the_title()))));
-                if ($title_words < 4) {
-                    $word_limit += 12;
-                } elseif ($title_words < 7) {
-                    $word_limit += 6;
+                // FIX: Rimosso l'aumento delle parole per i titoli corti (che causava i buchi bianchi)
+                $word_limit = $word_limit_base;
+                $words      = explode(' ', $clean_content);
+                $total_words = count($words);
+
+                if ($word_limit > $total_words) {
+                    $word_limit = $total_words;
                 }
-                if ($word_limit > count($words)) {
-                    $word_limit = count($words);
-                }
+
                 $excerpt = implode(' ', array_slice($words, 0, $word_limit));
+                
+                // FIX: Aggiunge i puntini solo se il testo è stato tagliato
+                $dots = ($total_words > $word_limit) ? '...' : '';
 
                 // Card HTML
                 echo '<div class="article-card' . esc_attr($category_classes) . '">';
@@ -2386,11 +2384,11 @@ class Article_Widget extends \Elementor\Widget_Base
                     echo '<a href="' . get_permalink() . '" class="Article-title">' . $title . '</a>';
                 }
 
-                // Description
+                // Description (con puntini di sospensione corretti)
                 if ($settings['content_link'] != 'allowed') {
-                    echo '<div class="Article-description" style="cursor: default;">' . $excerpt . '...</div>';
+                    echo '<div class="Article-description" style="cursor: default;">' . $excerpt . $dots . '</div>';
                 } else {
-                    echo '<div class="Article-description"><a href="' . get_permalink() . '">' . $excerpt . '...</a></div>';
+                    echo '<div class="Article-description"><a href="' . get_permalink() . '">' . $excerpt . $dots . '</a></div>';
                 }
 
                 echo '<a href="' . get_permalink() . '" class="Article-read-more">' . esc_html($settings['read_more_text']) . '</a>';
