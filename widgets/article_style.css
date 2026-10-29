@@ -239,7 +239,6 @@
     gap: 20px;
 }
 
-/* FIX: Aggiunto height: 100% per far allineare tutte le card */
 .article-card {
     display: flex;
     flex-direction: column;
@@ -249,7 +248,7 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%; 
-    background-color: white; /* Assicura che lo sfondo sia bianco di default */
+    background-color: white; 
 }
 
 .article-card:hover {
@@ -261,7 +260,7 @@
     flex-shrink: 0;
     position: relative;
     height: 0;
-    padding-bottom: 100%; /* Creates a perfect square */
+    padding-bottom: 100%; 
     overflow: hidden;
 }
 
@@ -384,18 +383,16 @@
     flex-direction: column;
 }
 
-/* FIX: Troncamento a 3 righe e altezza minima per allineare i pulsanti */
 .Article-description {
     margin-bottom: 15px;
     line-height: 1.5;
     
     display: -webkit-box;
-    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     
-    /* 1.5 (line-height) * 3 (righe) = 4.5em di altezza minima */
-    min-height: 4.5em; 
+    /* Il min-height e il numero di righe (-webkit-line-clamp) 
+       vengono ora generati dinamicamente da Elementor grazie al controllo aggiunto */
 }
 
 .Article-description:hover {
